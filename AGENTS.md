@@ -45,3 +45,7 @@ SEQ: 3-digit, zero-padded, per LAYER+MODULE in CODEMAP.json
 - Migrations: Alembic
 - Frontend: React 18 + TypeScript + Vite + TanStack Query + Zustand
 - Phase 3: pgvector HNSW + LangGraph
+
+## Antigravity 2.0 Command Execution Policy
+- **Allowed Development Commands**: `python`, `pytest`, `pip`, `npm`, `npx`, `tsc`, `vite`, `docker compose`, `update.py`, safe non-destructive git commands (`status`, `add`, `commit`, `push origin main`).
+- **Prohibited Destructive Commands**: Never run destructive deletions (`rm -rf /`, `rmdir /s /q`), force-pushes (`git push --force`), destructive resets (`git reset --hard` on committed work), volume deletions, or system process kills.

@@ -34,3 +34,7 @@ Full reference: ai_context/modules/MODULE_shared.md
 - MODULE_search.md    → M10: Phase 3 pgvector hybrid search
 - MODULE_agents.md    → M11: Phase 3 LangGraph agents
 - MODULE_shared.md    → Shared utilities — ALWAYS load alongside any module
+
+## Antigravity 2.0 Command Execution Policy
+- **Allowed Development Commands**: `python`, `pytest`, `pip`, `npm`, `npx`, `tsc`, `vite`, `docker compose`, `update.py`, safe git operations (`git status`, `git add`, `git commit`, `git push origin main`).
+- **Prohibited Destructive Commands**: Never run destructive deletions (`rm -rf /`, `rmdir /s /q`), force-pushes (`git push --force`), destructive resets (`git reset --hard` on committed work), volume deletions, or system process kills.
