@@ -3,17 +3,18 @@
     "project": "Trade OS",
     "version": "1.0.0",
     "entity_code_format": "TOS-{LAYER}-{MODULE}-{SEQ}",
-    "active_sprint": "S6",
+    "active_sprint": "S7",
     "completed_sprints": [
       "S1",
       "S2",
       "S3",
       "S4",
       "S5",
-      "S6"
+      "S6",
+      "S7"
     ],
-    "total_entities": 147,
-    "last_updated": "2026-08-28T13:26:33Z",
+    "total_entities": 153,
+    "last_updated": "2026-08-28T13:35:41Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -852,6 +853,36 @@
       "name": "test_lanes.py",
       "file": "backend/app/tests/test_lanes.py",
       "description": "Pytest unit tests for multi-corridor trade lane economics"
+    },
+    "TOS-INF-PROD-001": {
+      "name": "docker-compose.prod.yml",
+      "file": "docker-compose.prod.yml",
+      "description": "Unified 1-click production Docker compose configuration with PostgreSQL pgvector, backend, and Nginx frontend"
+    },
+    "TOS-INF-PROD-002": {
+      "name": "backend/Dockerfile",
+      "file": "backend/Dockerfile",
+      "description": "Production Python 3.12 multi-worker FastAPI Dockerfile"
+    },
+    "TOS-INF-PROD-003": {
+      "name": "frontend/Dockerfile",
+      "file": "frontend/Dockerfile",
+      "description": "Production multi-stage Node/Nginx frontend static assets Dockerfile"
+    },
+    "TOS-INF-PROD-004": {
+      "name": "frontend/nginx.conf",
+      "file": "frontend/nginx.conf",
+      "description": "Nginx reverse proxy for SPA static routes, REST API, and WebSocket streaming"
+    },
+    "TOS-UTL-PROD-001": {
+      "name": "verify_production_readiness.py",
+      "file": "scripts/verify_production_readiness.py",
+      "description": "Automated pre-flight production audit script checking schemas, tables, and explainability laws"
+    },
+    "TOS-TST-PROD-001": {
+      "name": "test_production_e2e.py",
+      "file": "backend/app/tests/test_production_e2e.py",
+      "description": "Full end-to-end production readiness API test suite"
     }
   },
   "dependency_rules": {

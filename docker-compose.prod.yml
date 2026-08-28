@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: tradeos_postgres_prod
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tradeos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tradeos_secret_password}
+      POSTGRES_DB: ${POSTGRES_DB:-trade_os}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tradeos -d trade_os"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tradeos_backend_prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://tradeos:tradeos_secret_password@postgres:5432/trade_os
+      API_KEY: ${API_KEY:-tradeos_dev_secret_key_2026}
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tradeos_frontend_prod
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    restart: always
+
+volumes:
+  postgres_prod_data:
