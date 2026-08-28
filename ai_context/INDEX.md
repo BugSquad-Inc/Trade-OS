@@ -1,5 +1,5 @@
 # Trade OS — Module Index
-*Project: Trade OS | Sprint: S5 | Total Entities: 134 | Updated: 2026-08-28T13:17:03Z*
+*Project: Trade OS | Sprint: S6 | Total Entities: 147 | Updated: 2026-08-28T13:26:33Z*
 
 ## Module Status
 

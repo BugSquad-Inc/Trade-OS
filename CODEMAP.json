@@ -3,16 +3,17 @@
     "project": "Trade OS",
     "version": "1.0.0",
     "entity_code_format": "TOS-{LAYER}-{MODULE}-{SEQ}",
-    "active_sprint": "S5",
+    "active_sprint": "S6",
     "completed_sprints": [
       "S1",
       "S2",
       "S3",
       "S4",
-      "S5"
+      "S5",
+      "S6"
     ],
-    "total_entities": 134,
-    "last_updated": "2026-08-28T13:17:03Z",
+    "total_entities": 147,
+    "last_updated": "2026-08-28T13:26:33Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -786,6 +787,71 @@
       "name": "test_analytics.py",
       "file": "backend/app/tests/test_analytics.py",
       "description": "Pytest unit tests for executive KPI endpoint"
+    },
+    "TOS-DB-WEBHOOK-001": {
+      "name": "WebhookSubscription",
+      "file": "backend/app/models/webhook.py",
+      "description": "Gold table for enterprise HMAC-SHA256 webhook subscriptions"
+    },
+    "TOS-DB-WEBHOOK-002": {
+      "name": "WebhookEventLog",
+      "file": "backend/app/models/webhook.py",
+      "description": "Gold audit table tracking webhook event dispatches and response codes"
+    },
+    "TOS-REP-WEBHOOK-001": {
+      "name": "webhook_repo",
+      "file": "backend/app/repositories/webhook_repo.py",
+      "description": "Repository for webhook registrations and dispatch logs"
+    },
+    "TOS-SVC-WEBHOOK-001": {
+      "name": "WebhookDispatcherService",
+      "file": "backend/app/services/webhook_service.py",
+      "description": "HMAC-SHA256 webhook signing and event dispatcher service"
+    },
+    "TOS-SCH-WEBHOOK-001": {
+      "name": "WebhookSubscribeRequest / WebhookListResponse",
+      "file": "backend/app/schemas/webhook.py",
+      "description": "Pydantic schemas for webhook subscriptions and dispatch payloads"
+    },
+    "TOS-SCH-LANE-001": {
+      "name": "TradeCorridorListResponse / TradeCorridorItem",
+      "file": "backend/app/schemas/lane.py",
+      "description": "Pydantic schemas for multi-corridor ocean freight matrix"
+    },
+    "TOS-RTE-WEBHOOK-001": {
+      "name": "subscribe_webhook / list_webhooks",
+      "file": "backend/app/api/webhooks.py",
+      "description": "POST /api/v1/webhooks/subscribe & GET /api/v1/webhooks"
+    },
+    "TOS-RTE-LANE-001": {
+      "name": "get_trade_corridors",
+      "file": "backend/app/api/lanes.py",
+      "description": "GET /api/v1/lanes/corridors endpoint"
+    },
+    "TOS-RTE-WS-001": {
+      "name": "websocket_signals_endpoint",
+      "file": "backend/app/api/websocket.py",
+      "description": "WS /ws/signals real-time trade signal streaming endpoint"
+    },
+    "TOS-FE-LANE-001": {
+      "name": "api/lanes.ts",
+      "file": "frontend/src/api/lanes.ts",
+      "description": "Frontend trade corridors API client"
+    },
+    "TOS-FE-WEBHOOK-001": {
+      "name": "api/webhooks.ts",
+      "file": "frontend/src/api/webhooks.ts",
+      "description": "Frontend webhook subscription API client"
+    },
+    "TOS-TST-WEBHOOK-001": {
+      "name": "test_webhooks.py",
+      "file": "backend/app/tests/test_webhooks.py",
+      "description": "Pytest unit tests for webhook subscription, list, and HMAC dispatch"
+    },
+    "TOS-TST-LANE-001": {
+      "name": "test_lanes.py",
+      "file": "backend/app/tests/test_lanes.py",
+      "description": "Pytest unit tests for multi-corridor trade lane economics"
     }
   },
   "dependency_rules": {
