@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
 interface UIState {
-  currentView: 'matches' | 'signals' | 'accounts' | 'customs';
+  currentView: 'matches' | 'signals' | 'accounts' | 'customs' | 'analytics';
   selectedBuyerId: string | null;
   selectedInspectorMatch: any | null;
   isCommandBarOpen: boolean;
   isInspectorOpen: boolean;
-  setCurrentView: (view: 'matches' | 'signals' | 'accounts' | 'customs') => void;
+  setCurrentView: (view: 'matches' | 'signals' | 'accounts' | 'customs' | 'analytics') => void;
   setSelectedBuyerId: (id: string | null) => void;
   setSelectedInspectorMatch: (match: any | null) => void;
   setCommandBarOpen: (open: boolean) => void;

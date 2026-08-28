@@ -10,6 +10,7 @@ export const GlassTopbar: React.FC = () => {
     signals: "Screen 2: Live Trade Signals & EUDR 68/100 Readiness",
     accounts: "Screen 3: Account 360 Dossier & LangGraph Agents",
     customs: "Screen 4: Customs Bill of Lading (BOL) Manifest Intelligence",
+    analytics: "Screen 5: Executive KPI Dashboard & Commercial Governance",
   };
 
   return (

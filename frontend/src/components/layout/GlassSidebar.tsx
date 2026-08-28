@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, ShieldCheck, Ship, ArrowUpRight } from 'lucide-react';
+import { LayoutGrid, Radio, Building2, ShieldCheck, Ship, BarChart3, ArrowUpRight } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
 
 export const GlassSidebar: React.FC = () => {
@@ -10,6 +10,7 @@ export const GlassSidebar: React.FC = () => {
     { id: 'signals', label: 'Live Signals & EUDR', icon: <Radio size={18} />, badge: 'Live' },
     { id: 'accounts', label: 'Account 360 & Agents', icon: <Building2 size={18} /> },
     { id: 'customs', label: 'Customs & BOL Flows', icon: <Ship size={18} />, badge: 'BOL' },
+    { id: 'analytics', label: 'Executive KPIs & Gov', icon: <BarChart3 size={18} /> },
   ];
 
   return (

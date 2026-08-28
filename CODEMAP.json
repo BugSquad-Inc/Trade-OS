@@ -3,15 +3,16 @@
     "project": "Trade OS",
     "version": "1.0.0",
     "entity_code_format": "TOS-{LAYER}-{MODULE}-{SEQ}",
-    "active_sprint": "S4",
+    "active_sprint": "S5",
     "completed_sprints": [
       "S1",
       "S2",
       "S3",
-      "S4"
+      "S4",
+      "S5"
     ],
-    "total_entities": 126,
-    "last_updated": "2026-08-28T13:10:37Z",
+    "total_entities": 134,
+    "last_updated": "2026-08-28T13:17:03Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -745,6 +746,46 @@
       "name": "seed_customs_data.py",
       "file": "backend/app/scripts/seed_customs_data.py",
       "description": "Customs BOL manifest seeder for Indian export corridors"
+    },
+    "TOS-DB-ANALYTICS-001": {
+      "name": "AgentRunRecord",
+      "file": "backend/app/models/analytics.py",
+      "description": "Gold table for tracking LangGraph multi-agent execution runs and outputs"
+    },
+    "TOS-REP-ANALYTICS-001": {
+      "name": "analytics_repo",
+      "file": "backend/app/repositories/analytics_repo.py",
+      "description": "Repository for aggregation of platform KPIs, verified contacts, and metrics"
+    },
+    "TOS-SVC-ANALYTICS-001": {
+      "name": "AnalyticsService",
+      "file": "backend/app/services/analytics_service.py",
+      "description": "Computes activation and GTM commercial KPIs for active exporter"
+    },
+    "TOS-SCH-ANALYTICS-001": {
+      "name": "ExecutiveKPIDashboardResponse",
+      "file": "backend/app/schemas/analytics.py",
+      "description": "Pydantic schema for executive activation and GTM KPI metrics"
+    },
+    "TOS-RTE-ANALYTICS-001": {
+      "name": "get_executive_kpis",
+      "file": "backend/app/api/analytics.py",
+      "description": "GET /api/v1/analytics/kpis endpoint"
+    },
+    "TOS-FE-ANALYTICS-001": {
+      "name": "ExecutiveDashboardView.tsx",
+      "file": "frontend/src/components/analytics/ExecutiveDashboardView.tsx",
+      "description": "Screen 5: Executive KPI Dashboard & Commercial Governance Cockpit"
+    },
+    "TOS-FE-ANALYTICS-002": {
+      "name": "api/analytics.ts",
+      "file": "frontend/src/api/analytics.ts",
+      "description": "Frontend analytics API client"
+    },
+    "TOS-TST-ANALYTICS-001": {
+      "name": "test_analytics.py",
+      "file": "backend/app/tests/test_analytics.py",
+      "description": "Pytest unit tests for executive KPI endpoint"
     }
   },
   "dependency_rules": {
