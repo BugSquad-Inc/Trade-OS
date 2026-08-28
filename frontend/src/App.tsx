@@ -4,6 +4,7 @@ import { AppShell } from './components/layout/AppShell';
 import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
 import { Account360View } from './components/accounts/Account360View';
+import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { useUIStore } from './store/uiStore';
 
@@ -25,6 +26,7 @@ function AppContent() {
         {currentView === 'matches' && <MatchPortalView />}
         {currentView === 'signals' && <SignalsView />}
         {currentView === 'accounts' && <Account360View />}
+        {currentView === 'customs' && <CustomsExplorerView />}
       </ErrorBoundary>
     </AppShell>
   );

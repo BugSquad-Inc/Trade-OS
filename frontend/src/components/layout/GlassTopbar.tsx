@@ -5,10 +5,11 @@ import { useUIStore } from '../../store/uiStore';
 export const GlassTopbar: React.FC = () => {
   const { currentView, setCommandBarOpen } = useUIStore();
 
-  const titles = {
-    matches: "Screen 1: Match Portal (Butler's Leather → German Buyers)",
+  const titles: Record<string, string> = {
+    matches: "Screen 1: Match Portal (European Buyer Matches)",
     signals: "Screen 2: Live Trade Signals & EUDR 68/100 Readiness",
-    accounts: "Screen 3: Account 360 Dossier & AI Outreach Cockpit",
+    accounts: "Screen 3: Account 360 Dossier & LangGraph Agents",
+    customs: "Screen 4: Customs Bill of Lading (BOL) Manifest Intelligence",
   };
 
   return (

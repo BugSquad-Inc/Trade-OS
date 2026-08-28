@@ -6,9 +6,10 @@ export const GlassSidebar: React.FC = () => {
   const { currentView, setCurrentView } = useUIStore();
 
   const navItems = [
-    { id: 'matches', label: 'Match Portal', icon: <LayoutGrid size={18} />, badge: '5 Qualified' },
+    { id: 'matches', label: 'Match Portal', icon: <LayoutGrid size={18} />, badge: '50+ Leads' },
     { id: 'signals', label: 'Live Signals & EUDR', icon: <Radio size={18} />, badge: 'Live' },
-    { id: 'accounts', label: 'Account 360', icon: <Building2 size={18} /> },
+    { id: 'accounts', label: 'Account 360 & Agents', icon: <Building2 size={18} /> },
+    { id: 'customs', label: 'Customs & BOL Flows', icon: <Ship size={18} />, badge: 'BOL' },
   ];
 
   return (
