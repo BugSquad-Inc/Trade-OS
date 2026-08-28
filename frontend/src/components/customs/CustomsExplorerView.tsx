@@ -70,10 +70,13 @@ export const CustomsExplorerView: React.FC = () => {
                   <AppleBadge tone="blue" size="sm">HS {s.hs_code}</AppleBadge>
                 </div>
                 <p className="text-xs text-slate-600">{s.product_desc}</p>
-                <div className="flex items-center gap-4 text-[11px] text-slate-400">
-                  <span>Shipper: <b className="text-slate-700">{s.exporter_name}</b></span>
+                <div className="flex items-center gap-4 text-[11px] text-slate-400 flex-wrap">
+                  <span>Current Shipper: <b className="text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{s.exporter_name}</b></span>
                   <span>Weight: <b className="text-slate-700 font-mono">{s.weight_kg.toLocaleString()} kg</b></span>
                   <span>Date: <b className="text-slate-700 font-mono">{s.shipment_date}</b></span>
+                  <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
+                    ⚡ Displacement Opportunity (Faster Chennai Transit)
+                  </span>
                 </div>
               </div>
 
