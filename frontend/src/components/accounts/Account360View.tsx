@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AccountHeader } from './AccountHeader';
 import { OutreachComposer } from './OutreachComposer';
+import { AgentCockpitCard } from './AgentCockpitCard';
 import { AppleCard } from '../apple/AppleCard';
 import { AppleBadge } from '../apple/AppleBadge';
 import { AppleSegmentedControl } from '../apple/AppleSegmentedControl';
@@ -17,7 +18,7 @@ export const Account360View: React.FC = () => {
 
   const effectiveId = selectedBuyerId || matchData?.matches?.[0]?.buyer_id || null;
   const { data: account, isLoading } = useAccount(effectiveId);
-  const [activeTab, setActiveTab] = useState<'overview' | 'contacts' | 'outreach'>('outreach');
+  const [activeTab, setActiveTab] = useState<'overview' | 'contacts' | 'outreach' | 'agents'>('outreach');
 
   if (isLoading) return <PageSkeleton />;
   if (!account) return <EmptyState title="No buyer selected" description="Select a buyer from the Match Portal to inspect their Account 360 dossier." />;
@@ -34,9 +35,10 @@ export const Account360View: React.FC = () => {
           value={activeTab}
           onChange={setActiveTab}
           options={[
-            { value: 'outreach', label: 'AI Outreach Composer' },
-            { value: 'overview', label: 'Company Overview & Specs' },
-            { value: 'contacts', label: `Verified Contacts (${account.contacts.length})` },
+            { value: 'outreach', label: 'AI Outreach' },
+            { value: 'agents', label: 'LangGraph Agents 🤖' },
+            { value: 'overview', label: 'Overview & Specs' },
+            { value: 'contacts', label: `Contacts (${account.contacts.length})` },
           ]}
         />
 
@@ -63,6 +65,13 @@ export const Account360View: React.FC = () => {
           buyerId={account.id}
           buyerName={account.canonical_name}
           defaultContact={primaryContact?.full_name}
+        />
+      )}
+
+      {activeTab === 'agents' && (
+        <AgentCockpitCard
+          buyerId={account.id}
+          buyerName={account.canonical_name}
         />
       )}
 
