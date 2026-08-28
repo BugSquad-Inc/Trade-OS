@@ -7,8 +7,8 @@ client = TestClient(app)
 
 def test_outreach_generation():
     m_res = client.get("/api/v1/matches", headers={"X-TradeOS-Key": settings.API_KEY})
-    picard = m_res.json()["matches"][0]
-    buyer_id = picard["buyer_id"]
+    buyer = m_res.json()["matches"][0]
+    buyer_id = buyer["buyer_id"]
 
     payload = {
         "buyer_id": buyer_id,
@@ -18,7 +18,7 @@ def test_outreach_generation():
     response = client.post("/api/v1/outreach", json=payload, headers={"X-TradeOS-Key": settings.API_KEY})
     assert response.status_code == 200
     data = response.json()
-    assert data["buyer_name"] == "Picard GmbH"
+    assert data["buyer_name"] == buyer["name"]
     assert data["tone"] == "Professional"
     assert "EUDR" in data["subject"]
     assert "Butler's Leather" in data["body"]

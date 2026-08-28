@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api import health, capability, matches, signals, accounts, outreach
+from app.api import health, capability, matches, signals, accounts, outreach, ingest
 
 app = FastAPI(
     title="Trade OS API",
@@ -25,6 +25,7 @@ app.include_router(matches.router)
 app.include_router(signals.router)
 app.include_router(accounts.router)
 app.include_router(outreach.router)
+app.include_router(ingest.router)
 
 @app.get("/")
 def root():

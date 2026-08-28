@@ -3,10 +3,12 @@
     "project": "Trade OS",
     "version": "1.0.0",
     "entity_code_format": "TOS-{LAYER}-{MODULE}-{SEQ}",
-    "active_sprint": "S1",
-    "completed_sprints": [],
-    "total_entities": 77,
-    "last_updated": "2026-08-28T12:11:00Z",
+    "active_sprint": "S2",
+    "completed_sprints": [
+      "S1"
+    ],
+    "total_entities": 92,
+    "last_updated": "2026-08-28T12:26:24Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -88,7 +90,7 @@
       "slug": "data_expand",
       "sprint": "S2",
       "description": "Multi-source ingestion: web scrape, trade shows, directories, customs summaries, freight feeds, compliance docs",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "files": {}
     },
     "M10_search": {
@@ -495,6 +497,81 @@
       "name": "EmptyState",
       "file": "frontend/src/components/ui/EmptyState.tsx",
       "description": "Empty state illustration and message"
+    },
+    "TOS-DB-DATAEXPAND-001": {
+      "name": "SourceSystem",
+      "file": "backend/app/models/ingestion.py",
+      "description": "Bronze source systems and rate limits table"
+    },
+    "TOS-DB-DATAEXPAND-002": {
+      "name": "IngestionRun",
+      "file": "backend/app/models/ingestion.py",
+      "description": "Bronze ingestion execution tracking table"
+    },
+    "TOS-DB-DATAEXPAND-003": {
+      "name": "RawDocument",
+      "file": "backend/app/models/ingestion.py",
+      "description": "Bronze immutable raw document payload table"
+    },
+    "TOS-DB-DATAEXPAND-004": {
+      "name": "RawExtract",
+      "file": "backend/app/models/ingestion.py",
+      "description": "Bronze extracted entity payload table"
+    },
+    "TOS-REP-DATAEXPAND-001": {
+      "name": "ingest_repo",
+      "file": "backend/app/repositories/ingest_repo.py",
+      "description": "Repository for bronze source systems and ingestion runs"
+    },
+    "TOS-SVC-DATAEXPAND-001": {
+      "name": "entity_resolution_service",
+      "file": "backend/app/services/entity_resolution_service.py",
+      "description": "Entity resolution, legal suffix stripping and company deduplication"
+    },
+    "TOS-SVC-DATAEXPAND-002": {
+      "name": "ingestion_service",
+      "file": "backend/app/services/ingestion_service.py",
+      "description": "Multi-source ingestion pipeline for 6 intelligence streams"
+    },
+    "TOS-WRK-DATAEXPAND-001": {
+      "name": "nightly_refresh_worker",
+      "file": "backend/app/workers/nightly_refresh_worker.py",
+      "description": "Nightly batch pipeline for ingestion, rescoring and score history logging"
+    },
+    "TOS-WRK-DATAEXPAND-002": {
+      "name": "seed_50_buyers",
+      "file": "backend/app/scripts/seed_50_buyers.py",
+      "description": "Multi-source data expansion seeder for 50+ European buyers & 100+ signals"
+    },
+    "TOS-SCH-DATAEXPAND-001": {
+      "name": "IngestionStatusResponse / PipelineRefreshResponse",
+      "file": "backend/app/schemas/ingest.py",
+      "description": "Pydantic schemas for ingestion status and pipeline refresh"
+    },
+    "TOS-RTE-DATAEXPAND-001": {
+      "name": "get_ingestion_status",
+      "file": "backend/app/api/ingest.py",
+      "description": "GET /api/v1/ingest/status endpoint"
+    },
+    "TOS-RTE-DATAEXPAND-002": {
+      "name": "trigger_pipeline_refresh",
+      "file": "backend/app/api/ingest.py",
+      "description": "POST /api/v1/ingest/refresh endpoint"
+    },
+    "TOS-FE-DATAEXPAND-001": {
+      "name": "api/ingest.ts",
+      "file": "frontend/src/api/ingest.ts",
+      "description": "Frontend ingestion API client"
+    },
+    "TOS-FE-DATAEXPAND-002": {
+      "name": "hooks/useIngest.ts",
+      "file": "frontend/src/hooks/useIngest.ts",
+      "description": "React query hooks for ingestion status and pipeline refresh mutation"
+    },
+    "TOS-TST-DATAEXPAND-001": {
+      "name": "test_data_expansion.py",
+      "file": "backend/app/tests/test_data_expansion.py",
+      "description": "Pytest integration tests for multi-source ingestion and resolution"
     }
   },
   "dependency_rules": {
