@@ -36,7 +36,7 @@ export function AppleSegmentedControl<T extends string>({
   };
 
   return (
-    <div className={`inline-flex items-center bg-zinc-900/90 p-1 rounded-xl border border-white/[0.08] relative ${sizeClasses[size]} ${className}`}>
+    <div className={`inline-flex items-center bg-slate-200/75 p-1 rounded-xl border border-slate-300/60 shadow-inner relative ${sizeClasses[size]} ${className}`}>
       {options.map((opt) => {
         const isSelected = opt.value === value;
         return (
@@ -46,20 +46,20 @@ export function AppleSegmentedControl<T extends string>({
             onClick={() => onChange(opt.value)}
             className={`relative z-10 flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors cursor-pointer select-none ${
               itemSizeClasses[size]
-            } ${isSelected ? 'text-white shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}
+            } ${isSelected ? 'text-slate-900 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
           >
             {isSelected && (
               <motion.div
                 layoutId="segmented-pill"
-                className="absolute inset-0 bg-zinc-800 rounded-lg shadow-sm border border-white/[0.1] -z-10"
+                className="absolute inset-0 bg-white rounded-lg shadow-sm border border-black/[0.04] -z-10"
                 transition={{ type: 'spring', stiffness: 450, damping: 35 }}
               />
             )}
             {opt.icon && <span className="opacity-90">{opt.icon}</span>}
             <span>{opt.label}</span>
             {opt.count !== undefined && (
-              <span className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono ${
-                isSelected ? 'bg-blue-500/20 text-blue-300' : 'bg-zinc-800 text-zinc-400'
+              <span className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono font-semibold ${
+                isSelected ? 'bg-blue-100 text-blue-700' : 'bg-slate-300/70 text-slate-700'
               }`}>
                 {opt.count}
               </span>

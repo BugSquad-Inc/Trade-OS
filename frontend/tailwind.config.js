@@ -11,6 +11,10 @@ export default {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"SF Mono"', 'ui-monospace', 'Menlo', 'Consolas', 'monospace'],
       },
+      boxShadow: {
+        '2xs': '0 1px 2px 0 rgba(0, 0, 0, 0.02)',
+        'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      },
       colors: {
         apple: {
           blue: '#007AFF',

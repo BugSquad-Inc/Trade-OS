@@ -1,23 +1,23 @@
 import React from 'react';
-import { Search, Command, ShieldCheck, Activity } from 'lucide-react';
+import { Search, Command } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
 
 export const GlassTopbar: React.FC = () => {
   const { currentView, setCommandBarOpen } = useUIStore();
 
   const titles: Record<string, string> = {
-    matches: "Screen 1: Match Portal (European Buyer Matches)",
-    signals: "Screen 2: Live Trade Signals & EUDR 68/100 Readiness",
-    accounts: "Screen 3: Account 360 Dossier & LangGraph Agents",
-    customs: "Screen 4: Customs Bill of Lading (BOL) Manifest Intelligence",
-    analytics: "Screen 5: Executive KPI Dashboard & Commercial Governance",
+    matches: "Screen 1: Qualified Buyer Match Portal (50+ European Importers)",
+    signals: "Screen 2: Live European Market Signals & EUDR Compliance Radar",
+    accounts: "Screen 3: Buyer Intelligence Dossier & AI Export Director",
+    customs: "Screen 4: Ocean Shipment Radar & Competitor Displacement",
+    analytics: "Screen 5: Executive Export Revenue & Pipeline Cockpit",
   };
 
   return (
-    <header className="h-16 glass-topbar flex items-center justify-between px-6 select-none shrink-0">
+    <header className="h-16 glass-topbar flex items-center justify-between px-6 select-none shrink-0 shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
       <div>
-        <h2 className="text-sm font-semibold text-white tracking-tight">{titles[currentView]}</h2>
-        <p className="text-xs text-zinc-400">Leather & Materials Export Intelligence Engine</p>
+        <h2 className="text-sm font-bold text-slate-900 tracking-tight">{titles[currentView]}</h2>
+        <p className="text-xs text-slate-500 font-medium">Indian Leather & Finished Materials Export Revenue Engine</p>
       </div>
 
       <div className="flex items-center gap-3">
@@ -25,19 +25,19 @@ export const GlassTopbar: React.FC = () => {
         <button
           type="button"
           onClick={() => setCommandBarOpen(true)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-xs text-zinc-400 hover:text-zinc-200 hover:border-white/[0.15] transition-all cursor-pointer shadow-sm"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 text-xs text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-all cursor-pointer shadow-xs"
         >
-          <Search size={14} />
-          <span>Spotlight Search...</span>
-          <kbd className="flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-zinc-800 text-zinc-300 rounded border border-white/[0.06]">
+          <Search size={14} className="text-slate-400" />
+          <span>Instant Buyer & HS Code Matcher...</span>
+          <kbd className="flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded border border-slate-200">
             <Command size={10} /> K
           </kbd>
         </button>
 
         {/* Live Status Pill */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Live Medallion Sync</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-semibold shadow-xs">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Live Market Feed (Updated Today)</span>
         </div>
       </div>
     </header>

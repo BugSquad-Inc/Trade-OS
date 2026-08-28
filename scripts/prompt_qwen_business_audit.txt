@@ -1,0 +1,67 @@
+﻿# STRATEGIC CPO & B2B COMMERCIAL AUDIT REQUEST FOR TRADE OS
+
+## CONTEXT & CURRENT STATE OF THE MVP
+Trade OS has completed all 7 technical sprints across its 11 modules for the **Leather & Materials Vertical Wedge** (Target: Indian leather exporters like Butler's Leather Chennai selling to European buyers in Germany, Italy, France, Spain, UK).
+
+### What Has Been Built:
+1. **Medallion Architecture (PostgreSQL 16 + pgvector on Docker)**:
+   - Bronze raw ingestion (6 intelligence streams: customs, tenders, regulatory, trade directories, company registries, port movements).
+   - Silver normalized entities (`entity_company`, `entity_person`, `customs_shipments_normalized`).
+   - Gold decision tables (`match_candidate`, `signal`, `exporter_capability`, `agent_runs`, `crm_export_log`, `webhook_subscriptions`).
+2. **Scoring Engine**:
+   - Canonical 100-point explainable formula: 35 Product Fit + 25 Compliance Readiness (EUDR 68/100, REACH) + 15 Lane Economics (INMAA->DEHAM transit & freight) + 15 Buyer Intent + 10 Accessibility.
+   - 100% explainability coverage (every match has 5 positive/negative ScoreDriver badges, zero zero-driver matches).
+3. **Hybrid Search & AI Multi-Agents**:
+   - Dense vector (pgvector HNSW) + Sparse text (BM25 tsvector) combined via Reciprocal Rank Fusion (RRF k=60).
+   - LangGraph 5-Agent Swarm (ResearchAgent, ComplianceAgent, NarrativeAgent, OutreachSequenceAgent, AccountPlanAgent) with human approval gate.
+4. **Customs & Commercial Hub**:
+   - Ocean BOL manifests (TEU volume, container flows, port pairs).
+   - 1-Click CRM export to HubSpot, Salesforce, and CSV.
+   - Real-time WebSockets (`/ws/signals`) and HMAC-SHA256 webhooks.
+5. **Frontend UI (Apple HIG Silver-White Theme)**:
+   - Screen 1: Match Portal (50+ European buyers, Grade A/B pills, MatchCard, ScoreRing).
+   - Screen 2: Live Signals Feed, EUDR 68/100 scorecard, Multi-Corridor Ocean Matrix (Hamburg, Genoa, Le Havre, Valencia).
+   - Screen 3: Account 360 buyer dossier, 4-tone AI Outreach Composer, LangGraph Cockpit.
+   - Screen 4: Customs Manifest Explorer.
+   - Screen 5: Executive KPI Dashboard & Governance.
+
+---
+
+## THE CORE STRATEGIC & BUSINESS PROBLEM:
+The user is concerned that **the MVP is currently heavily developer-friendly and engineering-focused rather than business-friendly and buyer/seller-friendly**. 
+
+Specifically:
+1. The terminology and presentation feel like an engineering console (e.g., "Medallion Data Sync", "RRF 0.032 Score", "LangGraph Agent Swarm", "TEU Manifests", "Incoterms Benchmark", "HMAC Webhooks") rather than a direct, intuitive **Export Revenue Engine** for a 50+ year old tannery owner or export director in Ambur/Chennai/Kanpur.
+2. A non-technical Indian exporter doesn't care about the backend pipeline architecture; they care about:
+   - *"Which German buyer will buy 20,000 sq ft of my shoe upper leather this month?"*
+   - *"How much money will I make per container after freight and EUDR compliance?"*
+   - *"What exact email should I send to the Head of Procurement right now to get a sample request?"*
+   - *"Why is this buyer ranked #1 over #5, and can I trust this data before I contact them?"*
+
+---
+
+## QUESTIONS FOR QWEN 3.8 MAX:
+
+Please provide an exhaustive, brutally honest, and actionable **B2B SaaS Chief Product Officer & GTM Audit** addressing:
+
+### 1. Executive Diagnosis: Developer Console vs. Commercial Revenue OS
+- What specific UI elements, terms, screens, and workflows currently scream "developer tool" and create friction for a non-technical exporter?
+- How should the mental model shift from "Data & AI Pipeline" to "Qualified Buyer Pipeline & Dollar Revenue"?
+
+### 2. Business-Friendly UX & Terminology Transformation Matrix
+- Provide a side-by-side mapping table:
+  - **Current Technical / Engineering Term** -> **Business-Friendly Exporter Term** -> **Why This Converts Higher**.
+  - (e.g. RRF Hybrid Score -> "Buyer Match Confidence", Medallion Sync -> "Live Market Freshness", LangGraph Agents -> "AI Export Assistant", etc.)
+
+### 3. Screen-by-Screen Business UX Improvements:
+- **Screen 1 (Match Portal)**: How to make the 100-point match immediately actionable for an export manager (e.g., deal size estimates, 1-click sample pitch, buyer buying cycle tags).
+- **Screen 2 (Signals & EUDR)**: How to translate EUDR 68/100 and freight into "Export Risk vs. Profit Margin" that factory owners understand.
+- **Screen 3 (Account 360 & Outreach)**: How to make the AI outreach generator feel like having a senior European sales director writing the email rather than an AI prompt playground.
+- **Screen 4 (Customs Flows)**: How to turn raw BOL container data into actionable competitive intelligence (e.g. "Buyer X is currently buying from your competitor in Pakistan; here is how to displace them").
+- **Screen 5 (Executive Dashboard)**: What KPIs a CEO/Founder actually looks at (Expected Order Value, Pipeline Velocity, Sample Request Rate, Compliance Clearance Status).
+
+### 4. The 15-Minute Live Demo Script for Butler's Leather:
+- Provide the exact step-by-step 15-minute demo walkthrough that the founder should present to Butler's Leather to close the $500 pilot on the spot with a 14-day guarantee.
+
+### 5. Final Recommendations:
+- Top 5 immediate high-impact UI/UX tweaks that bridge deep technical rigor with commercial elegance.

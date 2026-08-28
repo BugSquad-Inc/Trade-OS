@@ -12,14 +12,14 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const { isCommandBarOpen, setCommandBarOpen, setSelectedBuyerId, setCurrentView } = useUIStore();
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-zinc-950 text-zinc-100">
-      {/* Sidebar */}
+    <div className="flex h-screen w-screen overflow-hidden bg-[#F5F5F7] text-slate-900 font-sans">
+      {/* Translucent Silver/White Sidebar */}
       <GlassSidebar />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <GlassTopbar />
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-8 bg-[#F5F5F7]">
           {children}
         </main>
       </div>

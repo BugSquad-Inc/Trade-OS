@@ -37,12 +37,12 @@ export const AppleScoreRing: React.FC<AppleScoreRingProps> = ({
   return (
     <div className="relative flex flex-col items-center justify-center inline-flex select-none">
       <svg width={size} height={size} className="transform -rotate-90">
-        {/* Background Track */}
+        {/* Background Track — Silver Slate */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.08)"
+          stroke="#E2E8F0"
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -77,19 +77,19 @@ export const AppleScoreRing: React.FC<AppleScoreRingProps> = ({
       </svg>
       {/* Centered Score Badge */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-base font-bold font-mono tracking-tight text-white leading-none">
+        <span className="text-base font-bold font-mono tracking-tight text-slate-900 leading-none">
           {Math.round(score)}
         </span>
         {showGrade && grade && (
           <span
             className="text-[10px] font-bold px-1.5 py-0.5 rounded-full mt-0.5 leading-none"
-            style={{ backgroundColor: `${ringColor}22`, color: ringColor }}
+            style={{ backgroundColor: `${ringColor}18`, color: ringColor }}
           >
             {grade}
           </span>
         )}
       </div>
-      {label && <span className="text-[11px] text-zinc-400 font-medium mt-1">{label}</span>}
+      {label && <span className="text-[11px] text-slate-500 font-medium mt-1">{label}</span>}
     </div>
   );
 };

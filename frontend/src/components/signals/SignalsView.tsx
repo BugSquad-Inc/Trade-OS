@@ -30,7 +30,7 @@ export const SignalsView: React.FC = () => {
 
       <div className="space-y-4 pt-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-white tracking-tight">Live Intelligence Stream</h3>
+          <h3 className="text-base font-bold text-slate-900 tracking-tight">Live Intelligence Stream</h3>
           <AppleSegmentedControl
             size="sm"
             value={selectedCategory}

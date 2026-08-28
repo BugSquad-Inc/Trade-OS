@@ -18,10 +18,10 @@ export const AppleCard: React.FC<AppleCardProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    default: 'bg-zinc-900/70 border border-white/[0.08] backdrop-blur-xl shadow-lg',
-    inset: 'bg-zinc-950/60 border border-white/[0.05] shadow-inner',
-    elevated: 'bg-zinc-800/90 border border-white/[0.12] shadow-2xl backdrop-blur-2xl',
-    glass: 'bg-white/[0.04] border border-white/[0.09] backdrop-blur-md',
+    default: 'bg-white/85 border border-slate-200/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]',
+    inset: 'bg-slate-100/75 border border-slate-200/70 shadow-inner',
+    elevated: 'bg-white/95 border border-slate-200/90 shadow-[0_12px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl',
+    glass: 'bg-white/60 border border-slate-200/60 backdrop-blur-md shadow-sm',
   };
 
   const hoverMotion = hoverable || onClick ? {

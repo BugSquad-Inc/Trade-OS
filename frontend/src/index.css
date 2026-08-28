@@ -4,32 +4,41 @@
 
 @layer base {
   body {
-    @apply font-sans;
+    @apply font-sans bg-[#F5F5F7] text-slate-900 antialiased selection:bg-blue-500/20 selection:text-blue-900;
   }
 }
 
-/* Apple HIG Vibrancy & Glass Materials */
+/* Apple HIG Vibrancy & Glass Materials — White & Silver Theme */
 .glass-panel {
-  @apply bg-zinc-900/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl;
+  @apply bg-white/85 backdrop-blur-xl border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.04)];
 }
 
 .glass-card {
-  @apply bg-zinc-900/60 hover:bg-zinc-800/80 transition-colors backdrop-blur-md border border-white/[0.07] shadow-sm;
+  @apply bg-white/80 hover:bg-white/95 transition-all duration-200 backdrop-blur-md border border-slate-200/70 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.07)];
 }
 
 .glass-inset {
-  @apply bg-zinc-950/60 border border-white/[0.05];
+  @apply bg-slate-100/70 border border-slate-200/70 shadow-inner;
 }
 
 .glass-topbar {
-  @apply bg-zinc-950/80 backdrop-blur-xl border-b border-white/[0.08];
+  @apply bg-white/80 backdrop-blur-xl border-b border-slate-200/80;
 }
 
 .glass-sidebar {
-  @apply bg-zinc-950/90 backdrop-blur-2xl border-r border-white/[0.08];
+  @apply bg-[#FBFBFC]/95 backdrop-blur-2xl border-r border-slate-200/80;
 }
 
-/* Custom Scrollbar */
+/* Apple metallic silver gradients & pills */
+.silver-surface {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
+}
+
+.silver-pill {
+  @apply bg-gradient-to-b from-white to-slate-100/90 border border-slate-200/90 shadow-xs text-slate-700;
+}
+
+/* Custom Scrollbar — Light Silver */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -40,10 +49,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(148, 163, 184, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(148, 163, 184, 0.55);
 }

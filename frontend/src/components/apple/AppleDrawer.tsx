@@ -37,27 +37,27 @@ export const AppleDrawer: React.FC<AppleDrawerProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+            className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm cursor-pointer"
           />
 
-          {/* Slide-over Sheet */}
+          {/* Slide-over Sheet — Apple White & Silver */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-            className={`relative w-full ${width} bg-zinc-900/95 border-l border-white/[0.1] backdrop-blur-2xl shadow-2xl flex flex-col h-full z-10`}
+            className={`relative w-full ${width} bg-white/95 border-l border-slate-200/90 backdrop-blur-2xl shadow-2xl flex flex-col h-full z-10 text-slate-900`}
           >
             {/* Drawer Header */}
-            <div className="p-6 border-b border-white/[0.08] flex items-center justify-between">
+            <div className="p-6 border-b border-slate-200/80 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
-                {subtitle && <p className="text-xs text-zinc-400 mt-0.5">{subtitle}</p>}
+                <h3 className="text-lg font-bold text-slate-900 tracking-tight">{title}</h3>
+                {subtitle && <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>}
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800/80 transition-colors"
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>

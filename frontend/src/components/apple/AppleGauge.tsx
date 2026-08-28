@@ -30,11 +30,11 @@ export const AppleGauge: React.FC<AppleGaugeProps> = ({
     <div className={`w-full ${className}`}>
       {(label || showValue) && (
         <div className="flex items-center justify-between text-xs mb-1.5">
-          {label && <span className="font-medium text-zinc-400">{label}</span>}
-          {showValue && <span className="font-mono font-semibold text-zinc-200">{value}/{max}</span>}
+          {label && <span className="font-medium text-slate-600">{label}</span>}
+          {showValue && <span className="font-mono font-bold text-slate-900">{value}/{max}</span>}
         </div>
       )}
-      <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden p-0.5 border border-white/[0.05]">
+      <div className="h-2 w-full bg-slate-200/80 rounded-full overflow-hidden p-0.5 border border-slate-300/60">
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${colors[tone]}`}
           style={{ width: `${percentage}%` }}

@@ -25,7 +25,7 @@ export const MatchFilterBar: React.FC<Props> = ({
     <div className="flex flex-wrap items-center justify-between gap-4 py-2">
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Country:</span>
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Country:</span>
           <AppleSegmentedControl
             size="sm"
             value={selectedCountry}
@@ -42,7 +42,7 @@ export const MatchFilterBar: React.FC<Props> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Grade:</span>
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Grade:</span>
           <AppleSegmentedControl
             size="sm"
             value={selectedGrade}

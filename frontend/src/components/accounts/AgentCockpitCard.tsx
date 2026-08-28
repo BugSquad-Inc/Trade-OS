@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Sparkles, CheckCircle2, ShieldCheck, FileText, Send, Calendar } from 'lucide-react';
+import { Bot, Sparkles, CheckCircle2 } from 'lucide-react';
 import { AppleCard } from '../apple/AppleCard';
 import { AppleButton } from '../apple/AppleButton';
 import { AppleBadge } from '../apple/AppleBadge';
@@ -27,15 +27,15 @@ export const AgentCockpitCard: React.FC<Props> = ({ buyerId, buyerName }) => {
   };
 
   return (
-    <AppleCard variant="default" className="space-y-4 border-purple-500/20">
+    <AppleCard variant="default" className="space-y-4 border-purple-500/20 bg-white">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          <div className="p-2 rounded-xl bg-purple-50 text-purple-700 border border-purple-200/80 shadow-2xs">
             <Bot size={18} />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white tracking-tight">LangGraph Multi-Agent Workflows</h3>
-            <p className="text-xs text-zinc-400">Autonomous Research, Compliance, Outreach & 30-Day Plan</p>
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">AI European Export Director</h3>
+            <p className="text-xs text-slate-500 font-medium">Automated Buyer Research, EUDR Compliance Pack, Sample Pitch & 30-Day Deal Plan</p>
           </div>
         </div>
 
@@ -46,7 +46,7 @@ export const AgentCockpitCard: React.FC<Props> = ({ buyerId, buyerName }) => {
           onClick={handleRunAgents}
           icon={<Sparkles size={14} />}
         >
-          {workflow ? 'Re-Run Agent Pack' : 'Run Agent Pack'}
+          {workflow ? 'Regenerate Deal Pack' : 'Generate 30-Day Deal Pack'}
         </AppleButton>
       </div>
 
@@ -55,15 +55,15 @@ export const AgentCockpitCard: React.FC<Props> = ({ buyerId, buyerName }) => {
           {/* Agent Step Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             {workflow.completed_steps.map((s, idx) => (
-              <div key={idx} className="p-3 bg-zinc-950/60 rounded-xl border border-white/[0.05] space-y-1">
+              <div key={idx} className="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-white flex items-center gap-1.5">
-                    <CheckCircle2 size={13} className="text-emerald-400" />
+                  <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-emerald-600" />
                     {s.agent_name}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-500">{s.execution_time_ms}ms</span>
+                  <span className="text-[10px] font-mono text-slate-400 font-semibold">{s.execution_time_ms}ms</span>
                 </div>
-                <p className="text-zinc-400 text-[11px]">
+                <p className="text-slate-600 text-[11px] leading-relaxed">
                   {s.agent_name === 'NarrativeAgent' && s.output.narrative}
                   {s.agent_name === 'ComplianceAgent' && `EUDR Score: ${s.output.eudr_readiness_score}/100 — ${s.output.risk_assessment}`}
                   {s.agent_name === 'ResearchAgent' && `Verified: ${s.output.procurement_focus}`}
@@ -74,14 +74,14 @@ export const AgentCockpitCard: React.FC<Props> = ({ buyerId, buyerName }) => {
             ))}
           </div>
 
-          <div className="p-3 bg-purple-500/10 rounded-xl border border-purple-500/20 text-xs text-purple-200 flex items-center justify-between">
-            <span className="font-medium">Human-in-the-loop Gate: External communications require user confirmation.</span>
+          <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 text-xs text-purple-900 flex items-center justify-between shadow-2xs">
+            <span className="font-semibold">Human-in-the-loop Gate: External communications require user confirmation.</span>
             <AppleBadge tone="purple" size="sm">Gate Active</AppleBadge>
           </div>
         </div>
       ) : (
-        <div className="p-6 text-center bg-zinc-950/40 rounded-xl border border-white/[0.05] text-xs text-zinc-400">
-          Click <b className="text-white">"Run Agent Pack"</b> to deploy 5 autonomous LangGraph agents for {buyerName}.
+        <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200/80 text-xs text-slate-500 font-medium">
+          Click <b className="text-slate-900 font-bold">"Run Agent Pack"</b> to deploy 5 autonomous LangGraph agents for {buyerName}.
         </div>
       )}
     </AppleCard>
