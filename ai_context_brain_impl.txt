@@ -1,0 +1,257 @@
+# Universal AI Context System Generator
+## Paste this prompt into any AI with your project dev plan
+
+---
+
+## HOW TO USE THIS PROMPT
+
+1. Copy everything inside the prompt block below
+2. Paste it into Claude / Antigravity / ChatGPT / any AI
+3. After the prompt, paste your full project development plan
+4. The AI will generate all 7 files ready to use
+
+---
+
+## THE PROMPT
+
+```
+You are a codebase memory system generator.
+
+I am giving you my project development plan document below.
+Analyse it completely before generating anything.
+
+Generate exactly these 7 files for my project. Each file must be
+fully complete, ready to copy-paste with zero editing needed.
+
+---
+
+FILE 1: RULES.md
+Location: ai_context/RULES.md
+
+Rules for generating this file:
+- Extract every architectural constraint that says "always go through X, never call Y directly"
+- Extract every immutability rule (append-only tables, no-delete policies, INSERT ONLY)
+- Extract every layering rule (what belongs in which file type: router/service/repository etc)
+- Extract every shared utility that must never be duplicated across the project
+- Extract every abstraction that must be used instead of the concrete implementation
+- Extract every compliance or regulatory rule that must never be bypassed
+- Format: numbered list, one rule per line, no explanations, no rationale
+- Maximum 15 rules total
+- No code blocks, no headers beyond the title
+- Every rule must start with the thing that is forbidden or required, not a category label
+
+---
+
+FILE 2: ai_context/INDEX.md
+Location: ai_context/INDEX.md
+
+Rules for generating this file:
+- One line per module: module number, module name, sprint it belongs to, status (NOT STARTED / IN PROGRESS / DONE)
+- Include the slug/folder name where that module's code will live
+- List every shared utility: name, file path, one-word purpose
+- List every config key / environment variable name only, no values
+- List any pre-built or existing services that plug into this project
+- No function signatures, no descriptions, no explanations
+- Total file must be under 400 tokens
+- This file is read by AI before every session. Every token costs money. Be ruthless.
+
+---
+
+FILE 3: CODEMAP.json
+Location: project root (CODEMAP.json)
+
+Rules for generating this file:
+- Create the full JSON structure with correct meta, modules, entities, dependency_rules sections
+- meta section: fill project name, version 1.0.0, active_sprint from the plan, completed_sprints as empty array, total_entities as 0
+- modules section: create one entry per module extracted from the plan with correct module ID format, description, sprint number, status NOT_STARTED, empty files object
+- entities section: leave as empty object {}
+- dependency_rules section: extract every rule from the plan that maps to a key-value pair
+  where key is a short snake_case rule name and value is the full rule sentence
+- Module ID format: M{N}_{slug} where N is the module number and slug is lowercase underscore name
+- This file is the source of truth. Entities will be added by the developer as they build.
+
+---
+
+FILE 4: update.py
+Location: project root (update.py)
+
+Rules for generating this file:
+- Pure Python 3, no third-party dependencies, only stdlib (json, pathlib, argparse, datetime, sys)
+- Read CODEMAP.json from project root
+- Generate ai_context/INDEX.md
+- Generate ai_context/modules/MODULE_{slug}.md for every module in CODEMAP.json
+- Generate ai_context/modules/MODULE_shared.md for shared utilities (type UTL, CFG)
+- Each MODULE file must include sections for: DB models, Service functions, Repository functions,
+  API Routes, Pydantic Schemas, Background Workers, Frontend Components, Tests
+  (skip any section that has no entities yet — show placeholder text instead)
+- INDEX.md must include: module status table, shared utilities table, config keys table, dependency rules list
+- Support command line args: --module {slug} to regenerate one module only, --check to validate only
+- Update meta.last_updated, meta.last_updated_by, meta.total_entities on every run
+- Print a clean summary: files written, entity count, active sprint
+- Use the project's own entity code format extracted from the plan
+  If the plan has no code format, invent one: {PROJECT_ABBR}-{LAYER}-{MODULE}-{SEQ}
+  where PROJECT_ABBR is 2-4 uppercase letters from the project name
+- MODULE_SLUG dict must map every module ID to its file slug exactly as in CODEMAP.json
+
+---
+
+FILE 5: post-commit (git hook)
+Location: .git/hooks/post-commit (but output as post-commit in root for the developer to copy)
+
+Rules for generating this file:
+- Bash script, works on Linux and macOS
+- cd to git project root before anything else
+- Check Python is available, skip gracefully if not
+- Check CODEMAP.json exists, skip gracefully if not
+- Check update.py exists, skip gracefully if not
+- Run python update.py (or python3)
+- Check if ai_context/ or CODEMAP.json files changed with git diff
+- If changed: git add ai_context/ CODEMAP.json, then git commit --amend --no-edit --no-verify
+- If not changed: print nothing, exit silently
+- Never block the original commit if anything fails
+- Include install instruction as a comment at the top
+
+---
+
+FILE 6: GEMINI.md
+Location: project root (GEMINI.md)
+
+Rules for generating this file:
+- This file is read automatically by Antigravity IDE at session start
+- Instruction 1: before any code, read ai_context/RULES.md then ai_context/INDEX.md
+  then the MODULE file for the module being worked on today
+- Instruction 2: after any coding task, update CODEMAP.json with new entities,
+  assign next sequential code, run python update.py
+- Instruction 3: never write anything already listed in the MODULE files, call it by its code instead
+- Include the entity code format for this project so agent knows how to assign new codes
+- Include a one-line description of what each MODULE file covers so agent knows which to load
+- Keep under 300 tokens total
+
+---
+
+FILE 7: AGENTS.md
+Location: project root (AGENTS.md)
+
+Rules for generating this file:
+- This file is read by Antigravity, Cursor, Claude Code, and Codex
+- Contains the project rules from RULES.md (copy them here)
+- Contains the instruction to read INDEX.md and the relevant MODULE file before any task
+- Contains the entity code format
+- Does NOT contain Antigravity-specific features (those go in GEMINI.md only)
+- Keep under 400 tokens total
+
+---
+
+GENERATION RULES THAT APPLY TO ALL 7 FILES:
+
+1. Every file must be complete and ready to use. No placeholders like [YOUR PROJECT NAME].
+   Fill in the actual project name, module names, slugs, code format — everything.
+
+2. Extract the project abbreviation from the project name for entity codes.
+   Example: "Cold Storage IMS" → IMS, "Game Store" → GS, "E-commerce Platform" → ECP
+
+3. Extract module slugs from the module names in the plan.
+   Example: "M1 — Inventory Engine" → slug: inventory, file: MODULE_inventory.md
+
+4. If the plan does not specify a layering pattern (router/service/repository),
+   detect the tech stack from the plan and apply the standard pattern for that stack.
+   FastAPI → router/service/repository
+   Django → views/services/models
+   Express → routes/controllers/services
+   Rails → controllers/services/models
+
+5. update.py MODULE_SLUG dict must contain every module from CODEMAP.json.
+   Missing entries will cause update.py to silently skip that module.
+
+6. The dependency_rules in CODEMAP.json must use snake_case keys and full sentence values.
+   They will be printed directly into INDEX.md as the numbered rules list.
+
+7. Do not invent modules, rules, or features not present in the plan.
+   Extract only what is explicitly stated or clearly implied by the architecture.
+
+8. Output each file with a clear separator showing the filename and location.
+   Format:
+   ════════════════════════════════════
+   FILE: ai_context/RULES.md
+   ════════════════════════════════════
+   [file content here]
+
+---
+
+Here is my project development plan:
+
+[PASTE YOUR DEVELOPMENT PLAN HERE]
+```
+
+---
+
+## WHAT YOU GET BACK
+
+After pasting your plan, the AI returns 7 files in order:
+
+```
+ai_context/RULES.md          ← your project's architectural laws
+ai_context/INDEX.md          ← module status board (initially all NOT STARTED)
+CODEMAP.json                 ← empty source of truth with module structure ready
+update.py                    ← regenerator script tailored to your modules
+post-commit                  ← git hook to copy into .git/hooks/
+GEMINI.md                    ← Antigravity auto-reads this every session
+AGENTS.md                    ← cross-tool rules for Cursor and Claude Code too
+```
+
+---
+
+## AFTER YOU GET THE FILES — ONE-TIME SETUP
+
+Run these commands once from your project root:
+
+```bash
+mkdir -p ai_context/modules
+cp post-commit .git/hooks/post-commit
+chmod +x .git/hooks/post-commit
+python update.py --check
+python update.py
+```
+
+From that point the system is live. Every git commit auto-updates
+the MODULE files. Every Antigravity session reads context automatically.
+
+---
+
+## WHEN TO RUN THIS PROMPT AGAIN
+
+You do NOT re-run this prompt as you build. The generated files are
+maintained by update.py and CODEMAP.json from that point forward.
+
+Re-run this prompt only if:
+- You start a brand new project
+- Your architecture changes so fundamentally that the module structure itself changes
+- You want to regenerate update.py after adding new module types
+
+For everything else — new functions, new routes, new models, bug fixes,
+feature additions — you just update CODEMAP.json and run update.py.
+That is the daily workflow.
+
+---
+
+## TIPS FOR BETTER OUTPUT
+
+**Give the AI more plan = better output.**
+The more detailed your development plan, the more accurate the RULES.md
+and CODEMAP.json module structure will be.
+
+**If the plan has a sprint structure, include it.**
+The AI will set correct sprint numbers on each module in CODEMAP.json
+and mark the active sprint in meta.
+
+**If you have existing code already built, mention it.**
+The AI will mark those modules as IN_PROGRESS or DONE in CODEMAP.json
+and note them in INDEX.md.
+
+**If you have a specific entity code format you want, say so.**
+Add this line before pasting your plan:
+"Use this entity code format: {YOUR-FORMAT}-{SEQ}"
+
+**If your stack is unusual, name it explicitly.**
+Add this line: "Tech stack: {language} + {framework} + {database}"
+The AI will use the correct layering pattern for your stack.

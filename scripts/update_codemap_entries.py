@@ -1,0 +1,117 @@
+﻿import json
+from datetime import datetime, timezone
+
+with open("CODEMAP.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+# Update Module Statuses
+for m in ["M1_infra", "M2_schema", "M3_seed", "M4_scoring", "M5_api", "M6_match_ui", "M7_signals_ui", "M8_account_ui"]:
+    if m in data["modules"]:
+        data["modules"][m]["status"] = "DONE"
+
+entities = {
+    # M1 Infra
+    "TOS-INF-INFRA-001": {"name": "docker-compose.yml", "file": "docker-compose.yml", "description": "PostgreSQL 16 + pgvector container definition on port 5433"},
+    "TOS-INF-INFRA-002": {"name": "Dockerfile", "file": "backend/Dockerfile", "description": "FastAPI Python 3.12 production container build"},
+    "TOS-CFG-INFRA-001": {"name": "Settings", "file": "backend/app/config.py", "description": "Pydantic Settings with .env loading and CORS origins"},
+    "TOS-DB-INFRA-001": {"name": "get_db / engine", "file": "backend/app/database.py", "description": "SQLAlchemy 2.x engine and session factory with connection pooling"},
+    "TOS-UTL-INFRA-001": {"name": "require_api_key", "file": "backend/app/api/deps.py", "description": "FastAPI dependency enforcing X-TradeOS-Key authentication"},
+    "TOS-SCH-INFRA-001": {"name": "HealthResponse", "file": "backend/app/schemas/health.py", "description": "Pydantic health check response model"},
+    "TOS-RTE-INFRA-001": {"name": "health_check", "file": "backend/app/api/health.py", "description": "GET /api/v1/health unauthenticated endpoint"},
+    "TOS-RTE-INFRA-002": {"name": "app", "file": "backend/app/main.py", "description": "FastAPI application entry point with CORS and routers"},
+    "TOS-TST-INFRA-001": {"name": "test_health_endpoint", "file": "backend/app/tests/test_health.py", "description": "Pytest health endpoint integration test"},
+
+    # M2 Schema
+    "TOS-DB-SCHEMA-001": {"name": "001_extensions.sql", "file": "backend/sql/001_extensions.sql", "description": "pgcrypto, vector, pg_trgm extensions"},
+    "TOS-DB-SCHEMA-002": {"name": "002_schemas.sql", "file": "backend/sql/002_schemas.sql", "description": "app, bronze, silver, gold, audit schemas"},
+    "TOS-DB-SCHEMA-003": {"name": "003_functions.sql", "file": "backend/sql/003_functions.sql", "description": "set_updated_at trigger function"},
+    "TOS-DB-SCHEMA-004": {"name": "004_bronze.sql", "file": "backend/sql/004_bronze.sql", "description": "bronze.source_system, ingestion_run, raw_document, raw_extract"},
+    "TOS-DB-SCHEMA-005": {"name": "005_silver.sql", "file": "backend/sql/005_silver.sql", "description": "silver.entity_company, entity_person, entity_product, entity_certification, trade_lane_benchmark"},
+    "TOS-DB-SCHEMA-006": {"name": "006_gold.sql", "file": "backend/sql/006_gold.sql", "description": "gold.exporter_capability, match_profile, match_candidate, match_score_history, signal, signal_evidence, actions, audit.audit_event"},
+    "TOS-DB-SCHEMA-007": {"name": "007_indexes.sql", "file": "backend/sql/007_indexes.sql", "description": "Performance, trigram and GIN search indexes"},
+    "TOS-DB-SCHEMA-008": {"name": "008_triggers.sql", "file": "backend/sql/008_triggers.sql", "description": "Automatic updated_at and tsvector update triggers"},
+    "TOS-DB-SCHEMA-009": {"name": "Base", "file": "backend/app/models/base.py", "description": "SQLAlchemy DeclarativeBase model"},
+    "TOS-DB-SCHEMA-010": {"name": "EntityCompany / Person / Product", "file": "backend/app/models/company.py", "description": "Silver company, GDPR-compliant person and product models"},
+    "TOS-DB-SCHEMA-011": {"name": "EntityCertification", "file": "backend/app/models/compliance.py", "description": "Silver certification model"},
+    "TOS-DB-SCHEMA-012": {"name": "TradeLaneBenchmark", "file": "backend/app/models/lane.py", "description": "Silver ocean trade lane benchmark model"},
+    "TOS-DB-SCHEMA-013": {"name": "ExporterCapability", "file": "backend/app/models/exporter.py", "description": "Gold exporter capability profile model"},
+    "TOS-DB-SCHEMA-014": {"name": "Signal / SignalEvidence", "file": "backend/app/models/signal.py", "description": "Gold signal and evidence models"},
+    "TOS-DB-SCHEMA-015": {"name": "MatchCandidate / ScoreHistory / AuditEvent", "file": "backend/app/models/match.py", "description": "Gold match candidate, append-only score history and audit event models"},
+
+    # M3 Seed
+    "TOS-WRK-SEED-001": {"name": "seed_db.py", "file": "backend/app/scripts/seed_db.py", "description": "DDL migrator and seeder for Butler's Leather and 5 German buyers"},
+
+    # M4 Scoring
+    "TOS-SVC-SCORING-001": {"name": "score_match / grade_from_score", "file": "backend/app/services/scoring_service.py", "description": "Canonical 100-point explainable scoring engine (35/25/15/15/10)"},
+    "TOS-REP-SCORING-001": {"name": "upsert_match_candidate / insert_score_history", "file": "backend/app/repositories/match_repo.py", "description": "Match candidate upsert and append-only score history logger"},
+    "TOS-WRK-SCORING-001": {"name": "run_scoring.py", "file": "backend/app/scripts/run_scoring.py", "description": "Batch re-scoring runner for match candidates"},
+    "TOS-TST-SCORING-001": {"name": "test_scoring.py", "file": "backend/app/tests/test_scoring.py", "description": "Pytest unit tests for 100-point formula and grade boundaries"},
+
+    # M5 API
+    "TOS-SCH-API-001": {"name": "ExporterCapabilityResponse", "file": "backend/app/schemas/capability.py", "description": "Pydantic capability schema"},
+    "TOS-SCH-API-002": {"name": "MatchCardResponse / MatchListResponse", "file": "backend/app/schemas/match.py", "description": "Pydantic match list and card schemas"},
+    "TOS-SCH-API-003": {"name": "SignalListResponse / EUDRScorecardResponse", "file": "backend/app/schemas/signal.py", "description": "Pydantic signal feed and scorecard schemas"},
+    "TOS-SCH-API-004": {"name": "Account360Response / ContactDetail", "file": "backend/app/schemas/account.py", "description": "Pydantic Account 360 dossier schema"},
+    "TOS-SCH-API-005": {"name": "OutreachRequest / OutreachResponse", "file": "backend/app/schemas/outreach.py", "description": "Pydantic AI outreach request and response schemas"},
+    "TOS-REP-API-001": {"name": "capability_repo", "file": "backend/app/repositories/capability_repo.py", "description": "Exporter capability database queries"},
+    "TOS-REP-API-002": {"name": "account_repo", "file": "backend/app/repositories/account_repo.py", "description": "Company, contact and product queries"},
+    "TOS-REP-API-003": {"name": "signal_repo", "file": "backend/app/repositories/signal_repo.py", "description": "Live trade signals and evidence queries"},
+    "TOS-REP-API-004": {"name": "outreach_repo", "file": "backend/app/repositories/outreach_repo.py", "description": "Outreach action history logger"},
+    "TOS-SVC-API-001": {"name": "match_service", "file": "backend/app/services/match_service.py", "description": "Ranked match candidate aggregation"},
+    "TOS-SVC-API-002": {"name": "compliance_service", "file": "backend/app/services/compliance_service.py", "description": "EUDR 68/100 readiness and REACH calculations"},
+    "TOS-SVC-API-003": {"name": "lane_service", "file": "backend/app/services/lane_service.py", "description": "Chennai to Hamburg ocean freight and transit benchmark"},
+    "TOS-SVC-API-004": {"name": "outreach_service", "file": "backend/app/services/outreach_service.py", "description": "AI outreach generation in 4 professional tones"},
+    "TOS-RTE-API-001": {"name": "get_capability", "file": "backend/app/api/capability.py", "description": "GET /api/v1/capability authenticated endpoint"},
+    "TOS-RTE-API-002": {"name": "get_matches", "file": "backend/app/api/matches.py", "description": "GET /api/v1/matches authenticated endpoint"},
+    "TOS-RTE-API-003": {"name": "get_signals_feed", "file": "backend/app/api/signals.py", "description": "GET /api/v1/signals authenticated endpoint"},
+    "TOS-RTE-API-004": {"name": "get_account_360", "file": "backend/app/api/accounts.py", "description": "GET /api/v1/accounts/{id} authenticated endpoint"},
+    "TOS-RTE-API-005": {"name": "generate_outreach", "file": "backend/app/api/outreach.py", "description": "POST /api/v1/outreach authenticated endpoint"},
+    "TOS-TST-API-001": {"name": "test_capability.py", "file": "backend/app/tests/test_capability.py", "description": "Pytest capability endpoint tests"},
+    "TOS-TST-API-002": {"name": "test_matches.py", "file": "backend/app/tests/test_matches.py", "description": "Pytest matches endpoint tests"},
+    "TOS-TST-API-003": {"name": "test_signals.py", "file": "backend/app/tests/test_signals.py", "description": "Pytest signals endpoint tests"},
+    "TOS-TST-API-004": {"name": "test_accounts.py", "file": "backend/app/tests/test_accounts.py", "description": "Pytest account 360 endpoint tests"},
+    "TOS-TST-API-005": {"name": "test_outreach.py", "file": "backend/app/tests/test_outreach.py", "description": "Pytest outreach endpoint tests"},
+
+    # M6 Match UI
+    "TOS-FE-MATCHUI-001": {"name": "MatchPortalView", "file": "frontend/src/components/matches/MatchPortalView.tsx", "description": "Screen 1 Match Portal view container"},
+    "TOS-FE-MATCHUI-002": {"name": "ExporterProfileCard", "file": "frontend/src/components/matches/ExporterProfileCard.tsx", "description": "Butler's Leather capability card with EUDR readiness pill"},
+    "TOS-FE-MATCHUI-003": {"name": "MatchCard", "file": "frontend/src/components/matches/MatchCard.tsx", "description": "Ranked German buyer card with 100-pt Apple score ring and next action"},
+    "TOS-FE-MATCHUI-004": {"name": "MatchDriverBadge", "file": "frontend/src/components/matches/MatchDriverBadge.tsx", "description": "Interactive score driver badge with hover evidence tooltip"},
+    "TOS-FE-MATCHUI-005": {"name": "MatchFilterBar", "file": "frontend/src/components/matches/MatchFilterBar.tsx", "description": "Apple segmented control filters for match grade and segment"},
+    "TOS-FE-MATCHUI-006": {"name": "MatchInspector", "file": "frontend/src/components/matches/MatchInspector.tsx", "description": "Slide-over drawer for detailed match evidence and contact info"},
+
+    # M7 Signals UI
+    "TOS-FE-SIGNALSUI-001": {"name": "SignalsView", "file": "frontend/src/components/signals/SignalsView.tsx", "description": "Screen 2 Signals & Compliance feed container"},
+    "TOS-FE-SIGNALSUI-002": {"name": "EUDRScorecard", "file": "frontend/src/components/signals/EUDRScorecard.tsx", "description": "EUDR 68/100 readiness audit scorecard with gap breakdown"},
+    "TOS-FE-SIGNALSUI-003": {"name": "REACHComplianceCard", "file": "frontend/src/components/signals/REACHComplianceCard.tsx", "description": "REACH SVHC laboratory chemical safety test card"},
+    "TOS-FE-SIGNALSUI-004": {"name": "FreightLaneWidget", "file": "frontend/src/components/signals/FreightLaneWidget.tsx", "description": "Chennai to Hamburg ocean freight spot rates and transit time widget"},
+    "TOS-FE-SIGNALSUI-005": {"name": "SignalFeedItem", "file": "frontend/src/components/signals/SignalFeedItem.tsx", "description": "Live signal card with severity pill and direct quote evidence"},
+
+    # M8 Account UI
+    "TOS-FE-ACCOUNTUI-001": {"name": "Account360View", "file": "frontend/src/components/accounts/Account360View.tsx", "description": "Screen 3 Account 360 dossier with tab navigation"},
+    "TOS-FE-ACCOUNTUI-002": {"name": "AccountHeader", "file": "frontend/src/components/accounts/AccountHeader.tsx", "description": "Buyer dossier header with segment, rank and score ring"},
+    "TOS-FE-ACCOUNTUI-003": {"name": "OutreachComposer", "file": "frontend/src/components/accounts/OutreachComposer.tsx", "description": "AI outreach generator with 4 tone switches and mail client launcher"},
+
+    # Shared UI Primitives
+    "TOS-FE-SHR-001": {"name": "AppleSegmentedControl", "file": "frontend/src/components/apple/AppleSegmentedControl.tsx", "description": "Apple HIG sliding segmented control"},
+    "TOS-FE-SHR-002": {"name": "AppleScoreRing", "file": "frontend/src/components/apple/AppleScoreRing.tsx", "description": "Apple HIG animated SVG 100-point circular score gauge"},
+    "TOS-FE-SHR-003": {"name": "AppleCard", "file": "frontend/src/components/apple/AppleCard.tsx", "description": "Apple HIG vibrancy glassmorphism card"},
+    "TOS-FE-SHR-004": {"name": "AppleBadge", "file": "frontend/src/components/apple/AppleBadge.tsx", "description": "Apple HIG pill badge with status dot"},
+    "TOS-FE-SHR-005": {"name": "AppleButton", "file": "frontend/src/components/apple/AppleButton.tsx", "description": "Apple HIG interactive button with spring physics"},
+    "TOS-FE-SHR-006": {"name": "AppleDrawer", "file": "frontend/src/components/apple/AppleDrawer.tsx", "description": "Apple HIG slide-over sheet drawer"},
+    "TOS-FE-SHR-007": {"name": "AppleCommandBar", "file": "frontend/src/components/apple/AppleCommandBar.tsx", "description": "Apple Spotlight Cmd+K command palette"},
+    "TOS-FE-SHR-008": {"name": "AppleGauge", "file": "frontend/src/components/apple/AppleGauge.tsx", "description": "Apple HIG linear progress bar"},
+    "TOS-FE-SHR-009": {"name": "PageSkeleton", "file": "frontend/src/components/ui/PageSkeleton.tsx", "description": "Pulsing placeholder skeleton loader"},
+    "TOS-FE-SHR-010": {"name": "ErrorBoundary", "file": "frontend/src/components/ui/ErrorBoundary.tsx", "description": "React ErrorBoundary component"},
+    "TOS-FE-SHR-011": {"name": "EmptyState", "file": "frontend/src/components/ui/EmptyState.tsx", "description": "Empty state illustration and message"}
+}
+
+data["entities"] = entities
+data["meta"]["total_entities"] = len(entities)
+data["meta"]["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+with open("CODEMAP.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+
+print(f"[SUCCESS] CODEMAP.json updated with {len(entities)} registered entities!")

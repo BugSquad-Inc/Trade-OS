@@ -1,0 +1,53 @@
+#!/bin/bash
+# Trade OS — post-commit git hook
+# Automatically regenerates ai_context files after every git commit.
+#
+# INSTALL:
+#   cp post-commit .git/hooks/post-commit
+#   chmod +x .git/hooks/post-commit
+#
+# This hook never blocks your commit. If anything fails, it warns and exits.
+
+set -e
+
+# Move to git project root
+cd "$(git rev-parse --show-toplevel)" || exit 0
+
+# Check Python is available
+PYTHON=""
+if command -v python3 &>/dev/null; then
+    PYTHON="python3"
+elif command -v python &>/dev/null; then
+    PYTHON="python"
+else
+    echo "[Trade OS] Skipping ai_context update: Python not found."
+    exit 0
+fi
+
+# Check required files exist
+if [ ! -f "CODEMAP.json" ]; then
+    echo "[Trade OS] Skipping ai_context update: CODEMAP.json not found."
+    exit 0
+fi
+
+if [ ! -f "update.py" ]; then
+    echo "[Trade OS] Skipping ai_context update: update.py not found."
+    exit 0
+fi
+
+# Run update.py
+$PYTHON update.py || {
+    echo "[Trade OS] WARNING: update.py failed. ai_context files may be stale."
+    exit 0
+}
+
+# Check if ai_context/ or CODEMAP.json files changed
+CHANGED=$(git diff --name-only HEAD -- "ai_context/" "CODEMAP.json" 2>/dev/null || true)
+
+if [ -n "$CHANGED" ]; then
+    git add ai_context/ CODEMAP.json 2>/dev/null || true
+    git commit --amend --no-edit --no-verify 2>/dev/null || true
+    echo "[Trade OS] ai_context files updated and amended into commit."
+fi
+
+exit 0

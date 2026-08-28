@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans;
+  }
+}
+
+/* Apple HIG Vibrancy & Glass Materials */
+.glass-panel {
+  @apply bg-zinc-900/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl;
+}
+
+.glass-card {
+  @apply bg-zinc-900/60 hover:bg-zinc-800/80 transition-colors backdrop-blur-md border border-white/[0.07] shadow-sm;
+}
+
+.glass-inset {
+  @apply bg-zinc-950/60 border border-white/[0.05];
+}
+
+.glass-topbar {
+  @apply bg-zinc-950/80 backdrop-blur-xl border-b border-white/[0.08];
+}
+
+.glass-sidebar {
+  @apply bg-zinc-950/90 backdrop-blur-2xl border-r border-white/[0.08];
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
