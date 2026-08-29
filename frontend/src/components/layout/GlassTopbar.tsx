@@ -13,7 +13,9 @@ export const GlassTopbar: React.FC = () => {
     signals: "Live European Market Signals & Compliance Radar",
     accounts: "Buyer Intelligence Dossier & AI Sales Action",
     products: "Digital Product Passports & EU Compliance Spec",
-    customs: "Ocean Shipment Radar & Displacement",
+    documents: "Export Document Vault & Compliance Audit",
+    shipments: "Active Ocean Shipments & Bank eBRC Radar",
+    customs: "Ocean Displacements Radar",
     analytics: "Revenue & KPI Cockpit",
     verification: "Analyst Verification & Entity Resolution Queue",
   };

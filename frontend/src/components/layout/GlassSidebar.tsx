@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle } from 'lucide-react';
+import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle, FileCheck } from 'lucide-react';
 import { useUIStore, AppView } from '../../store/uiStore';
 
 export const GlassSidebar: React.FC = () => {
@@ -12,7 +12,9 @@ export const GlassSidebar: React.FC = () => {
     { id: 'signals', label: 'Live Market Signals', icon: <Radio size={18} />, badge: 'Live' },
     { id: 'accounts', label: 'Buyer Dossier & AI Sales', icon: <Building2 size={18} /> },
     { id: 'products', label: 'Digital Product Passports', icon: <Layers size={18} />, badge: 'DPP' },
-    { id: 'customs', label: 'Ocean Shipment Radar', icon: <Ship size={18} />, badge: 'Customs' },
+    { id: 'documents', label: 'Export Document Vault', icon: <FileCheck size={18} />, badge: 'EUDR' },
+    { id: 'shipments', label: 'Shipment Milestones & eBRC', icon: <Ship size={18} />, badge: 'Radar' },
+    { id: 'customs', label: 'Ocean Displacements', icon: <Ship size={18} />, badge: 'Customs' },
     { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
     { id: 'verification', label: 'Analyst Verification Queue', icon: <CheckCircle size={18} />, badge: 'Audit' },
   ];

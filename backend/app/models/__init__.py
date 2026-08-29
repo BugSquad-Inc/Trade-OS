@@ -10,6 +10,7 @@ from app.models.product import ProductFamily, ProductVersion, ProductCertificate
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
+from app.models.document import TradeDocument, DocumentType, ShipmentRecord, ShipmentMilestone
 
 __all__ = [
     "Base",
@@ -44,5 +45,9 @@ __all__ = [
     "Tenant",
     "UserRole",
     "UserAccount",
-    "TenantMembership"
+    "TenantMembership",
+    "TradeDocument",
+    "DocumentType",
+    "ShipmentRecord",
+    "ShipmentMilestone"
 ]

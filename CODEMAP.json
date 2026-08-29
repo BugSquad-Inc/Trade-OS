@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 189,
-    "last_updated": "2026-08-29T06:07:44Z",
+    "total_entities": 199,
+    "last_updated": "2026-08-29T06:11:43Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -523,6 +523,56 @@
       "name": "test_tenants_rbac.py",
       "file": "backend/app/tests/test_tenants_rbac.py",
       "description": "Pytest integration tests for organization provisioning, invitations, and RBAC permissions"
+    },
+    "TOS-DB-SCHEMA-021": {
+      "name": "TradeDocument / ShipmentRecord",
+      "file": "backend/app/models/document.py",
+      "description": "Gold trade document vault, audit hashes, container shipments, and DGFT eBRC realization models"
+    },
+    "TOS-SVC-SCORING-006": {
+      "name": "compliance_engine_v2.py",
+      "file": "backend/app/services/compliance_engine_v2.py",
+      "description": "European market compliance rule engine evaluating EUDR, REACH SVHC, Chromium VI, and LWG protocols"
+    },
+    "TOS-REP-API-017": {
+      "name": "document_repo.py",
+      "file": "backend/app/repositories/document_repo.py",
+      "description": "Export compliance document vault repository and hash verification"
+    },
+    "TOS-REP-API-018": {
+      "name": "shipment_repo.py",
+      "file": "backend/app/repositories/shipment_repo.py",
+      "description": "Container shipment milestones and bank foreign exchange eBRC realization repository"
+    },
+    "TOS-RTE-API-024": {
+      "name": "documents.py",
+      "file": "backend/app/api/documents.py",
+      "description": "FastAPI routes for trade document management and Compliance Rule Engine v2 audits"
+    },
+    "TOS-RTE-API-025": {
+      "name": "shipments.py",
+      "file": "backend/app/api/shipments.py",
+      "description": "FastAPI routes for container milestone radar and DGFT eBRC bank payment status"
+    },
+    "TOS-SCH-API-020": {
+      "name": "TradeDocument & Shipment Schemas",
+      "file": "backend/app/schemas/document.py",
+      "description": "Pydantic v2 schemas for document vault, compliance checks, and shipment milestones"
+    },
+    "TOS-FE-DOC-001": {
+      "name": "DocumentPackView",
+      "file": "frontend/src/components/documents/DocumentPackView.tsx",
+      "description": "Export document vault with EUDR Due Diligence Statements and compliance audit runner"
+    },
+    "TOS-FE-SHP-001": {
+      "name": "ShipmentMilestoneTrackerView",
+      "file": "frontend/src/components/shipments/ShipmentMilestoneTrackerView.tsx",
+      "description": "Container radar, vessel milestone stepper, and DGFT eBRC realization tracker"
+    },
+    "TOS-TST-API-008": {
+      "name": "test_documents_shipments.py",
+      "file": "backend/app/tests/test_documents_shipments.py",
+      "description": "Pytest integration tests for documents vault, compliance engine v2, and shipments"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",

@@ -7,6 +7,8 @@ import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
 import { Account360View } from './components/accounts/Account360View';
 import { ProductPassportView } from './components/products/ProductPassportView';
+import { DocumentPackView } from './components/documents/DocumentPackView';
+import { ShipmentMilestoneTrackerView } from './components/shipments/ShipmentMilestoneTrackerView';
 import { VerificationQueueView } from './components/verification/VerificationQueueView';
 import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ExecutiveDashboardView } from './components/analytics/ExecutiveDashboardView';
@@ -36,6 +38,8 @@ function AppContent() {
         {currentView === 'signals' && <SignalsView />}
         {currentView === 'accounts' && <Account360View />}
         {currentView === 'products' && <ProductPassportView />}
+        {currentView === 'documents' && <DocumentPackView />}
+        {currentView === 'shipments' && <ShipmentMilestoneTrackerView />}
         {currentView === 'verification' && <VerificationQueueView />}
         {currentView === 'customs' && <CustomsExplorerView />}
         {currentView === 'analytics' && <ExecutiveDashboardView />}

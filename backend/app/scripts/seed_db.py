@@ -15,6 +15,7 @@ from app.models.product import ProductFamily, ProductVersion, ProductCertificate
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
+from app.models.document import TradeDocument, DocumentType, ShipmentRecord, ShipmentMilestone
 from app.services import scoring_service
 
 def apply_sql_migrations():
@@ -327,6 +328,71 @@ def apply_sql_migrations():
         status VARCHAR(50) DEFAULT 'active' NOT NULL,
         invited_by VARCHAR(255),
         created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    -- Documents & Shipment Tracking Domain Tables
+    DO $$ BEGIN
+        CREATE TYPE gold.document_type_enum AS ENUM (
+            'eudr_dds', 'lab_test_report', 'commercial_invoice',
+            'packing_list', 'bill_of_lading', 'certificate_of_origin',
+            'rcmc_cle', 'ebrc_certificate'
+        );
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    DO $$ BEGIN
+        CREATE TYPE gold.shipment_milestone_enum AS ENUM (
+            'booking_confirmed', 'cargo_picked', 'customs_cleared_origin',
+            'vessel_departed', 'transshipment', 'vessel_arrived',
+            'customs_cleared_dest', 'delivered'
+        );
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS gold.trade_document (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES gold.tenant(id) ON DELETE SET NULL,
+        opportunity_id UUID REFERENCES gold.opportunity(id) ON DELETE SET NULL,
+        shipment_id UUID,
+        product_version_id UUID REFERENCES gold.product_version(id) ON DELETE SET NULL,
+        doc_type gold.document_type_enum NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        file_name VARCHAR(255) NOT NULL,
+        file_size_bytes INT DEFAULT 102400 NOT NULL,
+        file_hash_sha256 VARCHAR(64) DEFAULT 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' NOT NULL,
+        mime_type VARCHAR(100) DEFAULT 'application/pdf' NOT NULL,
+        storage_uri VARCHAR(500) DEFAULT 's3://tradeos-vault/docs/sample.pdf' NOT NULL,
+        status VARCHAR(50) DEFAULT 'verified' NOT NULL,
+        metadata_json JSONB DEFAULT '{}'::jsonb NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.shipment_record (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES gold.tenant(id) ON DELETE SET NULL,
+        opportunity_id UUID REFERENCES gold.opportunity(id) ON DELETE SET NULL,
+        buyer_id UUID REFERENCES silver.entity_company(id) ON DELETE CASCADE NOT NULL,
+        shipment_ref VARCHAR(100) UNIQUE NOT NULL,
+        container_number VARCHAR(50) DEFAULT 'MSKU1234567' NOT NULL,
+        vessel_name VARCHAR(100) DEFAULT 'Maersk Mc-Kinney Moller' NOT NULL,
+        voyage_number VARCHAR(50) DEFAULT '2608W' NOT NULL,
+        carrier VARCHAR(100) DEFAULT 'Maersk Line' NOT NULL,
+        origin_port VARCHAR(100) DEFAULT 'Chennai Port (INMAA)' NOT NULL,
+        destination_port VARCHAR(100) DEFAULT 'Hamburg Port (DEHAM)' NOT NULL,
+        etd DATE DEFAULT CURRENT_DATE NOT NULL,
+        eta DATE DEFAULT CURRENT_DATE NOT NULL,
+        milestone gold.shipment_milestone_enum DEFAULT 'vessel_departed' NOT NULL,
+        tracking_status VARCHAR(50) DEFAULT 'on_time' NOT NULL,
+        gross_weight_kg FLOAT DEFAULT 14500.0 NOT NULL,
+        invoice_amount_usd FLOAT DEFAULT 45000.0 NOT NULL,
+        realized_amount_inr FLOAT DEFAULT 0.0 NOT NULL,
+        ebrc_status VARCHAR(50) DEFAULT 'pending' NOT NULL,
+        ebrc_number VARCHAR(100),
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
     );
     """
     
@@ -772,6 +838,109 @@ def seed_database():
 
             db.commit()
             print("  [OK] Seeded Primary Tenant (Butler's Leather) with 4 RBAC Users (Owner, Sales, Compliance, Finance).")
+
+        # Check if Documents and Shipments are seeded
+        doc_count = db.query(TradeDocument).count()
+        if doc_count == 0:
+            print("  [INFO] Seeding Export Compliance Documents & Live Ocean Shipments...")
+            picard = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Picard%")).first()
+            roeckl = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Roeckl%")).first()
+            opp1 = db.query(Opportunity).filter(Opportunity.title.ilike("%Picard%")).first()
+
+            # Seed 3 Documents
+            doc1 = TradeDocument(
+                id=uuid.uuid4(),
+                opportunity_id=opp1.id if opp1 else None,
+                doc_type=DocumentType.eudr_dds,
+                title="EUDR Due Diligence Statement (DDS) — Consignment #2026-IN-HAM-01",
+                file_name="EUDR_DDS_Butlers_Hamburg_4107.pdf",
+                file_size_bytes=142800,
+                file_hash_sha256="4a5b6c7d8e9f0123456789abcdef0123456789abcdef0123456789abcdef0123",
+                mime_type="application/pdf",
+                storage_uri="s3://tradeos-vault/butlers/compliance/EUDR_DDS_2026.pdf",
+                status="verified",
+                metadata_json={"polygon_count": 142, "geo_coverage_pct": 98.5, "deforestation_free": True}
+            )
+            db.add(doc1)
+
+            doc2 = TradeDocument(
+                id=uuid.uuid4(),
+                doc_type=DocumentType.lab_test_report,
+                title="Eurofins Certified Lab Report — ISO 17075-1 Chromium VI (ND)",
+                file_name="Eurofins_CrVI_Test_Report_2026.pdf",
+                file_size_bytes=218000,
+                file_hash_sha256="9f8e7d6c5b4a3210fedcba9876543210fedcba9876543210fedcba9876543210",
+                mime_type="application/pdf",
+                storage_uri="s3://tradeos-vault/butlers/lab/Eurofins_CrVI_2026.pdf",
+                status="verified",
+                metadata_json={"lab": "Eurofins Consumer Product Testing", "result": "Non-Detectable (<3mg/kg)"}
+            )
+            db.add(doc2)
+
+            doc3 = TradeDocument(
+                id=uuid.uuid4(),
+                opportunity_id=opp1.id if opp1 else None,
+                doc_type=DocumentType.commercial_invoice,
+                title="Commercial Invoice #INV-2026-0881 — Picard GmbH",
+                file_name="Invoice_INV_2026_0881.pdf",
+                file_size_bytes=98000,
+                file_hash_sha256="1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+                mime_type="application/pdf",
+                storage_uri="s3://tradeos-vault/butlers/finance/INV_2026_0881.pdf",
+                status="issued",
+                metadata_json={"amount_usd": 45000.0, "incoterm": "CIF Hamburg"}
+            )
+            db.add(doc3)
+
+            # Seed 2 Live Shipments
+            if picard:
+                shp1 = ShipmentRecord(
+                    id=uuid.uuid4(),
+                    opportunity_id=opp1.id if opp1 else None,
+                    buyer_id=picard.id,
+                    shipment_ref="SHP-2026-INMAA-DEHAM-01",
+                    container_number="MSKU9821430",
+                    vessel_name="Maersk Mc-Kinney Moller",
+                    voyage_number="2608W",
+                    carrier="Maersk Line",
+                    origin_port="Chennai Port (INMAA)",
+                    destination_port="Hamburg Port (DEHAM)",
+                    etd=date(2026, 8, 15),
+                    eta=date(2026, 9, 12),
+                    milestone=ShipmentMilestone.vessel_departed,
+                    tracking_status="on_time",
+                    gross_weight_kg=14200.0,
+                    invoice_amount_usd=45000.0,
+                    realized_amount_inr=0.0,
+                    ebrc_status="pending"
+                )
+                db.add(shp1)
+
+            if roeckl:
+                shp2 = ShipmentRecord(
+                    id=uuid.uuid4(),
+                    buyer_id=roeckl.id,
+                    shipment_ref="SHP-2026-INMAA-DEMUC-02",
+                    container_number="LH-CARGO-8241",
+                    vessel_name="Lufthansa Cargo Flight LH8241",
+                    voyage_number="LH8241",
+                    carrier="Lufthansa Cargo",
+                    origin_port="Chennai Airport Cargo (MAA)",
+                    destination_port="Munich Airport (MUC)",
+                    etd=date(2026, 8, 20),
+                    eta=date(2026, 8, 23),
+                    milestone=ShipmentMilestone.customs_cleared_dest,
+                    tracking_status="on_time",
+                    gross_weight_kg=1850.0,
+                    invoice_amount_usd=17750.0,
+                    realized_amount_inr=1641875.0,
+                    ebrc_status="realized",
+                    ebrc_number="EBRC-SBI-2026-981240"
+                )
+                db.add(shp2)
+
+            db.commit()
+            print("  [OK] Seeded 3 Vault Trade Documents and 2 Live Shipments (Maersk Ocean & Lufthansa Air).")
 
             # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(
