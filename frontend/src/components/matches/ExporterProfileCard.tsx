@@ -48,11 +48,11 @@ export const ExporterProfileCard: React.FC<Props> = ({ capability }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm shrink-0">
-          <div className="text-right">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">EUDR Readiness</p>
+        <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm shrink-0">
+          <div className="text-left md:text-right">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">EU & UK Market Readiness</p>
             <p className="text-2xl font-bold font-mono text-emerald-600">{capability.eudr_readiness_score}<span className="text-sm text-slate-400">/100</span></p>
-            <p className="text-[10px] text-slate-500 font-medium">Due Diligence Ready</p>
+            <p className="text-[10px] text-slate-500 font-medium">LWG & Traceability Ready</p>
           </div>
           <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shadow-2xs">
             <ShieldCheck size={26} />

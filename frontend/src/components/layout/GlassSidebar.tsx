@@ -1,11 +1,11 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Ship, BarChart3 } from 'lucide-react';
-import { useUIStore } from '../../store/uiStore';
+import { LayoutGrid, Radio, Building2, Ship, BarChart3, X } from 'lucide-react';
+import { useUIStore, AppView } from '../../store/uiStore';
 
 export const GlassSidebar: React.FC = () => {
-  const { currentView, setCurrentView } = useUIStore();
+  const { currentView, setCurrentView, isMobileDrawerOpen, setMobileDrawerOpen } = useUIStore();
 
-  const navItems = [
+  const navItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
     { id: 'matches', label: 'Buyer Match Portal', icon: <LayoutGrid size={18} />, badge: '50+ Verified' },
     { id: 'signals', label: 'Live Market Signals', icon: <Radio size={18} />, badge: 'Live' },
     { id: 'accounts', label: 'Buyer Dossier & AI Sales', icon: <Building2 size={18} /> },
@@ -13,31 +13,42 @@ export const GlassSidebar: React.FC = () => {
     { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
   ];
 
-  return (
-    <aside className="w-64 glass-sidebar h-screen flex flex-col justify-between p-4 select-none shrink-0 shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
+  const sidebarContent = (
+    <div className="flex flex-col justify-between h-full p-4 select-none">
       <div className="space-y-6">
         {/* App Branding */}
-        <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20 text-lg">
-            🌍
+        <div className="flex items-center justify-between px-2 py-1">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20 text-lg">
+              🌍
+            </div>
+            <div>
+              <h1 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                Trade OS <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 bg-blue-100 text-blue-700 rounded-full">v2.0</span>
+              </h1>
+              <p className="text-[11px] text-slate-500 font-medium">India Export Revenue OS</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
-              Trade OS <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 bg-blue-100 text-blue-700 rounded-full">v1.0</span>
-            </h1>
-            <p className="text-[11px] text-slate-500 font-medium">Export Revenue OS</p>
-          </div>
+
+          {/* Close button on mobile drawer */}
+          <button
+            type="button"
+            onClick={() => setMobileDrawerOpen(false)}
+            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+          >
+            <X size={18} />
+          </button>
         </div>
 
         {/* Primary Navigation */}
         <div className="space-y-1">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Decision Views</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Export Workflows</p>
           {navItems.map((item) => {
             const active = currentView === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => setCurrentView(item.id as any)}
+                onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm transition-all cursor-pointer ${
                   active
                     ? 'bg-blue-50 text-blue-700 font-semibold border border-blue-200/80 shadow-xs'
@@ -59,31 +70,40 @@ export const GlassSidebar: React.FC = () => {
             );
           })}
         </div>
+      </div>
 
-        {/* Wedge Corridor Info */}
-        <div className="p-3.5 bg-white rounded-2xl border border-slate-200/80 shadow-xs space-y-2">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Export Wedge</p>
-          <div className="text-xs space-y-1.5 text-slate-700">
-            <div className="flex items-center justify-between font-semibold">
-              <span>🇮🇳 Butler's Leather</span>
-              <span className="text-slate-500 font-normal">Chennai</span>
-            </div>
-            <div className="flex items-center justify-between text-slate-500 text-[11px]">
-              <span>→ 🇩🇪 German Buyers</span>
-              <span className="font-medium text-slate-600">Hamburg</span>
-            </div>
+      {/* Exporter Context Card in Sidebar */}
+      <div className="p-3.5 rounded-2xl bg-gradient-to-b from-white to-slate-50 border border-slate-200/80 shadow-xs space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-bold text-slate-900 tracking-tight">Butler's Leather</span>
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/80">LWG Gold</span>
+        </div>
+        <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
+          Chennai Leather Cluster · 50k sqft/mo capacity
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Fixed Sidebar */}
+      <aside className="hidden lg:flex w-64 glass-sidebar h-screen flex-col shrink-0 shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Backdrop & Drawer */}
+      {isMobileDrawerOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+            onClick={() => setMobileDrawerOpen(false)}
+          />
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-[#FBFBFC] shadow-2xl border-r border-slate-200 z-50">
+            {sidebarContent}
           </div>
         </div>
-      </div>
-
-      {/* Footer Metrics */}
-      <div className="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200/80 text-xs space-y-1 shadow-xs">
-        <div className="flex items-center justify-between text-emerald-800 font-bold">
-          <span>Sprint Target</span>
-          <span>$500 Pilot</span>
-        </div>
-        <p className="text-[11px] text-emerald-700/90 font-medium">14-Day 5-Qualified-Match Guarantee</p>
-      </div>
-    </aside>
+      )}
+    </>
   );
 };

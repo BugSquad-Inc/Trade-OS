@@ -1,16 +1,24 @@
 import { create } from 'zustand';
 
+export type AppView = 'matches' | 'signals' | 'accounts' | 'customs' | 'analytics';
+
 interface UIState {
-  currentView: 'matches' | 'signals' | 'accounts' | 'customs' | 'analytics';
+  currentView: AppView;
   selectedBuyerId: string | null;
   selectedInspectorMatch: any | null;
   isCommandBarOpen: boolean;
   isInspectorOpen: boolean;
-  setCurrentView: (view: 'matches' | 'signals' | 'accounts' | 'customs' | 'analytics') => void;
+  isSimpleMode: boolean;
+  isMobileDrawerOpen: boolean;
+  
+  setCurrentView: (view: AppView) => void;
   setSelectedBuyerId: (id: string | null) => void;
   setSelectedInspectorMatch: (match: any | null) => void;
   setCommandBarOpen: (open: boolean) => void;
   setInspectorOpen: (open: boolean) => void;
+  setSimpleMode: (simple: boolean) => void;
+  toggleSimpleMode: () => void;
+  setMobileDrawerOpen: (open: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -19,9 +27,15 @@ export const useUIStore = create<UIState>((set) => ({
   selectedInspectorMatch: null,
   isCommandBarOpen: false,
   isInspectorOpen: false,
-  setCurrentView: (view) => set({ currentView: view }),
+  isSimpleMode: true, // Default to Simple Mode for SMB owners
+  isMobileDrawerOpen: false,
+
+  setCurrentView: (view) => set({ currentView: view, isMobileDrawerOpen: false }),
   setSelectedBuyerId: (id) => set({ selectedBuyerId: id }),
   setSelectedInspectorMatch: (match) => set({ selectedInspectorMatch: match, isInspectorOpen: !!match }),
   setCommandBarOpen: (open) => set({ isCommandBarOpen: open }),
   setInspectorOpen: (open) => set({ isInspectorOpen: open }),
+  setSimpleMode: (simple) => set({ isSimpleMode: simple }),
+  toggleSimpleMode: () => set((state) => ({ isSimpleMode: !state.isSimpleMode })),
+  setMobileDrawerOpen: (open) => set({ isMobileDrawerOpen: open }),
 }));

@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply font-sans bg-[#F5F5F7] text-slate-900 antialiased selection:bg-blue-500/20 selection:text-blue-900;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -36,6 +37,20 @@
 
 .silver-pill {
   @apply bg-gradient-to-b from-white to-slate-100/90 border border-slate-200/90 shadow-xs text-slate-700;
+}
+
+/* Mobile Responsive Optimizations */
+@media (max-width: 640px) {
+  /* 44px minimum touch target guarantee */
+  button, a, input, select {
+    min-height: 38px;
+  }
+  
+  /* Prevent horizontal overflow on small mobile viewports */
+  .mobile-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Custom Scrollbar — Light Silver */

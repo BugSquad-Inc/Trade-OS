@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 156,
-    "last_updated": "2026-08-29T05:39:22Z",
+    "total_entities": 158,
+    "last_updated": "2026-08-29T05:41:42Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -363,6 +363,16 @@
       "name": "test_provenance.py",
       "file": "backend/app/tests/test_provenance.py",
       "description": "Pytest unit tests for liveness, readiness probes and provenance table assertions"
+    },
+    "TOS-FE-SHR-013": {
+      "name": "MobileBottomNav",
+      "file": "frontend/src/components/layout/MobileBottomNav.tsx",
+      "description": "Responsive 5-tab bottom navigation with safe-area support for mobile viewports (<=768px)"
+    },
+    "TOS-FE-SHR-014": {
+      "name": "SimpleModeToggle",
+      "file": "frontend/src/components/ui/SimpleModeToggle.tsx",
+      "description": "Apple HIG toggle switching between owner Simple Mode and deep Analyst Mode"
     },
     "TOS-TST-API-003": {
       "name": "test_signals.py",

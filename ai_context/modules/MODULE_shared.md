@@ -16,6 +16,8 @@ SEQ: 3-digit zero-padded, assigned in order of creation per LAYER+MODULE
 ## Registered Shared Entities
 | Code | Name | File | Description |
 |------|------|------|-------------|
+| TOS-FE-SHR-013 | MobileBottomNav | frontend/src/components/layout/MobileBottomNav.tsx | Responsive 5-tab bottom navigation with safe-area support for mobile viewports (<=768px) |
+| TOS-FE-SHR-014 | SimpleModeToggle | frontend/src/components/ui/SimpleModeToggle.tsx | Apple HIG toggle switching between owner Simple Mode and deep Analyst Mode |
 | TOS-FE-SHR-001 | AppleSegmentedControl | frontend/src/components/apple/AppleSegmentedControl.tsx | Apple HIG sliding segmented control |
 | TOS-FE-SHR-002 | AppleScoreRing | frontend/src/components/apple/AppleScoreRing.tsx | Apple HIG animated SVG 100-point circular score gauge |
 | TOS-FE-SHR-003 | AppleCard | frontend/src/components/apple/AppleCard.tsx | Apple HIG vibrancy glassmorphism card |
