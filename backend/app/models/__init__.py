@@ -6,6 +6,7 @@ from app.models.exporter import ExporterCapability
 from app.models.signal import Signal, SignalEvidence
 from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory, Action, AuditEvent
 from app.models.provenance import TruthStatus, SourceTier, SourceRegistry, EvidenceAssertion
+from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
 
 __all__ = [
     "Base",
@@ -25,5 +26,9 @@ __all__ = [
     "TruthStatus",
     "SourceTier",
     "SourceRegistry",
-    "EvidenceAssertion"
+    "EvidenceAssertion",
+    "ProductFamily",
+    "ProductVersion",
+    "ProductCertificate",
+    "ProductPassport"
 ]

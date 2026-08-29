@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api import health, capability, matches, signals, accounts, outreach, ingest, search, agents, customs, crm, analytics, webhooks, lanes, websocket
+from app.api import health, capability, matches, signals, accounts, outreach, ingest, search, agents, customs, crm, analytics, webhooks, lanes, websocket, exporters, products
 
 app = FastAPI(
     title="Trade OS API",
     description="Export Revenue Operating System — Leather & Materials Vertical",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # CORS Middleware
@@ -20,6 +20,8 @@ app.add_middleware(
 
 # Include API Routers
 app.include_router(health.router)
+app.include_router(exporters.router)
+app.include_router(products.router)
 app.include_router(capability.router)
 app.include_router(matches.router)
 app.include_router(signals.router)

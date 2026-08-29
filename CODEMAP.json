@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 158,
-    "last_updated": "2026-08-29T05:41:42Z",
+    "total_entities": 167,
+    "last_updated": "2026-08-29T05:46:52Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -374,15 +374,60 @@
       "file": "frontend/src/components/ui/SimpleModeToggle.tsx",
       "description": "Apple HIG toggle switching between owner Simple Mode and deep Analyst Mode"
     },
-    "TOS-TST-API-003": {
-      "name": "test_signals.py",
-      "file": "backend/app/tests/test_signals.py",
-      "description": "Pytest signals endpoint tests"
+    "TOS-DB-SCHEMA-017": {
+      "name": "ProductFamily / Version / Certificate / Passport",
+      "file": "backend/app/models/product.py",
+      "description": "Gold product family catalog, version-controlled specs, lab test certificates, and Digital Product Passports"
+    },
+    "TOS-REP-API-012": {
+      "name": "exporter_repo.py",
+      "file": "backend/app/repositories/exporter_repo.py",
+      "description": "Exporter capability profile, onboarding save-and-resume, and readiness gap analysis repository"
+    },
+    "TOS-REP-API-013": {
+      "name": "product_repo.py",
+      "file": "backend/app/repositories/product_repo.py",
+      "description": "Product families, versions, lab test certificates, and Digital Product Passport repository"
+    },
+    "TOS-RTE-API-017": {
+      "name": "exporters.py",
+      "file": "backend/app/api/exporters.py",
+      "description": "FastAPI routes for exporter profiles, onboarding wizard steps, and readiness gaps"
+    },
+    "TOS-RTE-API-018": {
+      "name": "products.py",
+      "file": "backend/app/api/products.py",
+      "description": "FastAPI routes for product catalog, versions, certificates, and Digital Product Passports"
+    },
+    "TOS-SCH-API-015": {
+      "name": "Exporter Profile & Readiness Schemas",
+      "file": "backend/app/schemas/exporter.py",
+      "description": "Pydantic v2 schemas for Indian exporter registrations and readiness gap audits"
+    },
+    "TOS-SCH-API-016": {
+      "name": "Product Family & Passport Schemas",
+      "file": "backend/app/schemas/product.py",
+      "description": "Pydantic v2 schemas for product catalog, versions, certificates, and passports"
+    },
+    "TOS-FE-PROD-001": {
+      "name": "ProductPassportView",
+      "file": "frontend/src/components/products/ProductPassportView.tsx",
+      "description": "React view for Digital Product Passports, technical specifications, and lab test certificates"
+    },
+    "TOS-FE-ONB-001": {
+      "name": "OnboardingWizardModal",
+      "file": "frontend/src/components/onboarding/OnboardingWizardModal.tsx",
+      "description": "Interactive 4-step onboarding wizard for Indian exporter registrations and readiness scoring"
     },
     "TOS-TST-API-004": {
       "name": "test_accounts.py",
       "file": "backend/app/tests/test_accounts.py",
       "description": "Pytest account 360 endpoint tests"
+    },
+    "TOS-TST-API-003": {
+      "name": "test_signals.py",
+      "file": "backend/app/tests/test_signals.py",
+      "description": "Pytest signals endpoint tests"
     },
     "TOS-TST-API-005": {
       "name": "test_outreach.py",

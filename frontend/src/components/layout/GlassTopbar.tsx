@@ -10,6 +10,7 @@ export const GlassTopbar: React.FC = () => {
     matches: "Buyer Match Portal (50+ European Importers)",
     signals: "Live European Market Signals & Compliance Radar",
     accounts: "Buyer Intelligence Dossier & AI Sales Action",
+    products: "Digital Product Passports & EU Compliance Spec",
     customs: "Ocean Shipment Radar & Displacement",
     analytics: "Revenue & KPI Cockpit",
   };

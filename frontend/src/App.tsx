@@ -4,8 +4,10 @@ import { AppShell } from './components/layout/AppShell';
 import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
 import { Account360View } from './components/accounts/Account360View';
+import { ProductPassportView } from './components/products/ProductPassportView';
 import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ExecutiveDashboardView } from './components/analytics/ExecutiveDashboardView';
+import { OnboardingWizardModal } from './components/onboarding/OnboardingWizardModal';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { useUIStore } from './store/uiStore';
 
@@ -19,7 +21,7 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  const { currentView } = useUIStore();
+  const { currentView, isOnboardingModalOpen, setOnboardingModalOpen } = useUIStore();
 
   return (
     <AppShell>
@@ -27,9 +29,15 @@ function AppContent() {
         {currentView === 'matches' && <MatchPortalView />}
         {currentView === 'signals' && <SignalsView />}
         {currentView === 'accounts' && <Account360View />}
+        {currentView === 'products' && <ProductPassportView />}
         {currentView === 'customs' && <CustomsExplorerView />}
         {currentView === 'analytics' && <ExecutiveDashboardView />}
       </ErrorBoundary>
+
+      <OnboardingWizardModal
+        isOpen={isOnboardingModalOpen}
+        onClose={() => setOnboardingModalOpen(false)}
+      />
     </AppShell>
   );
 }

@@ -1,14 +1,15 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Ship, BarChart3, X } from 'lucide-react';
+import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle } from 'lucide-react';
 import { useUIStore, AppView } from '../../store/uiStore';
 
 export const GlassSidebar: React.FC = () => {
-  const { currentView, setCurrentView, isMobileDrawerOpen, setMobileDrawerOpen } = useUIStore();
+  const { currentView, setCurrentView, isMobileDrawerOpen, setMobileDrawerOpen, setOnboardingModalOpen } = useUIStore();
 
   const navItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
     { id: 'matches', label: 'Buyer Match Portal', icon: <LayoutGrid size={18} />, badge: '50+ Verified' },
     { id: 'signals', label: 'Live Market Signals', icon: <Radio size={18} />, badge: 'Live' },
     { id: 'accounts', label: 'Buyer Dossier & AI Sales', icon: <Building2 size={18} /> },
+    { id: 'products', label: 'Digital Product Passports', icon: <Layers size={18} />, badge: 'DPP' },
     { id: 'customs', label: 'Ocean Shipment Radar', icon: <Ship size={18} />, badge: 'Customs' },
     { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
   ];
@@ -72,14 +73,21 @@ export const GlassSidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Exporter Context Card in Sidebar */}
-      <div className="p-3.5 rounded-2xl bg-gradient-to-b from-white to-slate-50 border border-slate-200/80 shadow-xs space-y-2">
+      {/* Exporter Readiness Profile Card in Sidebar */}
+      <div
+        onClick={() => setOnboardingModalOpen(true)}
+        className="p-3.5 rounded-2xl bg-gradient-to-b from-white to-slate-50 border border-slate-200/80 shadow-xs space-y-2 cursor-pointer hover:border-blue-300 transition-all group"
+      >
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold text-slate-900 tracking-tight">Butler's Leather</span>
-          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/80">LWG Gold</span>
+          <span className="text-[11px] font-bold text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
+            Butler's Leather
+          </span>
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/80 flex items-center gap-1">
+            <CheckCircle size={10} /> 95/100
+          </span>
         </div>
         <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-          Chennai Leather Cluster · 50k sqft/mo capacity
+          Ambur Cluster · DGFT & ICEGATE Verified · Click for profile
         </p>
       </div>
     </div>
