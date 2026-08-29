@@ -12,6 +12,7 @@ export const GlassSidebar: React.FC = () => {
     { id: 'products', label: 'Digital Product Passports', icon: <Layers size={18} />, badge: 'DPP' },
     { id: 'customs', label: 'Ocean Shipment Radar', icon: <Ship size={18} />, badge: 'Customs' },
     { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
+    { id: 'verification', label: 'Analyst Verification Queue', icon: <CheckCircle size={18} />, badge: 'Audit' },
   ];
 
   const sidebarContent = (

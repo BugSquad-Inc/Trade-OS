@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 167,
-    "last_updated": "2026-08-29T05:46:52Z",
+    "total_entities": 171,
+    "last_updated": "2026-08-29T05:53:17Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -420,9 +420,9 @@
       "description": "Interactive 4-step onboarding wizard for Indian exporter registrations and readiness scoring"
     },
     "TOS-TST-API-004": {
-      "name": "test_accounts.py",
-      "file": "backend/app/tests/test_accounts.py",
-      "description": "Pytest account 360 endpoint tests"
+      "name": "test_onboarding_products.py",
+      "file": "backend/app/tests/test_onboarding_products.py",
+      "description": "Pytest integration tests for exporter onboarding and product passport APIs"
     },
     "TOS-TST-API-003": {
       "name": "test_signals.py",
@@ -430,9 +430,9 @@
       "description": "Pytest signals endpoint tests"
     },
     "TOS-TST-API-005": {
-      "name": "test_outreach.py",
-      "file": "backend/app/tests/test_outreach.py",
-      "description": "Pytest outreach endpoint tests"
+      "name": "test_verification.py",
+      "file": "backend/app/tests/test_verification.py",
+      "description": "Pytest integration tests for verification queue sign-offs, corrections, and entity resolution"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",
@@ -659,10 +659,30 @@
       "file": "frontend/src/api/search.ts",
       "description": "Frontend hybrid search API client"
     },
-    "TOS-TST-SEARCH-001": {
-      "name": "test_hybrid_search.py",
-      "file": "backend/app/tests/test_hybrid_search.py",
-      "description": "Pytest integration tests for RRF math and search endpoint"
+    "TOS-DB-SCHEMA-018": {
+      "name": "VerificationQueue / EntityResolutionLink / CorrectionRecord",
+      "file": "backend/app/models/verification.py",
+      "description": "Gold buyer verification queue, brand-parent entity resolution links, and audit correction records"
+    },
+    "TOS-REP-API-014": {
+      "name": "verification_repo.py",
+      "file": "backend/app/repositories/verification_repo.py",
+      "description": "Verification queue management, claim sign-off, data corrections, and entity resolution repository"
+    },
+    "TOS-RTE-API-019": {
+      "name": "verification.py",
+      "file": "backend/app/api/verification.py",
+      "description": "FastAPI routes for analyst verification queue, sign-offs, data corrections, and entity resolution"
+    },
+    "TOS-SCH-API-017": {
+      "name": "Verification & Entity Resolution Schemas",
+      "file": "backend/app/schemas/verification.py",
+      "description": "Pydantic v2 schemas for verification queue items, claim sign-offs, and entity resolution links"
+    },
+    "TOS-FE-VER-001": {
+      "name": "VerificationQueueView",
+      "file": "frontend/src/components/verification/VerificationQueueView.tsx",
+      "description": "Analyst workbench for buyer claim sign-offs, priority queues, and entity resolution mappings"
     },
     "TOS-SVC-AGENTS-001": {
       "name": "ResearchAgent",

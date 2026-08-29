@@ -12,6 +12,7 @@ from app.models.signal import Signal, SignalEvidence
 from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory
 from app.models.provenance import SourceRegistry, EvidenceAssertion, TruthStatus, SourceTier
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
+from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 from app.services import scoring_service
 
 def apply_sql_migrations():
@@ -150,6 +151,68 @@ def apply_sql_migrations():
         recipient_buyer_id UUID,
         generated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
         metadata JSONB DEFAULT '{"eudr_clearance": "Grade A", "reach_compliant": true}'::jsonb NOT NULL
+    );
+
+    -- EntityCompany & Person Verification Fields Migration
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS legal_entity_type TEXT DEFAULT 'GmbH';
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS vat_number TEXT;
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS lei TEXT;
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS company_registry_id TEXT;
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS registry_country CHAR(2) DEFAULT 'DE';
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS truth_status TEXT DEFAULT 'demo';
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS source_id UUID;
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS checked_at TIMESTAMPTZ DEFAULT NOW();
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS verified_by TEXT DEFAULT 'Trade OS Analyst';
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS entity_resolution_status TEXT DEFAULT 'linked';
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS parent_entity_id UUID REFERENCES silver.entity_company(id);
+    ALTER TABLE silver.entity_company ADD COLUMN IF NOT EXISTS tenant_id UUID;
+
+    ALTER TABLE silver.entity_person ADD COLUMN IF NOT EXISTS confidence_rubric TEXT DEFAULT 'Corporate website procurement imprint + sample dossier';
+    ALTER TABLE silver.entity_person ADD COLUMN IF NOT EXISTS contact_basis TEXT DEFAULT 'company_route';
+    ALTER TABLE silver.entity_person ADD COLUMN IF NOT EXISTS lawful_source TEXT DEFAULT 'German Trade Registry';
+    ALTER TABLE silver.entity_person ADD COLUMN IF NOT EXISTS correction_history JSONB DEFAULT '[]'::jsonb;
+
+    -- Verification Domain Tables
+    CREATE TABLE IF NOT EXISTS gold.verification_queue (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        entity_id UUID NOT NULL,
+        entity_type VARCHAR(50) NOT NULL,
+        entity_name VARCHAR(255) NOT NULL,
+        claim_type VARCHAR(100) DEFAULT 'buyer_procurement_intent' NOT NULL,
+        priority VARCHAR(20) DEFAULT 'medium' NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending' NOT NULL,
+        assigned_to VARCHAR(100) DEFAULT 'Trade OS Senior Research Analyst',
+        evidence_summary TEXT,
+        notes TEXT,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        completed_at TIMESTAMPTZ
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.entity_resolution_link (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        source_entity_id UUID REFERENCES silver.entity_company(id) NOT NULL,
+        target_entity_id UUID REFERENCES silver.entity_company(id) NOT NULL,
+        link_type VARCHAR(50) DEFAULT 'brand_subsidiary' NOT NULL,
+        confidence FLOAT DEFAULT 0.95 NOT NULL,
+        evidence JSONB DEFAULT '{"source": "German Commercial Register"}'::jsonb NOT NULL,
+        reviewer VARCHAR(100) DEFAULT 'Entity Resolution Engine',
+        status VARCHAR(50) DEFAULT 'confirmed' NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.correction_record (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        entity_id UUID NOT NULL,
+        entity_type VARCHAR(50) NOT NULL,
+        field_name VARCHAR(100) NOT NULL,
+        old_value TEXT,
+        new_value TEXT NOT NULL,
+        reason TEXT NOT NULL,
+        reporter_email VARCHAR(255) DEFAULT 'exporter_user@butlers.in' NOT NULL,
+        status VARCHAR(50) DEFAULT 'submitted' NOT NULL,
+        reviewed_by VARCHAR(100),
+        reviewed_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
     );
     """
     
@@ -393,6 +456,28 @@ def seed_database():
             db.add(pass3)
             db.commit()
             print("  [OK] Successfully seeded 3 Product Passports with lab certificates.")
+
+        # Check if Verification Queue is seeded
+        vq_count = db.query(VerificationQueue).count()
+        if vq_count == 0:
+            print("  [INFO] Seeding Verification Queue items for Analyst Review...")
+            buyers = db.query(EntityCompany).filter(EntityCompany.country_code == "DE").limit(5).all()
+            for b in buyers:
+                vq = VerificationQueue(
+                    id=uuid.uuid4(),
+                    entity_id=b.id,
+                    entity_type="company",
+                    entity_name=b.canonical_name,
+                    claim_type="buyer_procurement_intent",
+                    priority="high" if "Picard" in b.canonical_name or "Bader" in b.canonical_name else "medium",
+                    status="in_review" if "Picard" in b.canonical_name else "pending",
+                    assigned_to="Trade OS Senior Research Analyst",
+                    evidence_summary=f"Commercial Registry HRB verification and active {b.segment} procurement signal check.",
+                    notes="EU REACH and LWG Gold audit cross-referenced against German company register."
+                )
+                db.add(vq)
+            db.commit()
+            print("  [OK] Seeded 5 Verification Queue items for Analyst sign-off.")
             # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(
                 id=uuid.uuid4(),

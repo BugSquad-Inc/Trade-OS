@@ -7,6 +7,7 @@ from app.models.signal import Signal, SignalEvidence
 from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory, Action, AuditEvent
 from app.models.provenance import TruthStatus, SourceTier, SourceRegistry, EvidenceAssertion
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
+from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 
 __all__ = [
     "Base",
@@ -30,5 +31,8 @@ __all__ = [
     "ProductFamily",
     "ProductVersion",
     "ProductCertificate",
-    "ProductPassport"
+    "ProductPassport",
+    "VerificationQueue",
+    "EntityResolutionLink",
+    "CorrectionRecord"
 ]

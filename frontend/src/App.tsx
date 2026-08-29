@@ -5,6 +5,7 @@ import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
 import { Account360View } from './components/accounts/Account360View';
 import { ProductPassportView } from './components/products/ProductPassportView';
+import { VerificationQueueView } from './components/verification/VerificationQueueView';
 import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ExecutiveDashboardView } from './components/analytics/ExecutiveDashboardView';
 import { OnboardingWizardModal } from './components/onboarding/OnboardingWizardModal';
@@ -30,6 +31,7 @@ function AppContent() {
         {currentView === 'signals' && <SignalsView />}
         {currentView === 'accounts' && <Account360View />}
         {currentView === 'products' && <ProductPassportView />}
+        {currentView === 'verification' && <VerificationQueueView />}
         {currentView === 'customs' && <CustomsExplorerView />}
         {currentView === 'analytics' && <ExecutiveDashboardView />}
       </ErrorBoundary>

@@ -13,6 +13,7 @@ export const GlassTopbar: React.FC = () => {
     products: "Digital Product Passports & EU Compliance Spec",
     customs: "Ocean Shipment Radar & Displacement",
     analytics: "Revenue & KPI Cockpit",
+    verification: "Analyst Verification & Entity Resolution Queue",
   };
 
   return (
