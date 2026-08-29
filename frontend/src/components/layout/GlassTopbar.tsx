@@ -18,6 +18,7 @@ export const GlassTopbar: React.FC = () => {
     customs: "Ocean Displacements Radar",
     analytics: "Revenue & KPI Cockpit",
     verification: "Analyst Verification & Entity Resolution Queue",
+    audit: "Centralized Compliance & Security Audit Trail",
   };
 
   return (

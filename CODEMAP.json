@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 199,
-    "last_updated": "2026-08-29T06:11:43Z",
+    "total_entities": 205,
+    "last_updated": "2026-08-29T06:18:36Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -573,6 +573,36 @@
       "name": "test_documents_shipments.py",
       "file": "backend/app/tests/test_documents_shipments.py",
       "description": "Pytest integration tests for documents vault, compliance engine v2, and shipments"
+    },
+    "TOS-DB-SCHEMA-022": {
+      "name": "AuditEventRecord",
+      "file": "backend/app/models/audit.py",
+      "description": "Audit schema append-only compliance and security event trail model"
+    },
+    "TOS-REP-API-019": {
+      "name": "audit_repo.py",
+      "file": "backend/app/repositories/audit_repo.py",
+      "description": "Append-only centralized compliance and security audit trail repository"
+    },
+    "TOS-RTE-API-026": {
+      "name": "audit.py",
+      "file": "backend/app/api/audit.py",
+      "description": "FastAPI routes for immutable audit events retrieval and compliance stats"
+    },
+    "TOS-SCH-API-021": {
+      "name": "AuditEvent & AuditStats Schemas",
+      "file": "backend/app/schemas/audit.py",
+      "description": "Pydantic v2 schemas for immutable audit events, logging, and audit trail metrics"
+    },
+    "TOS-FE-AUD-001": {
+      "name": "AuditTrailView",
+      "file": "frontend/src/components/audit/AuditTrailView.tsx",
+      "description": "Enterprise compliance and security audit trail viewer with payload diff inspector"
+    },
+    "TOS-TST-API-009": {
+      "name": "test_audit_production_gate.py",
+      "file": "backend/app/tests/test_audit_production_gate.py",
+      "description": "Pytest integration tests for centralized audit logs and production secure MVP gate"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api import health, capability, matches, signals, accounts, outreach, ingest, search, agents, customs, crm, analytics, webhooks, lanes, websocket, exporters, products, verification, deals, today, tenants, users, documents, shipments
+from app.api import health, capability, matches, signals, accounts, outreach, ingest, search, agents, customs, crm, analytics, webhooks, lanes, websocket, exporters, products, verification, deals, today, tenants, users, documents, shipments, audit
 
 app = FastAPI(
     title="Trade OS API",
@@ -24,6 +24,7 @@ app.include_router(today.router)
 app.include_router(deals.router)
 app.include_router(documents.router)
 app.include_router(shipments.router)
+app.include_router(audit.router)
 app.include_router(tenants.router)
 app.include_router(users.router)
 app.include_router(exporters.router)

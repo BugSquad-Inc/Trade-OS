@@ -12,6 +12,7 @@ import { ShipmentMilestoneTrackerView } from './components/shipments/ShipmentMil
 import { VerificationQueueView } from './components/verification/VerificationQueueView';
 import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ExecutiveDashboardView } from './components/analytics/ExecutiveDashboardView';
+import { AuditTrailView } from './components/audit/AuditTrailView';
 import { OnboardingWizardModal } from './components/onboarding/OnboardingWizardModal';
 import { TeamManagementModal } from './components/tenants/TeamManagementModal';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
@@ -43,6 +44,7 @@ function AppContent() {
         {currentView === 'verification' && <VerificationQueueView />}
         {currentView === 'customs' && <CustomsExplorerView />}
         {currentView === 'analytics' && <ExecutiveDashboardView />}
+        {currentView === 'audit' && <AuditTrailView />}
       </ErrorBoundary>
 
       <OnboardingWizardModal

@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle, FileCheck } from 'lucide-react';
+import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle, FileCheck, ShieldCheck } from 'lucide-react';
 import { useUIStore, AppView } from '../../store/uiStore';
 
 export const GlassSidebar: React.FC = () => {
@@ -17,6 +17,7 @@ export const GlassSidebar: React.FC = () => {
     { id: 'customs', label: 'Ocean Displacements', icon: <Ship size={18} />, badge: 'Customs' },
     { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
     { id: 'verification', label: 'Analyst Verification Queue', icon: <CheckCircle size={18} />, badge: 'Audit' },
+    { id: 'audit', label: 'Compliance Audit Trail', icon: <ShieldCheck size={18} />, badge: 'Insert-Only' },
   ];
 
   const sidebarContent = (

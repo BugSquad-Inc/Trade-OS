@@ -11,6 +11,7 @@ from app.models.verification import VerificationQueue, EntityResolutionLink, Cor
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
 from app.models.document import TradeDocument, DocumentType, ShipmentRecord, ShipmentMilestone
+from app.models.audit import AuditEventRecord, AuditCategory
 
 __all__ = [
     "Base",
@@ -49,5 +50,7 @@ __all__ = [
     "TradeDocument",
     "DocumentType",
     "ShipmentRecord",
-    "ShipmentMilestone"
+    "ShipmentMilestone",
+    "AuditEventRecord",
+    "AuditCategory"
 ]

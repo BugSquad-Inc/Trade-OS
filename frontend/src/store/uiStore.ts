@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppView = 'today' | 'deals' | 'matches' | 'signals' | 'accounts' | 'products' | 'documents' | 'shipments' | 'customs' | 'analytics' | 'verification';
+export type AppView = 'today' | 'deals' | 'matches' | 'signals' | 'accounts' | 'products' | 'documents' | 'shipments' | 'customs' | 'analytics' | 'verification' | 'audit';
 
 interface UIState {
   currentView: AppView;

@@ -16,6 +16,7 @@ from app.models.verification import VerificationQueue, EntityResolutionLink, Cor
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
 from app.models.document import TradeDocument, DocumentType, ShipmentRecord, ShipmentMilestone
+from app.models.audit import AuditEventRecord, AuditCategory
 from app.services import scoring_service
 
 def apply_sql_migrations():
@@ -393,6 +394,33 @@ def apply_sql_migrations():
         ebrc_number VARCHAR(100),
         created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
         updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    -- Centralized Audit Schema & Table
+    CREATE SCHEMA IF NOT EXISTS audit;
+
+    DO $$ BEGIN
+        CREATE TYPE audit.audit_category_enum AS ENUM (
+            'AUTH', 'ACCESS', 'MODIFICATION', 'EXPORT_DATA',
+            'COMPLIANCE_SIGN_OFF', 'FINANCE_MODIFICATION'
+        );
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS audit.audit_event_record (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES gold.tenant(id) ON DELETE SET NULL,
+        user_id UUID REFERENCES gold.user_account(id) ON DELETE SET NULL,
+        event_category audit.audit_category_enum DEFAULT 'MODIFICATION' NOT NULL,
+        action VARCHAR(100) NOT NULL,
+        entity_type VARCHAR(100) NOT NULL,
+        entity_id UUID,
+        actor_email VARCHAR(255) DEFAULT 'system@tradeos.in' NOT NULL,
+        ip_address VARCHAR(45) DEFAULT '127.0.0.1' NOT NULL,
+        user_agent VARCHAR(255) DEFAULT 'TradeOS-Client/2.0' NOT NULL,
+        payload_diff JSONB DEFAULT '{}'::jsonb NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
     );
     """
     
@@ -941,6 +969,66 @@ def seed_database():
 
             db.commit()
             print("  [OK] Seeded 3 Vault Trade Documents and 2 Live Shipments (Maersk Ocean & Lufthansa Air).")
+
+        # Check if Audit Events are seeded
+        audit_count = db.query(AuditEventRecord).count()
+        if audit_count == 0:
+            print("  [INFO] Seeding Centralized Compliance & Security Audit Events...")
+            tenant = db.query(Tenant).first()
+            user_owner = db.query(UserAccount).filter(UserAccount.role == UserRole.owner).first()
+            user_comp = db.query(UserAccount).filter(UserAccount.role == UserRole.compliance).first()
+
+            events = [
+                AuditEventRecord(
+                    tenant_id=tenant.id if tenant else None,
+                    user_id=user_owner.id if user_owner else None,
+                    event_category=AuditCategory.AUTH,
+                    action="USER_LOGIN_SUCCESS",
+                    entity_type="user_account",
+                    entity_id=user_owner.id if user_owner else None,
+                    actor_email=user_owner.email if user_owner else "johann@butlers.in",
+                    ip_address="49.207.182.90",
+                    user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15",
+                    payload_diff={"mfa_verified": True, "auth_provider": "TradeOS-Internal-OIDC"}
+                ),
+                AuditEventRecord(
+                    tenant_id=tenant.id if tenant else None,
+                    user_id=user_comp.id if user_comp else None,
+                    event_category=AuditCategory.COMPLIANCE_SIGN_OFF,
+                    action="SIGN_OFF_EUDR_DDS",
+                    entity_type="trade_document",
+                    actor_email=user_comp.email if user_comp else "ananya.compliance@butlers.in",
+                    ip_address="49.207.182.90",
+                    user_agent="TradeOS-Client/2.0",
+                    payload_diff={"document_ref": "EUDR_DDS_Butlers_Hamburg_4107.pdf", "polygon_count": 142, "clearance_grade": "Grade A"}
+                ),
+                AuditEventRecord(
+                    tenant_id=tenant.id if tenant else None,
+                    user_id=user_owner.id if user_owner else None,
+                    event_category=AuditCategory.FINANCE_MODIFICATION,
+                    action="ISSUE_LANDED_COST_QUOTE",
+                    entity_type="quote",
+                    actor_email=user_owner.email if user_owner else "johann@butlers.in",
+                    ip_address="49.207.182.90",
+                    user_agent="TradeOS-Client/2.0",
+                    payload_diff={"quote_number": "QT-2026-ROECKL-01", "total_eur": 17750.0, "gross_margin_pct": 28.5}
+                ),
+                AuditEventRecord(
+                    tenant_id=tenant.id if tenant else None,
+                    user_id=user_comp.id if user_comp else None,
+                    event_category=AuditCategory.COMPLIANCE_SIGN_OFF,
+                    action="VERIFY_LAB_CERTIFICATE",
+                    entity_type="product_certificate",
+                    actor_email=user_comp.email if user_comp else "ananya.compliance@butlers.in",
+                    ip_address="49.207.182.90",
+                    user_agent="TradeOS-Client/2.0",
+                    payload_diff={"lab": "Eurofins Consumer Product Testing", "test": "ISO 17075-1 Chromium VI", "result": "ND (<3mg/kg)"}
+                )
+            ]
+            for ev in events:
+                db.add(ev)
+            db.commit()
+            print("  [OK] Seeded 4 Immutable Compliance & Security Audit Events.")
 
             # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(
