@@ -4,6 +4,7 @@ import { AppleCard } from '../apple/AppleCard';
 import { AppleScoreRing } from '../apple/AppleScoreRing';
 import { AppleBadge } from '../apple/AppleBadge';
 import { AppleButton } from '../apple/AppleButton';
+import { TruthStatusBadge } from '../apple/TruthStatusBadge';
 import { MatchDriverBadge } from './MatchDriverBadge';
 import { MatchCard as MatchCardType } from '../../api/matches';
 import { useUIStore } from '../../store/uiStore';
@@ -39,15 +40,13 @@ export const MatchCard: React.FC<Props> = ({ match }) => {
               <AppleBadge tone={match.grade === 'A' ? 'green' : 'blue'} size="sm">
                 Grade {match.grade} Match
               </AppleBadge>
-              <AppleBadge tone="teal" size="sm">
-                AW26 Sourcing
-              </AppleBadge>
+              <TruthStatusBadge status="demo" sourceName="Sample Dossier" />
               <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
                 <MapPin size={12} className="text-slate-400" /> {match.city}, {match.country}
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-1 font-medium">
-              {match.segment} · <b className="text-emerald-700">Est. Annual Order: ~40k sqft (€160,000)</b>
+              {match.segment} · <b className="text-slate-700">Annual Procurement Target: ~40k sqft</b>
             </p>
           </div>
         </div>

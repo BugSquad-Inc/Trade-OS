@@ -1,5 +1,5 @@
 # Trade OS — Module Index
-*Project: Trade OS | Sprint: S7 | Total Entities: 153 | Updated: 2026-08-28T13:56:45Z*
+*Project: Trade OS | Sprint: S7 | Total Entities: 156 | Updated: 2026-08-29T05:35:58Z*
 
 ## Module Status
 
@@ -32,6 +32,7 @@
 | TOS-FE-SHR-009 | PageSkeleton | frontend/src/components/ui/PageSkeleton.tsx | Pulsing placeholder skeleton loader |
 | TOS-FE-SHR-010 | ErrorBoundary | frontend/src/components/ui/ErrorBoundary.tsx | React ErrorBoundary component |
 | TOS-FE-SHR-011 | EmptyState | frontend/src/components/ui/EmptyState.tsx | Empty state illustration and message |
+| TOS-FE-SHR-012 | TruthStatusBadge | frontend/src/components/apple/TruthStatusBadge.tsx | Apple HIG pill badge displaying data truth status (verified, inferred, demo, stale) |
 
 ## Config Keys
 

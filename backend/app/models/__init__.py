@@ -5,6 +5,7 @@ from app.models.lane import TradeLaneBenchmark
 from app.models.exporter import ExporterCapability
 from app.models.signal import Signal, SignalEvidence
 from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory, Action, AuditEvent
+from app.models.provenance import TruthStatus, SourceTier, SourceRegistry, EvidenceAssertion
 
 __all__ = [
     "Base",
@@ -20,5 +21,9 @@ __all__ = [
     "MatchCandidate",
     "MatchScoreHistory",
     "Action",
-    "AuditEvent"
+    "AuditEvent",
+    "TruthStatus",
+    "SourceTier",
+    "SourceRegistry",
+    "EvidenceAssertion"
 ]

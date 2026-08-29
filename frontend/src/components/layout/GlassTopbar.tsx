@@ -15,9 +15,17 @@ export const GlassTopbar: React.FC = () => {
 
   return (
     <header className="h-16 glass-topbar flex items-center justify-between px-6 select-none shrink-0 shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
-      <div>
-        <h2 className="text-sm font-bold text-slate-900 tracking-tight">{titles[currentView]}</h2>
-        <p className="text-xs text-slate-500 font-medium">Indian Leather & Finished Materials Export Revenue Engine</p>
+      <div className="flex items-center gap-4">
+        <div>
+          <h2 className="text-sm font-bold text-slate-900 tracking-tight">{titles[currentView]}</h2>
+          <p className="text-xs text-slate-500 font-medium">Indian Leather & Finished Materials Export Revenue Engine</p>
+        </div>
+
+        {/* Demo Watermark Banner */}
+        <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-800 text-[11px] font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <span>Demo Environment — Synthetic benchmark records for pilot validation</span>
+        </div>
       </div>
 
       <div className="flex items-center gap-3">
@@ -34,10 +42,10 @@ export const GlassTopbar: React.FC = () => {
           </kbd>
         </button>
 
-        {/* Live Status Pill */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-semibold shadow-xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Live Market Feed (Updated Today)</span>
+        {/* Status Pill */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200/80 text-slate-700 text-xs font-semibold shadow-xs">
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span>Market Feed: Verified Daily</span>
         </div>
       </div>
     </header>

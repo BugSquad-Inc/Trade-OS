@@ -1,11 +1,19 @@
-const API_KEY = 'tradeos_pilot_secret_key_2026';
+// Retrieve API Key from Vite environment or development session
+const API_KEY = (import.meta as any).env?.VITE_TRADEOS_API_KEY || 'tradeos_pilot_secret_key_2026';
 
-export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const headers = {
+export interface ApiFetchOptions extends RequestInit {
+  skipAuth?: boolean;
+}
+
+export async function fetchApi<T>(endpoint: string, options: ApiFetchOptions = {}): Promise<T> {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'X-TradeOS-Key': API_KEY,
-    ...(options.headers || {}),
+    ...(options.headers as Record<string, string> || {}),
   };
+
+  if (!options.skipAuth && API_KEY) {
+    headers['X-TradeOS-Key'] = API_KEY;
+  }
 
   const response = await fetch(endpoint, {
     ...options,

@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 153,
-    "last_updated": "2026-08-28T13:56:45Z",
+    "total_entities": 156,
+    "last_updated": "2026-08-29T05:35:58Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -360,9 +360,9 @@
       "description": "Pytest capability endpoint tests"
     },
     "TOS-TST-API-002": {
-      "name": "test_matches.py",
-      "file": "backend/app/tests/test_matches.py",
-      "description": "Pytest matches endpoint tests"
+      "name": "test_provenance.py",
+      "file": "backend/app/tests/test_provenance.py",
+      "description": "Pytest unit tests for liveness, readiness probes and provenance table assertions"
     },
     "TOS-TST-API-003": {
       "name": "test_signals.py",
@@ -883,6 +883,21 @@
       "name": "test_production_e2e.py",
       "file": "backend/app/tests/test_production_e2e.py",
       "description": "Full end-to-end production readiness API test suite"
+    },
+    "TOS-DB-SCHEMA-016": {
+      "name": "SourceRegistry / EvidenceAssertion",
+      "file": "backend/app/models/provenance.py",
+      "description": "Gold truth status, source registry tiering (A-E), and evidence assertion provenance models"
+    },
+    "TOS-SCH-API-014": {
+      "name": "SourceRegistry / EvidenceAssertion Schemas",
+      "file": "backend/app/schemas/provenance.py",
+      "description": "Pydantic v2 schemas for provenance and truth status"
+    },
+    "TOS-FE-SHR-012": {
+      "name": "TruthStatusBadge",
+      "file": "frontend/src/components/apple/TruthStatusBadge.tsx",
+      "description": "Apple HIG pill badge displaying data truth status (verified, inferred, demo, stale)"
     }
   },
   "dependency_rules": {

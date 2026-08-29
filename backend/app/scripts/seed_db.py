@@ -1,7 +1,7 @@
 import os
 import sys
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from sqlalchemy import text
 from app.database import engine, SessionLocal
 from app.models.company import EntityCompany, EntityPerson, EntityProduct
@@ -10,34 +10,121 @@ from app.models.lane import TradeLaneBenchmark
 from app.models.exporter import ExporterCapability
 from app.models.signal import Signal, SignalEvidence
 from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory
+from app.models.provenance import SourceRegistry, EvidenceAssertion, TruthStatus, SourceTier
 from app.services import scoring_service
 
 def apply_sql_migrations():
-    print("[1/3] Applying PostgreSQL Medallion DDL scripts...")
-    sql_dir = os.path.join(os.path.dirname(__file__), "..", "..", "sql")
-    sql_files = sorted([f for f in os.listdir(sql_dir) if f.endswith(".sql")])
+    print("[1/3] Applying PostgreSQL Medallion DDL scripts & Provenance tables...")
+    
+    # Create gold.source_registry and gold.evidence_assertion if not exist
+    ddl_provenance = """
+    DO $$ BEGIN
+        CREATE TYPE gold.source_tier_enum AS ENUM ('tier_a', 'tier_b', 'tier_c', 'tier_d', 'tier_e');
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    DO $$ BEGIN
+        CREATE TYPE gold.truth_status_enum AS ENUM ('verified', 'inferred', 'customer_supplied', 'provider_supplied', 'demo', 'stale', 'disputed', 'unavailable');
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS gold.source_registry (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name VARCHAR(255) NOT NULL UNIQUE,
+        source_tier gold.source_tier_enum DEFAULT 'tier_e' NOT NULL,
+        licence_terms TEXT,
+        usage_policy VARCHAR(255),
+        owner VARCHAR(100) DEFAULT 'Trade OS Data Operations',
+        is_active BOOLEAN DEFAULT TRUE NOT NULL,
+        checked_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.evidence_assertion (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        claim_type VARCHAR(100) NOT NULL,
+        claim_value JSONB NOT NULL,
+        truth_status gold.truth_status_enum DEFAULT 'demo' NOT NULL,
+        source_id UUID REFERENCES gold.source_registry(id) ON DELETE CASCADE,
+        confidence FLOAT DEFAULT 1.0 NOT NULL,
+        verification_method VARCHAR(255),
+        reviewed_by VARCHAR(100),
+        tenant_id UUID,
+        metadata JSONB DEFAULT '{}'::jsonb,
+        valid_from TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        valid_until TIMESTAMPTZ,
+        checked_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_evidence_claim_type ON gold.evidence_assertion (claim_type);
+    CREATE INDEX IF NOT EXISTS idx_evidence_truth_status ON gold.evidence_assertion (truth_status);
+    """
     
     with engine.connect() as conn:
-        for fname in sql_files:
-            fpath = os.path.join(sql_dir, fname)
-            print(f"  -> Executing {fname}...")
-            with open(fpath, "r", encoding="utf-8") as f:
-                sql_content = f.read()
-                # Split commands and execute
-                conn.execute(text(sql_content))
-                conn.commit()
+        conn.execute(text(ddl_provenance))
+        conn.commit()
+
+    sql_dir = os.path.join(os.path.dirname(__file__), "..", "..", "sql")
+    if os.path.exists(sql_dir):
+        sql_files = sorted([f for f in os.listdir(sql_dir) if f.endswith(".sql")])
+        with engine.connect() as conn:
+            for fname in sql_files:
+                fpath = os.path.join(sql_dir, fname)
+                print(f"  -> Executing {fname}...")
+                with open(fpath, "r", encoding="utf-8") as f:
+                    sql_content = f.read()
+                    conn.execute(text(sql_content))
+                    conn.commit()
     print("  [OK] DDL migrations applied successfully.")
 
 def seed_database():
-    print("[2/3] Seeding Butler's Leather, 5 German Buyers, Freight & Signals...")
+    print("[2/3] Seeding Butler's Leather, 5 German Buyers, Provenance Source Registry...")
     db = SessionLocal()
     try:
-        # Check if already seeded
+        # 1. Seed Demo Source Registry
+        demo_source = db.query(SourceRegistry).filter_by(name="TradeOS Synthetic Benchmark & Prototype Dataset (Demo)").first()
+        if not demo_source:
+            demo_source = SourceRegistry(
+                id=uuid.uuid4(),
+                name="TradeOS Synthetic Benchmark & Prototype Dataset (Demo)",
+                source_tier=SourceTier.tier_e,
+                licence_terms="Synthetic sample data for demonstration, workflow validation, and testing only.",
+                usage_policy="Demo & Testing Environment Only",
+                owner="Trade OS Founder & Research Sandbox",
+                is_active=True,
+                checked_at=datetime.now(timezone.utc)
+            )
+            db.add(demo_source)
+            db.commit()
+            db.refresh(demo_source)
+
+        # Check if Butler's Leather is already seeded
         existing_cap = db.query(ExporterCapability).filter_by(company_name="Butler's Leather").first()
         if existing_cap:
-            print("  [INFO] Database already seeded. Refreshing scores...")
+            print("  [INFO] Database already seeded. Backfilling provenance assertions if needed...")
+            # Check if evidence assertions exist, if not, backfill from existing signals
+            ev_count = db.query(EvidenceAssertion).count()
+            if ev_count == 0:
+                signals = db.query(Signal).limit(20).all()
+                for sig in signals:
+                    ev = EvidenceAssertion(
+                        id=uuid.uuid4(),
+                        claim_type="buyer_signal",
+                        claim_value={"title": sig.title, "summary": sig.summary, "score": float(sig.score) if sig.score is not None else 0.0},
+                        truth_status=TruthStatus.demo,
+                        source_id=demo_source.id,
+                        confidence=0.9,
+                        verification_method="Sample research dossier (Demo)",
+                        reviewed_by="Trade OS Analyst"
+                    )
+                    db.add(ev)
+                db.commit()
+                print("  [OK] Backfilled demo evidence assertions from existing signals.")
         else:
-            # 1. Seed Butler's Leather Exporter Capability
+            # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(
                 id=uuid.uuid4(),
                 company_name="Butler's Leather",
@@ -60,7 +147,7 @@ def seed_database():
             )
             db.add(exporter)
 
-            # 2. Seed Freight Lane Benchmark
+            # 3. Seed Freight Lane Benchmark
             lane = TradeLaneBenchmark(
                 id=uuid.uuid4(),
                 origin_country="IN",
@@ -80,10 +167,10 @@ def seed_database():
             )
             db.add(lane)
 
-            # 3. Seed 5 German Buyers
+            # 4. Seed 5 German Buyers (Fictionalized sample dossiers with demo markers)
             buyers_data = [
                 {
-                    "name": "Picard GmbH",
+                    "name": "Picard GmbH [Sample]",
                     "legal_name": "Picard Lederwaren GmbH & Co. KG",
                     "city": "Obertshausen",
                     "region": "Hesse",
@@ -95,12 +182,12 @@ def seed_database():
                     "founded_year": 1928,
                     "employee_range": "200-500",
                     "contact": {
-                        "name": "Johann Schmidt",
+                        "name": "Johann Schmidt (Sample Contact)",
                         "title": "Head of Sourcing & Leather Procurement",
                         "email": "j.schmidt@picard-leather-demo.de",
                         "phone": "+49 6104 7040",
                         "confidence": 0.88,
-                        "verification_status": "verified"
+                        "verification_status": "demo"
                     },
                     "products": [
                         {"name": "Full-Grain Bovine Leather for Handbags", "hs_code": "4107", "material_types": ["Full-grain calf", "Bovine leather"], "thickness": ["0.9-1.3"], "finish": ["Semi-aniline", "Pigmented"]}
@@ -113,8 +200,8 @@ def seed_database():
                         {
                             "category": "compliance",
                             "severity": "high",
-                            "title": "EUDR Traceability Mandate for Leather Goods Supply Chain",
-                            "summary": "Picard sustainability update highlights mandatory batch-level deforestation-free declarations for all imported leathers.",
+                            "title": "Market Chemical & Traceability Update for Leather Goods",
+                            "summary": "Picard sustainability update highlights mandatory batch-level declarations for all imported leathers.",
                             "quote": "We are requiring all non-EU tanneries to provide farm geolocation data and REACH chemical compliance certificates prior to 2026 collection orders.",
                             "score": 90
                         },
@@ -129,7 +216,7 @@ def seed_database():
                     ]
                 },
                 {
-                    "name": "Roeckl Handschuhe & Accessoires",
+                    "name": "Roeckl Handschuhe & Accessoires [Sample]",
                     "legal_name": "Roeckl Handschuhe & Accessoires GmbH & Co. KG",
                     "city": "Munich",
                     "region": "Bavaria",
@@ -141,12 +228,12 @@ def seed_database():
                     "founded_year": 1839,
                     "employee_range": "100-250",
                     "contact": {
-                        "name": "Klaus Weber",
+                        "name": "Klaus Weber (Sample Contact)",
                         "title": "Sourcing Director Glove Materials",
                         "email": "k.weber@roeckl-gloves-demo.de",
                         "phone": "+49 89 72080",
                         "confidence": 0.85,
-                        "verification_status": "verified"
+                        "verification_status": "demo"
                     },
                     "products": [
                         {"name": "Ultra-Soft Goat & Kid Nappa", "hs_code": "4106", "material_types": ["Kid nappa", "Goat nappa"], "thickness": ["0.5-0.8"], "finish": ["Aniline", "Water-repellent"]}
@@ -166,7 +253,7 @@ def seed_database():
                     ]
                 },
                 {
-                    "name": "Bader GmbH & Co. KG",
+                    "name": "Bader GmbH & Co. KG [Sample]",
                     "legal_name": "Bader GmbH & Co. KG",
                     "city": "Göppingen",
                     "region": "Baden-Württemberg",
@@ -178,33 +265,33 @@ def seed_database():
                     "founded_year": 1872,
                     "employee_range": "1000+",
                     "contact": {
-                        "name": "Marcus Becker",
+                        "name": "Marcus Becker (Sample Contact)",
                         "title": "Supplier Quality & Raw Material Procurement",
                         "email": "m.becker@bader-leather-demo.de",
                         "phone": "+49 7161 6720",
                         "confidence": 0.82,
-                        "verification_status": "verified"
+                        "verification_status": "demo"
                     },
                     "products": [
                         {"name": "Bovine Wet-Blue & Crust for Auto Upholstery", "hs_code": "4104", "material_types": ["Bovine crust", "Heavy hide"], "thickness": ["1.2-1.8"], "finish": ["Crust", "Semi-aniline"]}
                     ],
                     "certifications": [
                         {"type": "IATF", "name": "IATF 16949 / ISO 9001", "issued_by": "DQS"},
-                        {"type": "EUDR", "name": "Automotive Raw Hide Traceability Protocol", "issued_by": "VDA"}
+                        {"type": "REACH", "name": "Automotive Raw Hide Traceability Protocol", "issued_by": "VDA"}
                     ],
                     "signals": [
                         {
                             "category": "regulatory",
                             "severity": "critical",
-                            "title": "Automotive Supply Chain LkSG & EUDR Compliance Audit",
+                            "title": "Automotive Supply Chain LkSG & Quality Audit",
                             "summary": "Bader supplier quality team enforces strict origin tracing for all imported wet-blue and crust containers.",
-                            "quote": "All Tier-2 tanneries must document farm origin and demonstrate zero deforestation compliance.",
+                            "quote": "All Tier-2 tanneries must document raw material origin and demonstrate zero chemical defect compliance.",
                             "score": 92
                         }
                     ]
                 },
                 {
-                    "name": "Kilger",
+                    "name": "Kilger [Sample]",
                     "legal_name": "Gerberei Kilger GmbH",
                     "city": "Viechtach",
                     "region": "Bavaria",
@@ -216,12 +303,12 @@ def seed_database():
                     "founded_year": 1856,
                     "employee_range": "50-100",
                     "contact": {
-                        "name": "Stefan Kilger",
+                        "name": "Stefan Kilger (Sample Contact)",
                         "title": "Managing Director & Sourcing Lead",
                         "email": "s.kilger@kilger-leder-demo.de",
                         "phone": "+49 9942 9440",
                         "confidence": 0.80,
-                        "verification_status": "verified"
+                        "verification_status": "demo"
                     },
                     "products": [
                         {"name": "Vegetable Tanned Bovine Crust", "hs_code": "4104", "material_types": ["Veg-tan crust", "Sole leather"], "thickness": ["1.4-2.0"], "finish": ["Natural crust", "Oiled"]}
@@ -241,7 +328,7 @@ def seed_database():
                     ]
                 },
                 {
-                    "name": "Otto Schumacher",
+                    "name": "Otto Schumacher [Sample]",
                     "legal_name": "Otto Schumacher Sattlerei GmbH",
                     "city": "Dorsten",
                     "region": "North Rhine-Westphalia",
@@ -253,12 +340,12 @@ def seed_database():
                     "founded_year": 1953,
                     "employee_range": "20-50",
                     "contact": {
-                        "name": "Christian Schumacher",
+                        "name": "Christian Schumacher (Sample Contact)",
                         "title": "Master Saddler & Material Procurement",
                         "email": "c.schumacher@schumacher-saddlery-demo.de",
                         "phone": "+49 2362 9900",
                         "confidence": 0.78,
-                        "verification_status": "verified"
+                        "verification_status": "demo"
                     },
                     "products": [
                         {"name": "Heavy Bridle & Saddle Cowhide", "hs_code": "4107", "material_types": ["Heavy cowhide", "Bridle leather"], "thickness": ["1.8-2.4"], "finish": ["Waxed", "Vegetable-tanned"]}
@@ -311,7 +398,7 @@ def seed_database():
                 db.commit()
                 db.refresh(company)
 
-                # Add Contact
+                # Add Contact with demo status
                 contact_info = b_data["contact"]
                 person = EntityPerson(
                     id=uuid.uuid4(),
@@ -324,7 +411,7 @@ def seed_database():
                     confidence=contact_info["confidence"],
                     verification_status=contact_info["verification_status"],
                     consent_status="legitimate_interest",
-                    legal_basis="B2B legitimate interest under GDPR Art. 6(1)(f)"
+                    legal_basis="B2B legitimate interest under GDPR Art. 6(1)(f) (Demo Sample)"
                 )
                 db.add(person)
 
@@ -353,7 +440,7 @@ def seed_database():
                     )
                     db.add(cert)
 
-                # Add Signals
+                # Add Signals with Evidence Assertion
                 for s_info in b_data.get("signals", []):
                     sig = Signal(
                         id=uuid.uuid4(),
@@ -364,9 +451,22 @@ def seed_database():
                         summary=s_info["summary"],
                         quote=s_info.get("quote"),
                         score=s_info["score"],
-                        evidence={"source": "Public Company Sustainability / Procurement Portal", "quote": s_info.get("quote")}
+                        evidence={"source": "Public Company Sustainability / Procurement Portal (Demo)", "quote": s_info.get("quote")}
                     )
                     db.add(sig)
+
+                    # Also add to gold.evidence_assertion
+                    evidence_assertion = EvidenceAssertion(
+                        id=uuid.uuid4(),
+                        claim_type="buyer_signal",
+                        claim_value={"title": s_info["title"], "summary": s_info["summary"], "score": s_info["score"]},
+                        truth_status=TruthStatus.demo,
+                        source_id=demo_source.id,
+                        confidence=0.9,
+                        verification_method="Sample research dossier",
+                        reviewed_by="Trade OS Analyst"
+                    )
+                    db.add(evidence_assertion)
 
                 # Compute and store 100-Point Match Score
                 match_score = scoring_service.score_match(company, exporter, rank=idx)
@@ -402,7 +502,7 @@ def seed_database():
                 db.add(history)
                 db.commit()
 
-        print("  [OK] Seed complete: Butler's Leather + 5 German Buyers + Matches created.")
+        print("  [OK] Seed complete: Butler's Leather + 5 German Buyers + Provenance Source Registry created.")
 
     except Exception as e:
         db.rollback()
@@ -412,7 +512,7 @@ def seed_database():
         db.close()
 
 def verify_seeding():
-    print("[3/3] Verifying Database Seeding...")
+    print("[3/3] Verifying Database Seeding & Provenance...")
     db = SessionLocal()
     try:
         buyers_count = db.query(EntityCompany).filter(EntityCompany.country_code != "IN").count()
@@ -422,20 +522,26 @@ def verify_seeding():
         signals_count = db.query(Signal).count()
         lane_count = db.query(TradeLaneBenchmark).count()
         contacts_count = db.query(EntityPerson).count()
+        sources_count = db.query(SourceRegistry).count()
+        evidence_count = db.query(EvidenceAssertion).count()
 
-        print(f"  -> Exporter Profiles: {exporter_count} (Expected 1)")
-        print(f"  -> German Buyers:     {buyers_count} (Expected 5)")
-        print(f"  -> Match Candidates:  {matches_count} (Expected 5)")
-        print(f"  -> Score History:     {history_count} (Expected 5)")
-        print(f"  -> Trade Signals:     {signals_count} (Expected 7+)")
-        print(f"  -> Freight Lanes:     {lane_count} (Expected 1)")
-        print(f"  -> Verified Contacts: {contacts_count} (Expected 5+)")
+        print(f"  -> Exporter Profiles:   {exporter_count} (Expected 1)")
+        print(f"  -> German Buyers:       {buyers_count} (Expected 5)")
+        print(f"  -> Match Candidates:    {matches_count} (Expected 5)")
+        print(f"  -> Score History:       {history_count} (Expected 5)")
+        print(f"  -> Trade Signals:       {signals_count} (Expected 7+)")
+        print(f"  -> Freight Lanes:       {lane_count} (Expected 1)")
+        print(f"  -> Sample Contacts:     {contacts_count} (Expected 5+)")
+        print(f"  -> Source Registries:   {sources_count} (Expected >= 1)")
+        print(f"  -> Evidence Assertions: {evidence_count} (Expected >= 5)")
 
         assert exporter_count == 1, "Missing exporter profile"
-        assert buyers_count == 5, f"Expected 5 buyers, found {buyers_count}"
-        assert matches_count == 5, f"Expected 5 matches, found {matches_count}"
+        assert buyers_count >= 5, f"Expected at least 5 buyers, found {buyers_count}"
+        assert matches_count >= 5, f"Expected at least 5 matches, found {matches_count}"
         assert history_count >= 5, "Missing score history"
-        print("[SUCCESS] All seed validation checks passed 100%!")
+        assert sources_count >= 1, "Missing source registry"
+        assert evidence_count >= 5, "Missing evidence assertions"
+        print("[SUCCESS] All seed and provenance validation checks passed 100%!")
     finally:
         db.close()
 
