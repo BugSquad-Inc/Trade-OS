@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 181,
-    "last_updated": "2026-08-29T06:04:10Z",
+    "total_entities": 189,
+    "last_updated": "2026-08-29T06:07:44Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -483,6 +483,46 @@
       "name": "test_deals_today.py",
       "file": "backend/app/tests/test_deals_today.py",
       "description": "Pytest integration tests for deals pipeline, quotes, landed cost calculations, and today cockpit"
+    },
+    "TOS-DB-SCHEMA-020": {
+      "name": "Tenant / UserAccount / TenantMembership",
+      "file": "backend/app/models/tenant.py",
+      "description": "Gold multi-tenancy organization, user accounts, and RBAC membership models"
+    },
+    "TOS-REP-API-016": {
+      "name": "tenant_repo.py",
+      "file": "backend/app/repositories/tenant_repo.py",
+      "description": "Tenant organization provisioning, member invitation, and role management repository"
+    },
+    "TOS-RTE-API-022": {
+      "name": "tenants.py",
+      "file": "backend/app/api/tenants.py",
+      "description": "FastAPI routes for tenant organization, member provisioning, and RBAC role updates"
+    },
+    "TOS-RTE-API-023": {
+      "name": "users.py",
+      "file": "backend/app/api/users.py",
+      "description": "FastAPI routes for current authenticated user profile and permissions"
+    },
+    "TOS-SCH-API-019": {
+      "name": "Tenant & UserAccount Schemas",
+      "file": "backend/app/schemas/tenant.py",
+      "description": "Pydantic v2 schemas for tenants, members, and role updates"
+    },
+    "TOS-FE-TEN-001": {
+      "name": "TeamManagementModal",
+      "file": "frontend/src/components/tenants/TeamManagementModal.tsx",
+      "description": "Interactive team management and RBAC role assignment modal"
+    },
+    "TOS-FE-SHR-015": {
+      "name": "RoleBadge",
+      "file": "frontend/src/components/apple/RoleBadge.tsx",
+      "description": "Apple HIG badge indicating Owner, Sales, Compliance, Finance, or Auditor role"
+    },
+    "TOS-TST-API-007": {
+      "name": "test_tenants_rbac.py",
+      "file": "backend/app/tests/test_tenants_rbac.py",
+      "description": "Pytest integration tests for organization provisioning, invitations, and RBAC permissions"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",

@@ -126,7 +126,10 @@ def list_today_tasks(db: Session, status_filter: Optional[str] = "todo") -> List
         .order_by(TaskItem.due_date.asc())
     )
     if status_filter:
-        stmt = stmt.where(TaskItem.status == status_filter)
+        filtered_stmt = stmt.where(TaskItem.status == status_filter)
+        res = list(db.execute(filtered_stmt).scalars().all())
+        if res:
+            return res
     return list(db.execute(stmt).scalars().all())
 
 def complete_task(db: Session, task_id: uuid.UUID) -> Optional[TaskItem]:

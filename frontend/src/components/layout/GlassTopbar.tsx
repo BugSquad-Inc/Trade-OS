@@ -47,6 +47,17 @@ export const GlassTopbar: React.FC = () => {
         {/* Simple Mode Toggle */}
         <SimpleModeToggle />
 
+        {/* Team Management & RBAC Button */}
+        <button
+          type="button"
+          onClick={() => useUIStore.getState().setTeamModalOpen(true)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white border border-slate-200/90 text-xs text-slate-700 hover:text-slate-900 hover:border-slate-300 transition-all cursor-pointer shadow-xs"
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span className="font-bold hidden md:inline">Butler's Org</span>
+          <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-purple-100 text-purple-700 font-bold">Owner</span>
+        </button>
+
         {/* Spotlight Command Bar Trigger */}
         <button
           type="button"

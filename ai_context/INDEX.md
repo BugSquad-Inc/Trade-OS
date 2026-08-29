@@ -1,5 +1,5 @@
 # Trade OS — Module Index
-*Project: Trade OS | Sprint: S7 | Total Entities: 181 | Updated: 2026-08-29T06:04:10Z*
+*Project: Trade OS | Sprint: S7 | Total Entities: 189 | Updated: 2026-08-29T06:07:44Z*
 
 ## Module Status
 
@@ -23,6 +23,7 @@
 |------|------|------|---------|
 | TOS-FE-SHR-013 | MobileBottomNav | frontend/src/components/layout/MobileBottomNav.tsx | Responsive 5-tab bottom navigation with safe-area support for mobile viewports (<=768px) |
 | TOS-FE-SHR-014 | SimpleModeToggle | frontend/src/components/ui/SimpleModeToggle.tsx | Apple HIG toggle switching between owner Simple Mode and deep Analyst Mode |
+| TOS-FE-SHR-015 | RoleBadge | frontend/src/components/apple/RoleBadge.tsx | Apple HIG badge indicating Owner, Sales, Compliance, Finance, or Auditor role |
 | TOS-FE-SHR-001 | AppleSegmentedControl | frontend/src/components/apple/AppleSegmentedControl.tsx | Apple HIG sliding segmented control |
 | TOS-FE-SHR-002 | AppleScoreRing | frontend/src/components/apple/AppleScoreRing.tsx | Apple HIG animated SVG 100-point circular score gauge |
 | TOS-FE-SHR-003 | AppleCard | frontend/src/components/apple/AppleCard.tsx | Apple HIG vibrancy glassmorphism card |

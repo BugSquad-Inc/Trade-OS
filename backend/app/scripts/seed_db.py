@@ -14,6 +14,7 @@ from app.models.provenance import SourceRegistry, EvidenceAssertion, TruthStatus
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
+from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
 from app.services import scoring_service
 
 def apply_sql_migrations():
@@ -284,6 +285,48 @@ def apply_sql_migrations():
         assigned_to VARCHAR(100) DEFAULT 'Sales Lead' NOT NULL,
         created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
         completed_at TIMESTAMPTZ
+    );
+
+    -- Multi-Tenancy & RBAC Domain Tables
+    DO $$ BEGIN
+        CREATE TYPE gold.user_role_enum AS ENUM ('owner', 'sales', 'compliance', 'finance', 'auditor');
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS gold.tenant (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name VARCHAR(255) NOT NULL,
+        slug VARCHAR(100) UNIQUE NOT NULL,
+        country_code VARCHAR(2) DEFAULT 'IN' NOT NULL,
+        plan VARCHAR(50) DEFAULT 'professional' NOT NULL,
+        status VARCHAR(50) DEFAULT 'active' NOT NULL,
+        settings JSONB DEFAULT '{}'::jsonb NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.user_account (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES gold.tenant(id) ON DELETE CASCADE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        full_name VARCHAR(255) NOT NULL,
+        role gold.user_role_enum DEFAULT 'sales' NOT NULL,
+        is_active BOOLEAN DEFAULT TRUE NOT NULL,
+        oidc_sub VARCHAR(255),
+        last_login_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.tenant_membership (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID REFERENCES gold.tenant(id) ON DELETE CASCADE NOT NULL,
+        user_id UUID REFERENCES gold.user_account(id) ON DELETE CASCADE NOT NULL,
+        role gold.user_role_enum DEFAULT 'sales' NOT NULL,
+        status VARCHAR(50) DEFAULT 'active' NOT NULL,
+        invited_by VARCHAR(255),
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
     );
     """
     
@@ -682,6 +725,53 @@ def seed_database():
 
             db.commit()
             print("  [OK] Seeded 3 Export Deals & Today Action Tasks with Landed Quotes.")
+
+        # Check if Tenant and User Accounts are seeded
+        tenant_count = db.query(Tenant).count()
+        if tenant_count == 0:
+            print("  [INFO] Seeding Primary Tenant Organisation & RBAC Users...")
+            tenant = Tenant(
+                id=uuid.uuid4(),
+                name="Butler's Leather Tannery Pvt Ltd",
+                slug="butlers-leather",
+                country_code="IN",
+                plan="enterprise",
+                status="active",
+                settings={"currency": "INR", "preferred_export_corridor": "Germany"}
+            )
+            db.add(tenant)
+            db.flush()
+
+            users_data = [
+                {"email": "johann@butlers.in", "name": "Johann Butler", "role": UserRole.owner},
+                {"email": "ramesh.sales@butlers.in", "name": "Ramesh Kumar", "role": UserRole.sales},
+                {"email": "ananya.compliance@butlers.in", "name": "Dr. Ananya Iyer", "role": UserRole.compliance},
+                {"email": "vikram.finance@butlers.in", "name": "Vikram Raman", "role": UserRole.finance},
+            ]
+
+            for u in users_data:
+                usr = UserAccount(
+                    id=uuid.uuid4(),
+                    tenant_id=tenant.id,
+                    email=u["email"],
+                    full_name=u["name"],
+                    role=u["role"],
+                    is_active=True
+                )
+                db.add(usr)
+                db.flush()
+
+                mem = TenantMembership(
+                    tenant_id=tenant.id,
+                    user_id=usr.id,
+                    role=u["role"],
+                    status="active",
+                    invited_by="System Provisioner"
+                )
+                db.add(mem)
+
+            db.commit()
+            print("  [OK] Seeded Primary Tenant (Butler's Leather) with 4 RBAC Users (Owner, Sales, Compliance, Finance).")
 
             # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(

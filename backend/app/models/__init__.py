@@ -9,6 +9,7 @@ from app.models.provenance import TruthStatus, SourceTier, SourceRegistry, Evide
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
 from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
+from app.models.tenant import Tenant, UserRole, UserAccount, TenantMembership
 
 __all__ = [
     "Base",
@@ -39,5 +40,9 @@ __all__ = [
     "Opportunity",
     "OpportunityStage",
     "Quote",
-    "TaskItem"
+    "TaskItem",
+    "Tenant",
+    "UserRole",
+    "UserAccount",
+    "TenantMembership"
 ]
