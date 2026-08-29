@@ -6,6 +6,8 @@ export const GlassSidebar: React.FC = () => {
   const { currentView, setCurrentView, isMobileDrawerOpen, setMobileDrawerOpen, setOnboardingModalOpen } = useUIStore();
 
   const navItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
+    { id: 'today', label: 'Today Action Cockpit', icon: <BarChart3 size={18} />, badge: 'Focus' },
+    { id: 'deals', label: '12-Stage Export Pipeline', icon: <Layers size={18} />, badge: 'Deals' },
     { id: 'matches', label: 'Buyer Match Portal', icon: <LayoutGrid size={18} />, badge: '50+ Verified' },
     { id: 'signals', label: 'Live Market Signals', icon: <Radio size={18} />, badge: 'Live' },
     { id: 'accounts', label: 'Buyer Dossier & AI Sales', icon: <Building2 size={18} /> },

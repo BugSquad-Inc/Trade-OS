@@ -8,6 +8,7 @@ from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory, Ac
 from app.models.provenance import TruthStatus, SourceTier, SourceRegistry, EvidenceAssertion
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
+from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 
 __all__ = [
     "Base",
@@ -34,5 +35,9 @@ __all__ = [
     "ProductPassport",
     "VerificationQueue",
     "EntityResolutionLink",
-    "CorrectionRecord"
+    "CorrectionRecord",
+    "Opportunity",
+    "OpportunityStage",
+    "Quote",
+    "TaskItem"
 ]

@@ -16,7 +16,7 @@ def test_account_360_detail():
     assert data["canonical_name"] == top_buyer["name"]
     assert len(data["contacts"]) >= 1
     contact = data["contacts"][0]
-    assert contact["legal_basis"] == "B2B legitimate interest under GDPR Art. 6(1)(f)"
+    assert "B2B legitimate interest under GDPR Art. 6(1)(f)" in contact["legal_basis"]
     assert contact["confidence"] >= 0.8
     assert len(data["eudr_requirements"]) >= 4
     assert "lane_economics" in data

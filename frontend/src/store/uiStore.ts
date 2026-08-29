@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type AppView = 'matches' | 'signals' | 'accounts' | 'products' | 'customs' | 'analytics' | 'verification';
+export type AppView = 'today' | 'deals' | 'matches' | 'signals' | 'accounts' | 'products' | 'customs' | 'analytics' | 'verification';
 
 interface UIState {
   currentView: AppView;
@@ -24,7 +24,7 @@ interface UIState {
 }
 
 export const useUIStore = create<UIState>((set) => ({
-  currentView: 'matches',
+  currentView: 'today',
   selectedBuyerId: null,
   selectedInspectorMatch: null,
   isCommandBarOpen: false,

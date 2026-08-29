@@ -13,6 +13,7 @@ from app.models.match import MatchProfile, MatchCandidate, MatchScoreHistory
 from app.models.provenance import SourceRegistry, EvidenceAssertion, TruthStatus, SourceTier
 from app.models.product import ProductFamily, ProductVersion, ProductCertificate, ProductPassport
 from app.models.verification import VerificationQueue, EntityResolutionLink, CorrectionRecord
+from app.models.deal import Opportunity, OpportunityStage, Quote, TaskItem
 from app.services import scoring_service
 
 def apply_sql_migrations():
@@ -213,6 +214,76 @@ def apply_sql_migrations():
         reviewed_by VARCHAR(100),
         reviewed_at TIMESTAMPTZ,
         created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    -- Deals, Quotes, and Task Domain Tables
+    DO $$ BEGIN
+        CREATE TYPE gold.opportunity_stage_enum AS ENUM (
+            'matched', 'pitch_drafted', 'outreach_sent', 'reply_positive',
+            'sample_requested', 'sample_sent', 'sample_approved', 'quote_sent',
+            'contract_negotiation', 'po_received', 'in_production', 'closed_won', 'closed_lost'
+        );
+    EXCEPTION
+        WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS gold.opportunity (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        tenant_id UUID,
+        buyer_id UUID REFERENCES silver.entity_company(id) ON DELETE CASCADE NOT NULL,
+        product_family_id UUID REFERENCES gold.product_family(id) ON DELETE SET NULL,
+        product_version_id UUID REFERENCES gold.product_version(id) ON DELETE SET NULL,
+        title VARCHAR(255) NOT NULL,
+        stage gold.opportunity_stage_enum DEFAULT 'matched' NOT NULL,
+        deal_value_eur FLOAT DEFAULT 0.0 NOT NULL,
+        deal_value_inr FLOAT DEFAULT 0.0 NOT NULL,
+        volume_sqft INT DEFAULT 5000 NOT NULL,
+        incoterms VARCHAR(50) DEFAULT 'CIF Hamburg' NOT NULL,
+        target_close_date DATE,
+        probability FLOAT DEFAULT 0.3 NOT NULL,
+        owner VARCHAR(100) DEFAULT 'Sales Lead' NOT NULL,
+        loss_reason TEXT,
+        notes TEXT,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.quote (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        opportunity_id UUID REFERENCES gold.opportunity(id) ON DELETE CASCADE NOT NULL,
+        quote_number VARCHAR(100) UNIQUE NOT NULL,
+        product_version_id UUID REFERENCES gold.product_version(id) ON DELETE SET NULL,
+        freight_lane_id UUID REFERENCES silver.trade_lane_benchmark(id) ON DELETE SET NULL,
+        quantity_sqft INT DEFAULT 5000 NOT NULL,
+        unit_price_inr FLOAT DEFAULT 295.0 NOT NULL,
+        unit_price_eur FLOAT DEFAULT 3.20 NOT NULL,
+        fx_rate_eur_inr FLOAT DEFAULT 92.5 NOT NULL,
+        estimated_freight_usd FLOAT DEFAULT 1850.0 NOT NULL,
+        customs_duty_pct FLOAT DEFAULT 0.0 NOT NULL,
+        insurance_usd FLOAT DEFAULT 120.0 NOT NULL,
+        landed_cost_eur_per_sqft FLOAT DEFAULT 3.55 NOT NULL,
+        gross_margin_pct FLOAT DEFAULT 28.5 NOT NULL,
+        total_quote_value_eur FLOAT DEFAULT 17750.0 NOT NULL,
+        payment_terms VARCHAR(255) DEFAULT '30% Advance, 70% against Copy of Bill of Lading' NOT NULL,
+        lead_time_days INT DEFAULT 30 NOT NULL,
+        status VARCHAR(50) DEFAULT 'sent' NOT NULL,
+        valid_until DATE DEFAULT CURRENT_DATE NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS gold.task_item (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        opportunity_id UUID REFERENCES gold.opportunity(id) ON DELETE CASCADE,
+        buyer_id UUID REFERENCES silver.entity_company(id) ON DELETE CASCADE,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        due_date DATE DEFAULT CURRENT_DATE NOT NULL,
+        priority VARCHAR(20) DEFAULT 'high' NOT NULL,
+        status VARCHAR(50) DEFAULT 'todo' NOT NULL,
+        task_type VARCHAR(50) DEFAULT 'outreach_approval' NOT NULL,
+        assigned_to VARCHAR(100) DEFAULT 'Sales Lead' NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+        completed_at TIMESTAMPTZ
     );
     """
     
@@ -478,6 +549,140 @@ def seed_database():
                 db.add(vq)
             db.commit()
             print("  [OK] Seeded 5 Verification Queue items for Analyst sign-off.")
+
+        # Check if Opportunities and Deals are seeded
+        opp_count = db.query(Opportunity).count()
+        if opp_count == 0:
+            print("  [INFO] Seeding Export Deal Pipeline & Opportunities...")
+            picard = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Picard%")).first()
+            roeckl = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Roeckl%")).first()
+            bader = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Bader%")).first()
+            kilger = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Kilger%")).first()
+            schumacher = db.query(EntityCompany).filter(EntityCompany.canonical_name.ilike("%Schumacher%")).first()
+            
+            p_bovine = db.query(ProductFamily).filter(ProductFamily.name.ilike("%Bovine%")).first()
+            p_goat = db.query(ProductFamily).filter(ProductFamily.name.ilike("%Goat%")).first()
+            p_veg = db.query(ProductFamily).filter(ProductFamily.name.ilike("%Vegetable%")).first()
+
+            if picard:
+                opp1 = Opportunity(
+                    id=uuid.uuid4(),
+                    buyer_id=picard.id,
+                    product_family_id=p_bovine.id if p_bovine else None,
+                    title="Picard AW26 Handbag Nappa Contract (12,000 sqft)",
+                    stage=OpportunityStage.sample_approved,
+                    deal_value_eur=45000.0,
+                    deal_value_inr=4162500.0,
+                    volume_sqft=12000,
+                    incoterms="CIF Hamburg",
+                    target_close_date=date(2026, 9, 30),
+                    probability=0.85,
+                    owner="Johann Exporter (Butler's Lead)",
+                    notes="Physical swatches approved by Offenbach procurement team. Preparing commercial contract."
+                )
+                db.add(opp1)
+                db.flush()
+
+                # Add sample dispatch task
+                t1 = TaskItem(
+                    opportunity_id=opp1.id,
+                    buyer_id=picard.id,
+                    title="Dispatch AW26 Master Swatch Pack & LWG Gold Dossier to Picard Offenbach",
+                    description="DHL Express tracking required with EUDR pre-clearance certificates.",
+                    due_date=date.today(),
+                    priority="urgent",
+                    status="todo",
+                    task_type="sample_dispatch",
+                    assigned_to="Sales Lead"
+                )
+                db.add(t1)
+
+            if roeckl:
+                opp2 = Opportunity(
+                    id=uuid.uuid4(),
+                    buyer_id=roeckl.id,
+                    product_family_id=p_goat.id if p_goat else None,
+                    title="Roeckl Supple Glove Nappa Order (5,000 sqft)",
+                    stage=OpportunityStage.quote_sent,
+                    deal_value_eur=17750.0,
+                    deal_value_inr=1641875.0,
+                    volume_sqft=5000,
+                    incoterms="CIF Munich / Air Cargo",
+                    target_close_date=date(2026, 10, 15),
+                    probability=0.65,
+                    owner="Sales Lead",
+                    notes="Landed cost quotation QT-2026-ROECKL sent at €3.55/sqft."
+                )
+                db.add(opp2)
+                db.flush()
+
+                q2 = Quote(
+                    opportunity_id=opp2.id,
+                    quote_number="QT-2026-ROECKL-01",
+                    quantity_sqft=5000,
+                    unit_price_inr=295.0,
+                    unit_price_eur=3.55,
+                    fx_rate_eur_inr=92.5,
+                    estimated_freight_usd=1850.0,
+                    customs_duty_pct=0.0,
+                    insurance_usd=120.0,
+                    landed_cost_eur_per_sqft=3.55,
+                    gross_margin_pct=28.5,
+                    total_quote_value_eur=17750.0,
+                    payment_terms="30% Advance, 70% against B/L copy",
+                    lead_time_days=25,
+                    status="sent"
+                )
+                db.add(q2)
+
+                t2 = TaskItem(
+                    opportunity_id=opp2.id,
+                    buyer_id=roeckl.id,
+                    title="Follow up on Landed Quote QT-2026-ROECKL-01 with Munich Glove Team",
+                    description="Check if 0.5-0.7mm kid nappa thickness range matches AW26 pattern.",
+                    due_date=date.today(),
+                    priority="high",
+                    status="todo",
+                    task_type="quote_followup",
+                    assigned_to="Sales Lead"
+                )
+                db.add(t2)
+
+            if bader:
+                opp3 = Opportunity(
+                    id=uuid.uuid4(),
+                    buyer_id=bader.id,
+                    product_family_id=p_bovine.id if p_bovine else None,
+                    title="Bader Automotive Grade Crust Tender (30,000 sqft)",
+                    stage=OpportunityStage.pitch_drafted,
+                    deal_value_eur=120000.0,
+                    deal_value_inr=11100000.0,
+                    volume_sqft=30000,
+                    incoterms="CIF Bremerhaven",
+                    target_close_date=date(2026, 11, 30),
+                    probability=0.40,
+                    owner="Sales Lead",
+                    notes="High-volume automotive tier-1 supplier inquiry."
+                )
+                db.add(opp3)
+                db.flush()
+
+                t3 = TaskItem(
+                    opportunity_id=opp3.id,
+                    buyer_id=bader.id,
+                    title="Generate Digital Product Passport & Upload ISO 17075 Cr-VI Cert for Bader Tender",
+                    description="Bader compliance portal requires LWG Gold audit and lab report attachment.",
+                    due_date=date.today(),
+                    priority="high",
+                    status="todo",
+                    task_type="dds_upload",
+                    assigned_to="Compliance Officer"
+                )
+                db.add(t3)
+
+            db.commit()
+            print("  [OK] Seeded 3 Export Deals & Today Action Tasks with Landed Quotes.")
+
             # 2. Seed Butler's Leather Exporter Capability
             exporter = ExporterCapability(
                 id=uuid.uuid4(),

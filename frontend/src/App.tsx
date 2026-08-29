@@ -1,6 +1,8 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from './components/layout/AppShell';
+import { TodayCockpitView } from './components/today/TodayCockpitView';
+import { DealsPipelineView } from './components/deals/DealsPipelineView';
 import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
 import { Account360View } from './components/accounts/Account360View';
@@ -27,6 +29,8 @@ function AppContent() {
   return (
     <AppShell>
       <ErrorBoundary>
+        {currentView === 'today' && <TodayCockpitView />}
+        {currentView === 'deals' && <DealsPipelineView />}
         {currentView === 'matches' && <MatchPortalView />}
         {currentView === 'signals' && <SignalsView />}
         {currentView === 'accounts' && <Account360View />}

@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 171,
-    "last_updated": "2026-08-29T05:53:17Z",
+    "total_entities": 181,
+    "last_updated": "2026-08-29T06:04:10Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -433,6 +433,56 @@
       "name": "test_verification.py",
       "file": "backend/app/tests/test_verification.py",
       "description": "Pytest integration tests for verification queue sign-offs, corrections, and entity resolution"
+    },
+    "TOS-DB-SCHEMA-019": {
+      "name": "Opportunity / Quote / TaskItem",
+      "file": "backend/app/models/deal.py",
+      "description": "Gold 12-stage export deal pipeline, Landed-cost quotations, and executive action tasks"
+    },
+    "TOS-SVC-DEAL-001": {
+      "name": "quote_service.py",
+      "file": "backend/app/services/quote_service.py",
+      "description": "Landed-cost and FX margin calculation engine converting INR ex-factory to European port EUR/sqft"
+    },
+    "TOS-REP-API-015": {
+      "name": "deal_repo.py",
+      "file": "backend/app/repositories/deal_repo.py",
+      "description": "Deal opportunities, 12-stage lifecycle transitions, quotes, and task item repository"
+    },
+    "TOS-RTE-API-020": {
+      "name": "deals.py",
+      "file": "backend/app/api/deals.py",
+      "description": "FastAPI routes for 12-stage deal management, quotes, landed-cost calculator, and pipeline totals"
+    },
+    "TOS-RTE-API-021": {
+      "name": "today.py",
+      "file": "backend/app/api/today.py",
+      "description": "FastAPI routes for Today executive morning cockpit, urgent tasks, and recommended actions"
+    },
+    "TOS-SCH-API-018": {
+      "name": "Opportunity & Quotation Schemas",
+      "file": "backend/app/schemas/deal.py",
+      "description": "Pydantic v2 schemas for deals, quotes, landed cost calculations, and today cockpit"
+    },
+    "TOS-FE-DEAL-001": {
+      "name": "DealsPipelineView",
+      "file": "frontend/src/components/deals/DealsPipelineView.tsx",
+      "description": "12-stage export deal pipeline Kanban and quotation manager"
+    },
+    "TOS-FE-DEAL-002": {
+      "name": "LandedCostCalculatorModal",
+      "file": "frontend/src/components/deals/LandedCostCalculatorModal.tsx",
+      "description": "Interactive FOB INR to European Landed EUR pricing and FX margin calculator"
+    },
+    "TOS-FE-TODAY-001": {
+      "name": "TodayCockpitView",
+      "file": "frontend/src/components/today/TodayCockpitView.tsx",
+      "description": "Executive morning cockpit view showing priority actions, pipeline velocity, and buyer opportunities"
+    },
+    "TOS-TST-API-006": {
+      "name": "test_deals_today.py",
+      "file": "backend/app/tests/test_deals_today.py",
+      "description": "Pytest integration tests for deals pipeline, quotes, landed cost calculations, and today cockpit"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",

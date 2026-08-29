@@ -7,6 +7,8 @@ export const GlassTopbar: React.FC = () => {
   const { currentView, setCommandBarOpen, setMobileDrawerOpen } = useUIStore();
 
   const titles: Record<string, string> = {
+    today: "Today Priority Action Cockpit",
+    deals: "12-Stage Export Deals & Quotation Pipeline",
     matches: "Buyer Match Portal (50+ European Importers)",
     signals: "Live European Market Signals & Compliance Radar",
     accounts: "Buyer Intelligence Dossier & AI Sales Action",

@@ -1,16 +1,16 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Ship, BarChart3 } from 'lucide-react';
+import { LayoutGrid, Radio, Building2, Ship, BarChart3, Layers } from 'lucide-react';
 import { useUIStore, AppView } from '../../store/uiStore';
 
 export const MobileBottomNav: React.FC = () => {
   const { currentView, setCurrentView } = useUIStore();
 
   const navItems: { id: AppView; label: string; icon: React.ReactNode }[] = [
+    { id: 'today', label: 'Today', icon: <BarChart3 size={20} /> },
+    { id: 'deals', label: 'Pipeline', icon: <Layers size={20} /> },
     { id: 'matches', label: 'Buyers', icon: <LayoutGrid size={20} /> },
     { id: 'signals', label: 'Signals', icon: <Radio size={20} /> },
     { id: 'accounts', label: 'Dossiers', icon: <Building2 size={20} /> },
-    { id: 'customs', label: 'Shipments', icon: <Ship size={20} /> },
-    { id: 'analytics', label: 'Cockpit', icon: <BarChart3 size={20} /> },
   ];
 
   return (
