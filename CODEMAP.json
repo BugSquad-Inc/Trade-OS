@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 222,
-    "last_updated": "2026-09-01T15:34:24Z",
+    "total_entities": 224,
+    "last_updated": "2026-09-01T15:37:12Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -1228,6 +1228,16 @@
       "name": "WhatIfSimulatorModal",
       "file": "frontend/src/components/matches/WhatIfSimulatorModal.tsx",
       "description": "Interactive what-if simulator allowing adjustments of certs, specs, and freight to preview score impact"
+    },
+    "TOS-TST-API-013": {
+      "name": "test_outreach_v2_compliance_pack.py",
+      "file": "backend/app/tests/test_outreach_v2_compliance_pack.py",
+      "description": "Pytest suite for outreach modes, DIN 5008 German, and compliance pack bundle generation"
+    },
+    "TOS-FE-ACC-018": {
+      "name": "outreach_api_v2",
+      "file": "frontend/src/api/outreach.ts",
+      "description": "API client for 3-mode outreach generation and export-ready compliance pack manifest"
     }
   },
   "dependency_rules": {
