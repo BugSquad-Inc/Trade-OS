@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 218,
-    "last_updated": "2026-09-01T15:27:36Z",
+    "total_entities": 220,
+    "last_updated": "2026-09-01T15:31:13Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -1208,6 +1208,16 @@
       "name": "test_product_matrix_rbac.py",
       "file": "backend/app/tests/test_product_matrix_rbac.py",
       "description": "Pytest suite for product matrix creation, public DPP token lookup, and RBAC 7-role permissions"
+    },
+    "TOS-SVC-SCORING-007": {
+      "name": "provenance_service",
+      "file": "backend/app/services/provenance_service.py",
+      "description": "Truth status resolution, 90-day SLA freshness calculation, and analyst review loop"
+    },
+    "TOS-TST-API-011": {
+      "name": "test_provenance_analyst_loop.py",
+      "file": "backend/app/tests/test_provenance_analyst_loop.py",
+      "description": "Pytest suite for data freshness calculation, 90-day SLA, and analyst review workflow"
     }
   },
   "dependency_rules": {

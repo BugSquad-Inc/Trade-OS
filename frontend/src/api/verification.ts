@@ -8,7 +8,7 @@ export interface VerificationItem {
   entity_name: string;
   claim_type: string;
   priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'in_review' | 'verified' | 'rejected';
+  status: 'pending' | 'in_review' | 'verified' | 'rejected' | 'disputed';
   assigned_to?: string;
   evidence_summary?: string;
   notes?: string;
@@ -26,6 +26,14 @@ export interface EntityResolutionLink {
   reviewer?: string;
   status: string;
   created_at: string;
+}
+
+export interface FreshnessCheck {
+  entity_id: string;
+  is_stale: boolean;
+  days_old: number;
+  freshness_label: string;
+  effective_truth_status: string;
 }
 
 export interface CorrectionRecord {
@@ -46,6 +54,40 @@ export function useVerificationQueue(statusFilter?: string) {
   return useQuery<VerificationItem[]>({
     queryKey: ['verification_queue', statusFilter],
     queryFn: () => fetchApi<VerificationItem[]>(`/api/v1/verification/queue${queryParam}`),
+  });
+}
+
+export function useCheckFreshness(companyId?: string) {
+  return useQuery<FreshnessCheck>({
+    queryKey: ['freshness', companyId],
+    queryFn: () => fetchApi<FreshnessCheck>(`/api/v1/verification/freshness/${companyId}`),
+    enabled: !!companyId,
+  });
+}
+
+export function useReviewClaim() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      queueId,
+      decision,
+      notes,
+      evidence_reference,
+    }: {
+      queueId: string;
+      decision: 'approve' | 'reject' | 'dispute';
+      notes?: string;
+      evidence_reference?: string;
+    }) =>
+      fetchApi<VerificationItem>(`/api/v1/verification/queue/${queueId}/review`, {
+        method: 'POST',
+        body: JSON.stringify({ decision, notes, evidence_reference }),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['verification_queue'] });
+      queryClient.invalidateQueries({ queryKey: ['matches'] });
+      queryClient.invalidateQueries({ queryKey: ['accounts'] });
+    },
   });
 }
 

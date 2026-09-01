@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from typing import Optional, Dict, Any, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class VerificationQueueResponse(BaseModel):
     id: uuid.UUID
@@ -17,12 +17,25 @@ class VerificationQueueResponse(BaseModel):
     created_at: datetime
     completed_at: Optional[datetime] = None
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)
 
 class SignOffRequest(BaseModel):
     approved: bool = Field(..., description="True to verify claim with evidence; False to reject")
     notes: Optional[str] = Field(None, description="Analyst verification rationale / registry citation")
     reviewer: Optional[str] = "Trade OS Senior Analyst"
+
+class AnalystReviewRequest(BaseModel):
+    decision: str = Field(..., description="'approve', 'reject', or 'dispute'")
+    notes: Optional[str] = None
+    evidence_reference: Optional[str] = None
+    reviewer: Optional[str] = "Trade OS Senior Research Analyst"
+
+class FreshnessCheckResponse(BaseModel):
+    entity_id: uuid.UUID
+    is_stale: bool
+    days_old: int
+    freshness_label: str
+    effective_truth_status: str
 
 class CorrectionCreate(BaseModel):
     entity_id: uuid.UUID
@@ -47,7 +60,7 @@ class CorrectionResponse(BaseModel):
     reviewed_at: Optional[datetime] = None
     created_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)
 
 class EntityResolutionLinkCreate(BaseModel):
     source_entity_id: uuid.UUID
@@ -68,4 +81,4 @@ class EntityResolutionLinkResponse(BaseModel):
     status: str
     created_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)
