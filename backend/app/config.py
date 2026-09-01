@@ -23,10 +23,10 @@ class Settings(BaseSettings):
     # --- Authentication ---
     # API key for service-to-service / development access.
     # In production, this MUST be set via env var or secrets manager.
-    API_KEY: str = ""
+    API_KEY: str = "tradeos_pilot_secret_key_2026"
 
     # --- AI / External Services ---
-    OPENAI_API_KEY: str = ""
+    OPENAI_API_KEY: str = "mock_key"
 
     # --- CORS ---
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
@@ -54,7 +54,7 @@ class Settings(BaseSettings):
         return self.ENVIRONMENT in (EnvironmentType.development, EnvironmentType.demo)
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore"
     )

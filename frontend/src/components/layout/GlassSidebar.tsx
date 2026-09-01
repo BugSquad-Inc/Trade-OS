@@ -1,28 +1,67 @@
 import React from 'react';
-import { LayoutGrid, Radio, Building2, Layers, Ship, BarChart3, X, CheckCircle, FileCheck, ShieldCheck } from 'lucide-react';
-import { useUIStore, AppView } from '../../store/uiStore';
+import { 
+  BarChart3, 
+  Briefcase, 
+  Package, 
+  DollarSign, 
+  Building2, 
+  Layers, 
+  Radio, 
+  LayoutGrid, 
+  FileCheck, 
+  Ship, 
+  CheckCircle, 
+  ShieldCheck, 
+  BookOpen, 
+  X, 
+  Sparkles,
+  SlidersHorizontal
+} from 'lucide-react';
+import { useUIStore, AppView, WorkspaceMode } from '../../store/uiStore';
+import { TruthStatusBadge } from '../apple/TruthStatusBadge';
 
 export const GlassSidebar: React.FC = () => {
-  const { currentView, setCurrentView, isMobileDrawerOpen, setMobileDrawerOpen, setOnboardingModalOpen } = useUIStore();
+  const { 
+    currentView, 
+    setCurrentView, 
+    workspaceMode, 
+    toggleWorkspaceMode, 
+    isMobileDrawerOpen, 
+    setMobileDrawerOpen, 
+    setOnboardingModalOpen,
+    openGlossary
+  } = useUIStore();
 
-  const navItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
-    { id: 'today', label: 'Today Action Cockpit', icon: <BarChart3 size={18} />, badge: 'Focus' },
-    { id: 'deals', label: '12-Stage Export Pipeline', icon: <Layers size={18} />, badge: 'Deals' },
-    { id: 'matches', label: 'Buyer Match Portal', icon: <LayoutGrid size={18} />, badge: '50+ Verified' },
-    { id: 'signals', label: 'Live Market Signals', icon: <Radio size={18} />, badge: 'Live' },
-    { id: 'accounts', label: 'Buyer Dossier & AI Sales', icon: <Building2 size={18} /> },
-    { id: 'products', label: 'Digital Product Passports', icon: <Layers size={18} />, badge: 'DPP' },
-    { id: 'documents', label: 'Export Document Vault', icon: <FileCheck size={18} />, badge: 'EUDR' },
-    { id: 'shipments', label: 'Shipment Milestones & eBRC', icon: <Ship size={18} />, badge: 'Radar' },
-    { id: 'customs', label: 'Ocean Displacements', icon: <Ship size={18} />, badge: 'Customs' },
-    { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
-    { id: 'verification', label: 'Analyst Verification Queue', icon: <CheckCircle size={18} />, badge: 'Audit' },
-    { id: 'audit', label: 'Compliance Audit Trail', icon: <ShieldCheck size={18} />, badge: 'Insert-Only' },
+  // Primary 5 Owner Jobs
+  const ownerNavItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
+    { id: 'today', label: 'Today Actions', icon: <BarChart3 size={18} />, badge: '5 Focus' },
+    { id: 'sales', label: 'Sales & Buyers', icon: <Briefcase size={18} />, badge: 'Shortlist' },
+    { id: 'orders', label: 'Orders & Shipments', icon: <Package size={18} />, badge: 'Active' },
+    { id: 'money', label: 'Money & eBRC', icon: <DollarSign size={18} />, badge: 'Treasury' },
+    { id: 'business', label: 'My Business', icon: <Building2 size={18} />, badge: 'Profile' },
   ];
+
+  // Expert Backstage Views
+  const expertNavItems: { id: AppView; label: string; icon: React.ReactNode; badge?: string }[] = [
+    { id: 'today', label: 'Today Action Cockpit', icon: <BarChart3 size={18} /> },
+    { id: 'deals', label: '12-Stage Export Pipeline', icon: <Layers size={18} />, badge: 'Stages' },
+    { id: 'matches', label: 'Buyer Match Scoring', icon: <LayoutGrid size={18} />, badge: '50+' },
+    { id: 'signals', label: 'Market Signals Radar', icon: <Radio size={18} />, badge: 'Live' },
+    { id: 'accounts', label: 'Buyer Intelligence Dossiers', icon: <Building2 size={18} /> },
+    { id: 'products', label: 'Digital Product Passports', icon: <Layers size={18} />, badge: 'DPP' },
+    { id: 'documents', label: 'Export Document Vault', icon: <FileCheck size={18} /> },
+    { id: 'shipments', label: 'Ocean Milestone Radar', icon: <Ship size={18} /> },
+    { id: 'customs', label: 'Customs Displacements', icon: <Ship size={18} /> },
+    { id: 'analytics', label: 'Revenue & KPI Cockpit', icon: <BarChart3 size={18} /> },
+    { id: 'verification', label: 'Analyst Verification Queue', icon: <CheckCircle size={18} />, badge: 'Queue' },
+    { id: 'audit', label: 'Compliance Audit Trail', icon: <ShieldCheck size={18} /> },
+  ];
+
+  const currentNavItems = workspaceMode === 'owner' ? ownerNavItems : expertNavItems;
 
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full p-4 select-none">
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* App Branding */}
         <div className="flex items-center justify-between px-2 py-1">
           <div className="flex items-center gap-3">
@@ -47,14 +86,45 @@ export const GlassSidebar: React.FC = () => {
           </button>
         </div>
 
-        {/* Primary Navigation */}
+        {/* Workspace Mode Switcher */}
+        <div className="p-1 bg-slate-200/60 rounded-xl flex items-center gap-1 text-[11px] font-bold">
+          <button
+            type="button"
+            onClick={() => useUIStore.getState().setWorkspaceMode('owner')}
+            className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              workspaceMode === 'owner'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <Sparkles size={12} className={workspaceMode === 'owner' ? 'text-blue-600' : ''} />
+            <span>Owner Jobs</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => useUIStore.getState().setWorkspaceMode('expert')}
+            className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              workspaceMode === 'expert'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <SlidersHorizontal size={12} className={workspaceMode === 'expert' ? 'text-purple-600' : ''} />
+            <span>Expert Mode</span>
+          </button>
+        </div>
+
+        {/* Navigation Items */}
         <div className="space-y-1">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Export Workflows</p>
-          {navItems.map((item) => {
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
+            {workspaceMode === 'owner' ? 'Primary Owner Jobs' : 'Backstage Workflows'}
+          </p>
+          {currentNavItems.map((item) => {
             const active = currentView === item.id;
             return (
               <button
                 key={item.id}
+                type="button"
                 onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm transition-all cursor-pointer ${
                   active
@@ -77,6 +147,16 @@ export const GlassSidebar: React.FC = () => {
             );
           })}
         </div>
+
+        {/* Export Glossary Quick Link */}
+        <button
+          type="button"
+          onClick={() => openGlossary()}
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50/70 border border-slate-200/60 transition-colors cursor-pointer"
+        >
+          <BookOpen size={15} className="text-blue-500" />
+          <span>Export Glossary (Plain English)</span>
+        </button>
       </div>
 
       {/* Exporter Readiness Profile Card in Sidebar */}
@@ -88,12 +168,10 @@ export const GlassSidebar: React.FC = () => {
           <span className="text-[11px] font-bold text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
             Butler's Leather
           </span>
-          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/80 flex items-center gap-1">
-            <CheckCircle size={10} /> 95/100
-          </span>
+          <TruthStatusBadge status="verified" sourceName="ICEGATE" checkedDate="30 Aug" showDetails={false} />
         </div>
         <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-          Ambur Cluster · DGFT & ICEGATE Verified · Click for profile
+          Ambur Cluster · IEC Verified · 95/100 Readiness
         </p>
       </div>
     </div>

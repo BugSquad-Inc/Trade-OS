@@ -2,6 +2,12 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from './components/layout/AppShell';
 import { TodayCockpitView } from './components/today/TodayCockpitView';
+import { SalesHubView } from './components/sales/SalesHubView';
+import { OrdersHubView } from './components/orders/OrdersHubView';
+import { MoneyHubView } from './components/money/MoneyHubView';
+import { MyBusinessHubView } from './components/business/MyBusinessHubView';
+
+// Backstage / Expert Views
 import { DealsPipelineView } from './components/deals/DealsPipelineView';
 import { MatchPortalView } from './components/matches/MatchPortalView';
 import { SignalsView } from './components/signals/SignalsView';
@@ -13,8 +19,11 @@ import { VerificationQueueView } from './components/verification/VerificationQue
 import { CustomsExplorerView } from './components/customs/CustomsExplorerView';
 import { ExecutiveDashboardView } from './components/analytics/ExecutiveDashboardView';
 import { AuditTrailView } from './components/audit/AuditTrailView';
+
+// Modals
 import { OnboardingWizardModal } from './components/onboarding/OnboardingWizardModal';
 import { TeamManagementModal } from './components/tenants/TeamManagementModal';
+import { ExportGlossaryModal } from './components/ui/ExportGlossaryModal';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { useUIStore } from './store/uiStore';
 
@@ -28,12 +37,25 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  const { currentView, isOnboardingModalOpen, setOnboardingModalOpen, isTeamModalOpen, setTeamModalOpen } = useUIStore();
+  const { 
+    currentView, 
+    isOnboardingModalOpen, 
+    setOnboardingModalOpen, 
+    isTeamModalOpen, 
+    setTeamModalOpen 
+  } = useUIStore();
 
   return (
     <AppShell>
       <ErrorBoundary>
+        {/* Primary 5 Owner Jobs */}
         {currentView === 'today' && <TodayCockpitView />}
+        {currentView === 'sales' && <SalesHubView />}
+        {currentView === 'orders' && <OrdersHubView />}
+        {currentView === 'money' && <MoneyHubView />}
+        {currentView === 'business' && <MyBusinessHubView />}
+
+        {/* Backstage / Direct Views */}
         {currentView === 'deals' && <DealsPipelineView />}
         {currentView === 'matches' && <MatchPortalView />}
         {currentView === 'signals' && <SignalsView />}
@@ -56,6 +78,8 @@ function AppContent() {
         isOpen={isTeamModalOpen}
         onClose={() => setTeamModalOpen(false)}
       />
+
+      <ExportGlossaryModal />
     </AppShell>
   );
 }

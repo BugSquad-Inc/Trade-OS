@@ -1,5 +1,5 @@
 # Trade OS — Module Index
-*Project: Trade OS | Sprint: S7 | Total Entities: 205 | Updated: 2026-08-29T06:18:36Z*
+*Project: Trade OS | Sprint: S7 | Total Entities: 214 | Updated: 2026-09-01T15:10:29Z*
 
 ## Module Status
 
@@ -35,7 +35,9 @@
 | TOS-FE-SHR-009 | PageSkeleton | frontend/src/components/ui/PageSkeleton.tsx | Pulsing placeholder skeleton loader |
 | TOS-FE-SHR-010 | ErrorBoundary | frontend/src/components/ui/ErrorBoundary.tsx | React ErrorBoundary component |
 | TOS-FE-SHR-011 | EmptyState | frontend/src/components/ui/EmptyState.tsx | Empty state illustration and message |
-| TOS-FE-SHR-012 | TruthStatusBadge | frontend/src/components/apple/TruthStatusBadge.tsx | Apple HIG pill badge displaying data truth status (verified, inferred, demo, stale) |
+| TOS-FE-SHR-012 | TruthStatusBadge | frontend/src/components/apple/TruthStatusBadge.tsx | Apple HIG pill badge displaying data truth status (verified, declared, estimated, checked, demo, stale, needs_professional_confirmation) |
+| TOS-FE-SHR-016 | ExportGlossaryModal | frontend/src/components/ui/ExportGlossaryModal.tsx | Plain-English interactive export glossary modal explaining Incoterms, eBRC, EUDR, REACH, LWG, and DPP |
+| TOS-FE-SHR-017 | WhatDoesThisMean | frontend/src/components/ui/WhatDoesThisMean.tsx | Contextual in-app trigger linking technical export terms to plain-English explanations |
 
 ## Config Keys
 

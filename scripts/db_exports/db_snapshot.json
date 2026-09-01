@@ -1,0 +1,1528 @@
+{
+  "extracted_at": "2026-08-30T05:48:11.030439+00:00",
+  "tables": {
+    "audit.audit_event": 0,
+    "audit.audit_event_record": 7,
+    "bronze.ingestion_run": 0,
+    "bronze.raw_document": 0,
+    "bronze.raw_extract": 0,
+    "bronze.source_system": 0,
+    "gold.actions": 132,
+    "gold.agent_runs": 0,
+    "gold.correction_record": 14,
+    "gold.crm_export_log": 72,
+    "gold.entity_resolution_link": 0,
+    "gold.evidence_assertion": 50,
+    "gold.exporter_capability": 7,
+    "gold.match_candidate": 74,
+    "gold.match_profile": 7,
+    "gold.match_score_history": 2473,
+    "gold.opportunity": 3,
+    "gold.product_certificate": 4,
+    "gold.product_family": 20,
+    "gold.product_passport": 20,
+    "gold.product_version": 20,
+    "gold.quote": 1,
+    "gold.shipment_record": 2,
+    "gold.signal": 167,
+    "gold.signal_evidence": 0,
+    "gold.source_registry": 1,
+    "gold.task_item": 3,
+    "gold.tenant": 1,
+    "gold.tenant_membership": 13,
+    "gold.trade_document": 3,
+    "gold.user_account": 13,
+    "gold.verification_queue": 5,
+    "gold.webhook_event_logs": 496,
+    "gold.webhook_subscriptions": 31,
+    "silver.customs_shipments_normalized": 5,
+    "silver.entity_certification": 42,
+    "silver.entity_company": 74,
+    "silver.entity_person": 72,
+    "silver.entity_product": 72,
+    "silver.trade_lane_benchmark": 7
+  },
+  "sample_data": {
+    "silver.entity_company": [
+      {
+        "id": "5727be36-ee2b-49e9-a017-224c984628bc",
+        "canonical_name": "Hugo Boss AG",
+        "legal_name": "Hugo Boss AG S.A./GmbH",
+        "domain": "hugoboss.com",
+        "country_code": "DE",
+        "city": "Metzingen",
+        "region": null,
+        "postal_code": null,
+        "website": "https://www.hugoboss.com",
+        "linkedin_url": null,
+        "segment": "Luxury Apparel & Leather",
+        "description": "European brand specialized in Luxury Apparel & Leather.",
+        "founded_year": null,
+        "employee_range": null,
+        "status": "active",
+        "confidence": 0.92,
+        "search_vector": "'ag':3 'apparel':5,12 'boss':2 'brand':8 'european':7 'hugo':1 'leather':6,13 'luxuri':4,11 'special':9",
+        "created_at": "2026-08-28T12:21:59.296536+00:00",
+        "updated_at": "2026-08-28T12:21:59.296536+00:00",
+        "legal_entity_type": "GmbH",
+        "vat_number": null,
+        "lei": null,
+        "company_registry_id": null,
+        "registry_country": "DE",
+        "truth_status": "demo",
+        "source_id": null,
+        "checked_at": "2026-08-29T05:51:52.260854+00:00",
+        "verified_by": "Trade OS Analyst",
+        "entity_resolution_status": "linked",
+        "parent_entity_id": null,
+        "tenant_id": null
+      },
+      {
+        "id": "a015e5ab-c003-4b5a-988f-16ecf1c25bee",
+        "canonical_name": "Montblanc International",
+        "legal_name": "Montblanc International S.A./GmbH",
+        "domain": "montblanc.com",
+        "country_code": "DE",
+        "city": "Hamburg",
+        "region": null,
+        "postal_code": null,
+        "website": "https://www.montblanc.com",
+        "linkedin_url": null,
+        "segment": "Luxury Writing & Leather Goods",
+        "description": "European brand specialized in Luxury Writing & Leather Goods.",
+        "founded_year": null,
+        "employee_range": null,
+        "status": "active",
+        "confidence": 0.92,
+        "search_vector": "'brand':8 'european':7 'good':6,14 'intern':2 'leather':5,13 'luxuri':3,11 'montblanc':1 'special':9 'write':4,12",
+        "created_at": "2026-08-28T12:21:59.311853+00:00",
+        "updated_at": "2026-08-28T12:21:59.311853+00:00",
+        "legal_entity_type": "GmbH",
+        "vat_number": null,
+        "lei": null,
+        "company_registry_id": null,
+        "registry_country": "DE",
+        "truth_status": "demo",
+        "source_id": null,
+        "checked_at": "2026-08-29T05:51:52.260854+00:00",
+        "verified_by": "Trade OS Analyst",
+        "entity_resolution_status": "linked",
+        "parent_entity_id": null,
+        "tenant_id": null
+      },
+      {
+        "id": "abb10874-392b-44f2-b51d-4720dad184ad",
+        "canonical_name": "Rimowa GmbH",
+        "legal_name": "Rimowa GmbH S.A./GmbH",
+        "domain": "rimowa.com",
+        "country_code": "DE",
+        "city": "Cologne",
+        "region": null,
+        "postal_code": null,
+        "website": "https://www.rimowa.com",
+        "linkedin_url": null,
+        "segment": "Luggage & Travel Accessories",
+        "description": "European brand specialized in Luggage & Travel Accessories.",
+        "founded_year": null,
+        "employee_range": null,
+        "status": "active",
+        "confidence": 0.92,
+        "search_vector": "'accessori':5,12 'brand':7 'european':6 'gmbh':2 'luggag':3,10 'rimowa':1 'special':8 'travel':4,11",
+        "created_at": "2026-08-28T12:21:59.322375+00:00",
+        "updated_at": "2026-08-28T12:21:59.322375+00:00",
+        "legal_entity_type": "GmbH",
+        "vat_number": null,
+        "lei": null,
+        "company_registry_id": null,
+        "registry_country": "DE",
+        "truth_status": "demo",
+        "source_id": null,
+        "checked_at": "2026-08-29T05:51:52.260854+00:00",
+        "verified_by": "Trade OS Analyst",
+        "entity_resolution_status": "linked",
+        "parent_entity_id": null,
+        "tenant_id": null
+      },
+      {
+        "id": "4515925d-e649-4a3c-9e78-4d39ac5f9588",
+        "canonical_name": "Braun B\u00fcffel",
+        "legal_name": "Braun B\u00fcffel S.A./GmbH",
+        "domain": "braun-bueffel.com",
+        "country_code": "DE",
+        "city": "Kirn",
+        "region": null,
+        "postal_code": null,
+        "website": "https://www.braun-bueffel.com",
+        "linkedin_url": null,
+        "segment": "Fine Leather Goods & Wallets",
+        "description": "European brand specialized in Fine Leather Goods & Wallets.",
+        "founded_year": null,
+        "employee_range": null,
+        "status": "active",
+        "confidence": 0.92,
+        "search_vector": "'brand':8 'braun':1 'b\u00fcffel':2 'european':7 'fine':3,11 'good':5,13 'leather':4,12 'special':9 'wallet':6,14",
+        "created_at": "2026-08-28T12:21:59.330037+00:00",
+        "updated_at": "2026-08-28T12:21:59.330037+00:00",
+        "legal_entity_type": "GmbH",
+        "vat_number": null,
+        "lei": null,
+        "company_registry_id": null,
+        "registry_country": "DE",
+        "truth_status": "demo",
+        "source_id": null,
+        "checked_at": "2026-08-29T05:51:52.260854+00:00",
+        "verified_by": "Trade OS Analyst",
+        "entity_resolution_status": "linked",
+        "parent_entity_id": null,
+        "tenant_id": null
+      },
+      {
+        "id": "ce15f042-3975-4ff2-9568-a5e7487e8a4a",
+        "canonical_name": "Aigner Munich",
+        "legal_name": "Aigner Munich S.A./GmbH",
+        "domain": "aignermunich.com",
+        "country_code": "DE",
+        "city": "Munich",
+        "region": null,
+        "postal_code": null,
+        "website": "https://www.aignermunich.com",
+        "linkedin_url": null,
+        "segment": "Luxury Handbags & Belts",
+        "description": "European brand specialized in Luxury Handbags & Belts.",
+        "founded_year": null,
+        "employee_range": null,
+        "status": "active",
+        "confidence": 0.92,
+        "search_vector": "'aigner':1 'belt':5,12 'brand':7 'european':6 'handbag':4,11 'luxuri':3,10 'munich':2 'special':8",
+        "created_at": "2026-08-28T12:21:59.337244+00:00",
+        "updated_at": "2026-08-28T12:21:59.337244+00:00",
+        "legal_entity_type": "GmbH",
+        "vat_number": null,
+        "lei": null,
+        "company_registry_id": null,
+        "registry_country": "DE",
+        "truth_status": "demo",
+        "source_id": null,
+        "checked_at": "2026-08-29T05:51:52.260854+00:00",
+        "verified_by": "Trade OS Analyst",
+        "entity_resolution_status": "linked",
+        "parent_entity_id": null,
+        "tenant_id": null
+      }
+    ],
+    "silver.entity_product": [
+      {
+        "id": "e4ebfe12-2d94-4fd5-8bcb-560fe29bccbd",
+        "company_id": "c8b63527-9483-46ca-9408-1c215977d1ff",
+        "name": "Full-Grain Bovine Leather for Handbags",
+        "description": null,
+        "hs_code": "4107",
+        "material_types": [
+          "Full-grain calf",
+          "Bovine leather"
+        ],
+        "tannage": [],
+        "thickness_range_mm": [
+          "0.9-1.3"
+        ],
+        "finish": [
+          "Semi-aniline",
+          "Pigmented"
+        ],
+        "spec": {},
+        "search_vector": "'4107':8 'bovin':4 'full':2 'full-grain':1 'grain':3 'handbag':7 'leather':5",
+        "created_at": "2026-08-28T12:06:21.987819+00:00",
+        "updated_at": "2026-08-28T12:06:21.987819+00:00"
+      },
+      {
+        "id": "73285964-840c-4394-84e7-6cc650a92ab6",
+        "company_id": "e95aaf01-aab7-4b49-b883-788244137059",
+        "name": "Ultra-Soft Goat & Kid Nappa",
+        "description": null,
+        "hs_code": "4106",
+        "material_types": [
+          "Kid nappa",
+          "Goat nappa"
+        ],
+        "tannage": [],
+        "thickness_range_mm": [
+          "0.5-0.8"
+        ],
+        "finish": [
+          "Aniline",
+          "Water-repellent"
+        ],
+        "spec": {},
+        "search_vector": "'4106':7 'goat':4 'kid':5 'nappa':6 'soft':3 'ultra':2 'ultra-soft':1",
+        "created_at": "2026-08-28T12:06:22.004479+00:00",
+        "updated_at": "2026-08-28T12:06:22.004479+00:00"
+      },
+      {
+        "id": "10b4fa52-21e2-40a7-ab83-5e3aa40afc84",
+        "company_id": "741a6de1-ec94-47ef-804b-2dcfe87a5a0c",
+        "name": "Bovine Wet-Blue & Crust for Auto Upholstery",
+        "description": null,
+        "hs_code": "4104",
+        "material_types": [
+          "Bovine crust",
+          "Heavy hide"
+        ],
+        "tannage": [],
+        "thickness_range_mm": [
+          "1.2-1.8"
+        ],
+        "finish": [
+          "Crust",
+          "Semi-aniline"
+        ],
+        "spec": {},
+        "search_vector": "'4104':9 'auto':7 'blue':4 'bovin':1 'crust':5 'upholsteri':8 'wet':3 'wet-blu':2",
+        "created_at": "2026-08-28T12:06:22.014168+00:00",
+        "updated_at": "2026-08-28T12:06:22.014168+00:00"
+      },
+      {
+        "id": "a7f7eea0-3fff-421b-b5a2-5d281174d39e",
+        "company_id": "83d4d51d-d178-43ae-b7f5-1a265d4a8c10",
+        "name": "Vegetable Tanned Bovine Crust",
+        "description": null,
+        "hs_code": "4104",
+        "material_types": [
+          "Veg-tan crust",
+          "Sole leather"
+        ],
+        "tannage": [],
+        "thickness_range_mm": [
+          "1.4-2.0"
+        ],
+        "finish": [
+          "Natural crust",
+          "Oiled"
+        ],
+        "spec": {},
+        "search_vector": "'4104':5 'bovin':3 'crust':4 'tan':2 'veget':1",
+        "created_at": "2026-08-28T12:06:22.023405+00:00",
+        "updated_at": "2026-08-28T12:06:22.023405+00:00"
+      },
+      {
+        "id": "86eb3a32-94cf-40a7-87f7-49d96b9c3bc0",
+        "company_id": "f999b28c-bea3-42ed-9c5e-8d6a239db3f7",
+        "name": "Heavy Bridle & Saddle Cowhide",
+        "description": null,
+        "hs_code": "4107",
+        "material_types": [
+          "Heavy cowhide",
+          "Bridle leather"
+        ],
+        "tannage": [],
+        "thickness_range_mm": [
+          "1.8-2.4"
+        ],
+        "finish": [
+          "Waxed",
+          "Vegetable-tanned"
+        ],
+        "spec": {},
+        "search_vector": "'4107':5 'bridl':2 'cowhid':4 'heavi':1 'saddl':3",
+        "created_at": "2026-08-28T12:06:22.033402+00:00",
+        "updated_at": "2026-08-28T12:06:22.033402+00:00"
+      }
+    ],
+    "silver.trade_lane_benchmark": [
+      {
+        "id": "ed1955b8-e3e5-4018-a187-d05c141fccaf",
+        "origin_country": "IN",
+        "origin_port": "INMAA",
+        "destination_country": "DE",
+        "destination_port": "DEHAM",
+        "mode": "sea",
+        "container_type": "40HC",
+        "rate_usd": 1850.0,
+        "rate_low_usd": 1800.0,
+        "rate_high_usd": 2600.0,
+        "transit_days_min": 26,
+        "transit_days_max": 34,
+        "port_congestion_index": "Normal (1.2 days wait)",
+        "reroute_risk_notes": "Suez canal security advisories may require Cape of Good Hope routing (+10-14 days)",
+        "effective_start": "2026-01-01",
+        "effective_end": null,
+        "created_at": "2026-08-28T12:06:21.964370+00:00",
+        "updated_at": "2026-08-28T12:06:21.964370+00:00"
+      },
+      {
+        "id": "a124ab81-4867-4a9b-8611-187881d5291a",
+        "origin_country": "IN",
+        "origin_port": "INMAA",
+        "destination_country": "DE",
+        "destination_port": "DEHAM",
+        "mode": "sea",
+        "container_type": "40HC",
+        "rate_usd": 1850.0,
+        "rate_low_usd": 1800.0,
+        "rate_high_usd": 2600.0,
+        "transit_days_min": 26,
+        "transit_days_max": 34,
+        "port_congestion_index": "Normal (1.2 days wait)",
+        "reroute_risk_notes": "Suez canal security advisories may require Cape of Good Hope routing (+10-14 days)",
+        "effective_start": "2026-01-01",
+        "effective_end": null,
+        "created_at": "2026-08-29T05:43:59.400450+00:00",
+        "updated_at": "2026-08-29T05:43:59.400450+00:00"
+      },
+      {
+        "id": "77d750fd-8979-4cd1-81d8-272ea7dba943",
+        "origin_country": "IN",
+        "origin_port": "INMAA",
+        "destination_country": "DE",
+        "destination_port": "DEHAM",
+        "mode": "sea",
+        "container_type": "40HC",
+        "rate_usd": 1850.0,
+        "rate_low_usd": 1800.0,
+        "rate_high_usd": 2600.0,
+        "transit_days_min": 26,
+        "transit_days_max": 34,
+        "port_congestion_index": "Normal (1.2 days wait)",
+        "reroute_risk_notes": "Suez canal security advisories may require Cape of Good Hope routing (+10-14 days)",
+        "effective_start": "2026-01-01",
+        "effective_end": null,
+        "created_at": "2026-08-29T05:51:52.331869+00:00",
+        "updated_at": "2026-08-29T05:51:52.331869+00:00"
+      },
+      {
+        "id": "c9228f5e-667a-4c69-b446-9fd76a8c3c75",
+        "origin_country": "IN",
+        "origin_port": "INMAA",
+        "destination_country": "DE",
+        "destination_port": "DEHAM",
+        "mode": "sea",
+        "container_type": "40HC",
+        "rate_usd": 1850.0,
+        "rate_low_usd": 1800.0,
+        "rate_high_usd": 2600.0,
+        "transit_days_min": 26,
+        "transit_days_max": 34,
+        "port_congestion_index": "Normal (1.2 days wait)",
+        "reroute_risk_notes": "Suez canal security advisories may require Cape of Good Hope routing (+10-14 days)",
+        "effective_start": "2026-01-01",
+        "effective_end": null,
+        "created_at": "2026-08-29T06:02:18.537926+00:00",
+        "updated_at": "2026-08-29T06:02:18.537926+00:00"
+      },
+      {
+        "id": "ed22a0a8-5283-4860-879c-9520d500f3dd",
+        "origin_country": "IN",
+        "origin_port": "INMAA",
+        "destination_country": "DE",
+        "destination_port": "DEHAM",
+        "mode": "sea",
+        "container_type": "40HC",
+        "rate_usd": 1850.0,
+        "rate_low_usd": 1800.0,
+        "rate_high_usd": 2600.0,
+        "transit_days_min": 26,
+        "transit_days_max": 34,
+        "port_congestion_index": "Normal (1.2 days wait)",
+        "reroute_risk_notes": "Suez canal security advisories may require Cape of Good Hope routing (+10-14 days)",
+        "effective_start": "2026-01-01",
+        "effective_end": null,
+        "created_at": "2026-08-29T06:06:13.751195+00:00",
+        "updated_at": "2026-08-29T06:06:13.751195+00:00"
+      }
+    ],
+    "gold.exporter_capability": [
+      {
+        "id": "dd7221f5-5c5f-403c-b180-a23233d68ecc",
+        "company_name": "Butler's Leather",
+        "location": "Chennai / Ambur, Tamil Nadu, India",
+        "cluster": "Chennai / Ambur / Ranipet Leather Cluster",
+        "export_market_focus": [
+          "Germany",
+          "EU",
+          "United Kingdom"
+        ],
+        "material_types": [
+          "Finished bovine full-grain",
+          "Finished goat nappa",
+          "Vegetable crust",
+          "Footwear uppers",
+          "Lining leather"
+        ],
+        "tannage": [
+          "Vegetable-tanned",
+          "Chrome-tanned",
+          "Chrome-free / Metal-free",
+          "Combination"
+        ],
+        "thickness_range_mm": [
+          "0.8-1.0",
+          "1.2-1.4",
+          "1.6-2.2"
+        ],
+        "finish_capabilities": [
+          "Aniline",
+          "Semi-aniline",
+          "Pigmented",
+          "Pull-up",
+          "Wax finish",
+          "Embossed print"
+        ],
+        "monthly_capacity_sqft": 55000,
+        "moq_sqft": 3000,
+        "lead_time_days": 35,
+        "sample_lead_time_days": 10,
+        "port_of_export": "Chennai Port (INMAA)",
+        "incoterms": [
+          "FOB Chennai",
+          "CIF Hamburg",
+          "EXW"
+        ],
+        "certifications": [
+          "LWG Gold Rated",
+          "ISO 9001:2015",
+          "ISO 14001:2015",
+          "REACH SVHC Tested"
+        ],
+        "eudr_readiness_score": 68,
+        "eudr_gap_summary": "Missing farm-level GPS polygon coordinates for ~30% smallholder hide supply cluster; Due Diligence Statement (DDS) template ready.",
+        "created_at": "2026-08-28T12:06:21.964370+00:00",
+        "updated_at": "2026-08-29T05:44:59.251052+00:00",
+        "pan": null,
+        "gstin_list": [
+          "33AABCB1234F1Z1"
+        ],
+        "iec": "0498765432",
+        "udyam_number": "UDYAM-TN-02-0012345",
+        "rcmc_number": "CLE/SR/RCMC/2024/9876",
+        "rcmc_expiry": null,
+        "lut_status": "active",
+        "lut_expiry": null,
+        "ad_code": "6390001",
+        "ad_bank_branch": "State Bank of India, Overseas Branch, Chennai",
+        "ad_bank_ifsc": "SBIN0000853",
+        "icegate_status": "registered",
+        "authorised_signatory": "K. S. Butler, Managing Director",
+        "facilities": [
+          {
+            "name": "Unit 1",
+            "workers": 90
+          }
+        ],
+        "ports": [
+          "INMAA",
+          "INTUT"
+        ],
+        "incoterms_preference": [
+          "FOB",
+          "CIF",
+          "DAP"
+        ],
+        "commercial_constraints": "LC 60 days or 30% advance on custom tannages",
+        "onboarding_step": 5,
+        "onboarding_status": "approved",
+        "reviewed_by": "Trade OS Senior Export Analyst",
+        "reviewed_at": null,
+        "evidence_status": {
+          "iec": "verified",
+          "lut": "verified",
+          "pan": "verified",
+          "rcmc": "verified",
+          "gstin": "verified",
+          "ad_code": "verified"
+        }
+      },
+      {
+        "id": "895e402f-a59d-40a1-ad95-5e1ea34b7225",
+        "company_name": "Butler's Leather",
+        "location": "Chennai / Ambur, Tamil Nadu, India",
+        "cluster": "Chennai / Ambur / Ranipet Leather Cluster",
+        "export_market_focus": [
+          "Germany",
+          "EU",
+          "United Kingdom"
+        ],
+        "material_types": [
+          "Finished bovine full-grain",
+          "Finished goat nappa",
+          "Vegetable crust",
+          "Footwear uppers",
+          "Lining leather"
+        ],
+        "tannage": [
+          "Vegetable-tanned",
+          "Chrome-tanned",
+          "Chrome-free / Metal-free",
+          "Combination"
+        ],
+        "thickness_range_mm": [
+          "0.8-1.0",
+          "1.2-1.4",
+          "1.6-2.2"
+        ],
+        "finish_capabilities": [
+          "Aniline",
+          "Semi-aniline",
+          "Pigmented",
+          "Pull-up",
+          "Wax finish",
+          "Embossed print"
+        ],
+        "monthly_capacity_sqft": 55000,
+        "moq_sqft": 3000,
+        "lead_time_days": 35,
+        "sample_lead_time_days": 10,
+        "port_of_export": "Chennai Port (INMAA)",
+        "incoterms": [
+          "FOB Chennai",
+          "CIF Hamburg",
+          "EXW"
+        ],
+        "certifications": [
+          "LWG Gold Rated",
+          "ISO 9001:2015",
+          "ISO 14001:2015",
+          "REACH SVHC Tested"
+        ],
+        "eudr_readiness_score": 68,
+        "eudr_gap_summary": "Missing farm-level GPS polygon coordinates for ~30% smallholder hide supply cluster; Due Diligence Statement (DDS) template ready.",
+        "created_at": "2026-08-29T05:43:59.400450+00:00",
+        "updated_at": "2026-08-29T05:45:16.662660+00:00",
+        "pan": null,
+        "gstin_list": [
+          "33AABCB1234F1Z1"
+        ],
+        "iec": "0498765432",
+        "udyam_number": "UDYAM-TN-02-0012345",
+        "rcmc_number": "CLE/SR/RCMC/2024/9876",
+        "rcmc_expiry": null,
+        "lut_status": "active",
+        "lut_expiry": null,
+        "ad_code": "6390001",
+        "ad_bank_branch": "State Bank of India, Overseas Branch, Chennai",
+        "ad_bank_ifsc": "SBIN0000853",
+        "icegate_status": "registered",
+        "authorised_signatory": "K. S. Butler, Managing Director",
+        "facilities": [
+          {
+            "name": "Unit 1",
+            "workers": 90
+          }
+        ],
+        "ports": [
+          "INMAA",
+          "INTUT"
+        ],
+        "incoterms_preference": [
+          "FOB",
+          "CIF",
+          "DAP"
+        ],
+        "commercial_constraints": "LC 60 days or 30% advance on custom tannages",
+        "onboarding_step": 5,
+        "onboarding_status": "approved",
+        "reviewed_by": "Trade OS Senior Export Analyst",
+        "reviewed_at": null,
+        "evidence_status": {
+          "iec": "verified",
+          "lut": "verified",
+          "pan": "verified",
+          "rcmc": "verified",
+          "gstin": "verified",
+          "ad_code": "verified"
+        }
+      },
+      {
+        "id": "af5946d2-1037-4054-b8c5-cc5ead8133d4",
+        "company_name": "Butler's Leather",
+        "location": "Chennai / Ambur, Tamil Nadu, India",
+        "cluster": "Chennai / Ambur / Ranipet Leather Cluster",
+        "export_market_focus": [
+          "Germany",
+          "EU",
+          "United Kingdom"
+        ],
+        "material_types": [
+          "Finished bovine full-grain",
+          "Finished goat nappa",
+          "Vegetable crust",
+          "Footwear uppers",
+          "Lining leather"
+        ],
+        "tannage": [
+          "Vegetable-tanned",
+          "Chrome-tanned",
+          "Chrome-free / Metal-free",
+          "Combination"
+        ],
+        "thickness_range_mm": [
+          "0.8-1.0",
+          "1.2-1.4",
+          "1.6-2.2"
+        ],
+        "finish_capabilities": [
+          "Aniline",
+          "Semi-aniline",
+          "Pigmented",
+          "Pull-up",
+          "Wax finish",
+          "Embossed print"
+        ],
+        "monthly_capacity_sqft": 55000,
+        "moq_sqft": 3000,
+        "lead_time_days": 35,
+        "sample_lead_time_days": 10,
+        "port_of_export": "Chennai Port (INMAA)",
+        "incoterms": [
+          "FOB Chennai",
+          "CIF Hamburg",
+          "EXW"
+        ],
+        "certifications": [
+          "LWG Gold Rated",
+          "ISO 9001:2015",
+          "ISO 14001:2015",
+          "REACH SVHC Tested"
+        ],
+        "eudr_readiness_score": 68,
+        "eudr_gap_summary": "Missing farm-level GPS polygon coordinates for ~30% smallholder hide supply cluster; Due Diligence Statement (DDS) template ready.",
+        "created_at": "2026-08-29T05:51:52.331869+00:00",
+        "updated_at": "2026-08-29T05:52:01.783527+00:00",
+        "pan": null,
+        "gstin_list": [
+          "33AABCB1234F1Z1"
+        ],
+        "iec": "0498765432",
+        "udyam_number": "UDYAM-TN-02-0012345",
+        "rcmc_number": "CLE/SR/RCMC/2024/9876",
+        "rcmc_expiry": null,
+        "lut_status": "active",
+        "lut_expiry": null,
+        "ad_code": "6390001",
+        "ad_bank_branch": "State Bank of India, Overseas Branch, Chennai",
+        "ad_bank_ifsc": "SBIN0000853",
+        "icegate_status": "registered",
+        "authorised_signatory": "K. S. Butler, Managing Director",
+        "facilities": [
+          {
+            "name": "Unit 1",
+            "workers": 90
+          }
+        ],
+        "ports": [
+          "INMAA",
+          "INTUT"
+        ],
+        "incoterms_preference": [
+          "FOB",
+          "CIF",
+          "DAP"
+        ],
+        "commercial_constraints": "LC 60 days or 30% advance on custom tannages",
+        "onboarding_step": 5,
+        "onboarding_status": "approved",
+        "reviewed_by": "Trade OS Senior Export Analyst",
+        "reviewed_at": null,
+        "evidence_status": {
+          "iec": "verified",
+          "lut": "verified",
+          "pan": "verified",
+          "rcmc": "verified",
+          "gstin": "verified",
+          "ad_code": "verified"
+        }
+      },
+      {
+        "id": "33fbb9c8-4d63-4b60-9ecf-1cb8184bbc43",
+        "company_name": "Butler's Leather",
+        "location": "Chennai, Tamil Nadu, India",
+        "cluster": "Chennai / Ambur / Ranipet Leather Cluster",
+        "export_market_focus": [
+          "Germany",
+          "EU",
+          "United Kingdom"
+        ],
+        "material_types": [
+          "Finished bovine full-grain",
+          "Finished goat nappa",
+          "Vegetable crust",
+          "Footwear uppers",
+          "Lining leather"
+        ],
+        "tannage": [
+          "Vegetable-tanned",
+          "Chrome-tanned",
+          "Chrome-free / Metal-free",
+          "Combination"
+        ],
+        "thickness_range_mm": [
+          "0.8-1.0",
+          "1.2-1.4",
+          "1.6-2.2"
+        ],
+        "finish_capabilities": [
+          "Aniline",
+          "Semi-aniline",
+          "Pigmented",
+          "Pull-up",
+          "Wax finish",
+          "Embossed print"
+        ],
+        "monthly_capacity_sqft": 50000,
+        "moq_sqft": 3000,
+        "lead_time_days": 35,
+        "sample_lead_time_days": 10,
+        "port_of_export": "Chennai Port (INMAA)",
+        "incoterms": [
+          "FOB Chennai",
+          "CIF Hamburg",
+          "EXW"
+        ],
+        "certifications": [
+          "LWG Gold Rated",
+          "ISO 9001:2015",
+          "ISO 14001:2015",
+          "REACH SVHC Tested"
+        ],
+        "eudr_readiness_score": 68,
+        "eudr_gap_summary": "Missing farm-level GPS polygon coordinates for ~30% smallholder hide supply cluster; Due Diligence Statement (DDS) template ready.",
+        "created_at": "2026-08-29T06:02:18.537926+00:00",
+        "updated_at": "2026-08-29T06:02:18.537926+00:00",
+        "pan": null,
+        "gstin_list": [
+          "33AABCB1234F1Z1"
+        ],
+        "iec": "0498765432",
+        "udyam_number": "UDYAM-TN-02-0012345",
+        "rcmc_number": "CLE/SR/RCMC/2024/9876",
+        "rcmc_expiry": null,
+        "lut_status": "active",
+        "lut_expiry": null,
+        "ad_code": "6390001",
+        "ad_bank_branch": "State Bank of India, Overseas Branch, Chennai",
+        "ad_bank_ifsc": "SBIN0000853",
+        "icegate_status": "registered",
+        "authorised_signatory": "K. S. Butler, Managing Director",
+        "facilities": [
+          {
+            "name": "Ambur Tannery Unit 1",
+            "workers": 85,
+            "area_sqft": 45000
+          }
+        ],
+        "ports": [
+          "INMAA",
+          "INTUT"
+        ],
+        "incoterms_preference": [
+          "FOB",
+          "CIF",
+          "DAP"
+        ],
+        "commercial_constraints": "LC 60 days or 30% advance on custom tannages",
+        "onboarding_step": 5,
+        "onboarding_status": "approved",
+        "reviewed_by": "Trade OS Senior Export Analyst",
+        "reviewed_at": null,
+        "evidence_status": {
+          "iec": "verified",
+          "lut": "verified",
+          "pan": "verified",
+          "rcmc": "verified",
+          "gstin": "verified",
+          "ad_code": "verified"
+        }
+      },
+      {
+        "id": "10747a5a-9b70-4cee-ab1d-7c1ada79dc68",
+        "company_name": "Butler's Leather",
+        "location": "Chennai, Tamil Nadu, India",
+        "cluster": "Chennai / Ambur / Ranipet Leather Cluster",
+        "export_market_focus": [
+          "Germany",
+          "EU",
+          "United Kingdom"
+        ],
+        "material_types": [
+          "Finished bovine full-grain",
+          "Finished goat nappa",
+          "Vegetable crust",
+          "Footwear uppers",
+          "Lining leather"
+        ],
+        "tannage": [
+          "Vegetable-tanned",
+          "Chrome-tanned",
+          "Chrome-free / Metal-free",
+          "Combination"
+        ],
+        "thickness_range_mm": [
+          "0.8-1.0",
+          "1.2-1.4",
+          "1.6-2.2"
+        ],
+        "finish_capabilities": [
+          "Aniline",
+          "Semi-aniline",
+          "Pigmented",
+          "Pull-up",
+          "Wax finish",
+          "Embossed print"
+        ],
+        "monthly_capacity_sqft": 50000,
+        "moq_sqft": 3000,
+        "lead_time_days": 35,
+        "sample_lead_time_days": 10,
+        "port_of_export": "Chennai Port (INMAA)",
+        "incoterms": [
+          "FOB Chennai",
+          "CIF Hamburg",
+          "EXW"
+        ],
+        "certifications": [
+          "LWG Gold Rated",
+          "ISO 9001:2015",
+          "ISO 14001:2015",
+          "REACH SVHC Tested"
+        ],
+        "eudr_readiness_score": 68,
+        "eudr_gap_summary": "Missing farm-level GPS polygon coordinates for ~30% smallholder hide supply cluster; Due Diligence Statement (DDS) template ready.",
+        "created_at": "2026-08-29T06:06:13.751195+00:00",
+        "updated_at": "2026-08-29T06:06:13.751195+00:00",
+        "pan": null,
+        "gstin_list": [
+          "33AABCB1234F1Z1"
+        ],
+        "iec": "0498765432",
+        "udyam_number": "UDYAM-TN-02-0012345",
+        "rcmc_number": "CLE/SR/RCMC/2024/9876",
+        "rcmc_expiry": null,
+        "lut_status": "active",
+        "lut_expiry": null,
+        "ad_code": "6390001",
+        "ad_bank_branch": "State Bank of India, Overseas Branch, Chennai",
+        "ad_bank_ifsc": "SBIN0000853",
+        "icegate_status": "registered",
+        "authorised_signatory": "K. S. Butler, Managing Director",
+        "facilities": [
+          {
+            "name": "Ambur Tannery Unit 1",
+            "workers": 85,
+            "area_sqft": 45000
+          }
+        ],
+        "ports": [
+          "INMAA",
+          "INTUT"
+        ],
+        "incoterms_preference": [
+          "FOB",
+          "CIF",
+          "DAP"
+        ],
+        "commercial_constraints": "LC 60 days or 30% advance on custom tannages",
+        "onboarding_step": 5,
+        "onboarding_status": "approved",
+        "reviewed_by": "Trade OS Senior Export Analyst",
+        "reviewed_at": null,
+        "evidence_status": {
+          "iec": "verified",
+          "lut": "verified",
+          "pan": "verified",
+          "rcmc": "verified",
+          "gstin": "verified",
+          "ad_code": "verified"
+        }
+      }
+    ],
+    "gold.match_candidate": [
+      {
+        "id": "abc7dfe7-a095-4d98-a304-78480c3df008",
+        "match_profile_id": "8d5405bf-4af9-4e85-99af-987464eacc56",
+        "buyer_id": "4da4b1e8-958b-4aba-ba6e-5d2d56604522",
+        "total_score": 78.0,
+        "product_fit_score": 27.5,
+        "compliance_score": 20.0,
+        "lane_economics_score": 12.5,
+        "intent_signals_score": 11.5,
+        "accessibility_score": 6.5,
+        "grade": "B",
+        "rank": 34,
+        "score_version": "v1.0.0",
+        "drivers": [
+          {
+            "score": 27.5,
+            "title": "Material & Tannage Alignment",
+            "weight": 35,
+            "category": "Product Fit",
+            "evidence": "Full bovine & goat leather grain overlap with buyer catalog requirements."
+          },
+          {
+            "score": 20.0,
+            "title": "EUDR 68/100 & REACH Certification",
+            "weight": 25,
+            "category": "Compliance",
+            "evidence": "LWG Gold certified; EUDR readiness at 68/100 with active due diligence pack."
+          },
+          {
+            "score": 12.5,
+            "title": "Chennai \u2192 Hamburg Ocean Transit",
+            "weight": 15,
+            "category": "Lane Economics",
+            "evidence": "Direct Chennai-to-Hamburg ocean transit (26-34 days, $1,850/FEU) highly viable."
+          },
+          {
+            "score": 11.5,
+            "title": "Buyer Sourcing Demand Signal",
+            "weight": 15,
+            "category": "Intent Signals",
+            "evidence": "Public sourcing portal prioritizes traceable EUDR compliant leather suppliers."
+          },
+          {
+            "score": 6.5,
+            "title": "Verified Procurement Decision Maker",
+            "weight": 10,
+            "category": "Accessibility",
+            "evidence": "Verified Head of Sourcing contact identified with GDPR legitimate interest basis."
+          }
+        ],
+        "key_gaps": [
+          "Confirm buyer's exact batch thickness tolerance (0.9-1.3mm vs 1.2-1.4mm)",
+          "Provide farm-level GPS polygon coordinates for EUDR due diligence dossier"
+        ],
+        "next_best_action": "Send vegetable-tanned heavy cowhide swatch (1.8-2.2mm) for master saddlery evaluation",
+        "outreach_angle": "Showcase heritage vegetable tannage and dense temper suited for equestrian leather.",
+        "status": "suggested",
+        "created_at": "2026-08-29T06:02:18.637284+00:00",
+        "updated_at": "2026-08-29T06:18:19.122066+00:00"
+      },
+      {
+        "id": "73bf6610-52c0-42e6-b013-c7380c6c7fbd",
+        "match_profile_id": null,
+        "buyer_id": "6c9194c7-9d17-48e5-a435-7f72c1fb54a6",
+        "total_score": 78.0,
+        "product_fit_score": 27.5,
+        "compliance_score": 20.0,
+        "lane_economics_score": 12.5,
+        "intent_signals_score": 11.5,
+        "accessibility_score": 6.5,
+        "grade": "B",
+        "rank": 66,
+        "score_version": "v1.0.0",
+        "drivers": [
+          {
+            "score": 27.5,
+            "title": "Material & Tannage Alignment",
+            "weight": 35,
+            "category": "Product Fit",
+            "evidence": "Full bovine & goat leather grain overlap with buyer catalog requirements."
+          },
+          {
+            "score": 20.0,
+            "title": "EUDR 68/100 & REACH Certification",
+            "weight": 25,
+            "category": "Compliance",
+            "evidence": "LWG Gold certified; EUDR readiness at 68/100 with active due diligence pack."
+          },
+          {
+            "score": 12.5,
+            "title": "Chennai \u2192 Hamburg Ocean Transit",
+            "weight": 15,
+            "category": "Lane Economics",
+            "evidence": "Direct Chennai-to-Hamburg ocean transit (26-34 days, $1,850/FEU) highly viable."
+          },
+          {
+            "score": 11.5,
+            "title": "Buyer Sourcing Demand Signal",
+            "weight": 15,
+            "category": "Intent Signals",
+            "evidence": "Public sourcing portal prioritizes traceable EUDR compliant leather suppliers."
+          },
+          {
+            "score": 6.5,
+            "title": "Verified Procurement Decision Maker",
+            "weight": 10,
+            "category": "Accessibility",
+            "evidence": "Verified Head of Sourcing contact identified with GDPR legitimate interest basis."
+          }
+        ],
+        "key_gaps": [
+          "Confirm buyer's exact batch thickness tolerance (0.9-1.3mm vs 1.2-1.4mm)",
+          "Provide farm-level GPS polygon coordinates for EUDR due diligence dossier"
+        ],
+        "next_best_action": "Send vegetable-tanned heavy cowhide swatch (1.8-2.2mm) for master saddlery evaluation",
+        "outreach_angle": "Showcase heritage vegetable tannage and dense temper suited for equestrian leather.",
+        "status": "suggested",
+        "created_at": "2026-08-28T13:08:26.385866+00:00",
+        "updated_at": "2026-08-29T06:16:54.484486+00:00"
+      },
+      {
+        "id": "7d0585e2-dff2-4799-a41b-a446fbf443f0",
+        "match_profile_id": "8d5405bf-4af9-4e85-99af-987464eacc56",
+        "buyer_id": "a1fa6f46-85f8-4937-ae76-b6c09472a379",
+        "total_score": 78.0,
+        "product_fit_score": 27.5,
+        "compliance_score": 20.0,
+        "lane_economics_score": 12.5,
+        "intent_signals_score": 11.5,
+        "accessibility_score": 6.5,
+        "grade": "B",
+        "rank": 57,
+        "score_version": "v1.0.0",
+        "drivers": [
+          {
+            "score": 27.5,
+            "title": "Material & Tannage Alignment",
+            "weight": 35,
+            "category": "Product Fit",
+            "evidence": "Full bovine & goat leather grain overlap with buyer catalog requirements."
+          },
+          {
+            "score": 20.0,
+            "title": "EUDR 68/100 & REACH Certification",
+            "weight": 25,
+            "category": "Compliance",
+            "evidence": "LWG Gold certified; EUDR readiness at 68/100 with active due diligence pack."
+          },
+          {
+            "score": 12.5,
+            "title": "Chennai \u2192 Hamburg Ocean Transit",
+            "weight": 15,
+            "category": "Lane Economics",
+            "evidence": "Direct Chennai-to-Hamburg ocean transit (26-34 days, $1,850/FEU) highly viable."
+          },
+          {
+            "score": 11.5,
+            "title": "Buyer Sourcing Demand Signal",
+            "weight": 15,
+            "category": "Intent Signals",
+            "evidence": "Public sourcing portal prioritizes traceable EUDR compliant leather suppliers."
+          },
+          {
+            "score": 6.5,
+            "title": "Verified Procurement Decision Maker",
+            "weight": 10,
+            "category": "Accessibility",
+            "evidence": "Verified Head of Sourcing contact identified with GDPR legitimate interest basis."
+          }
+        ],
+        "key_gaps": [
+          "Confirm buyer's exact batch thickness tolerance (0.9-1.3mm vs 1.2-1.4mm)",
+          "Provide farm-level GPS polygon coordinates for EUDR due diligence dossier"
+        ],
+        "next_best_action": "Send vegetable-tanned heavy cowhide swatch (1.8-2.2mm) for master saddlery evaluation",
+        "outreach_angle": "Showcase heritage vegetable tannage and dense temper suited for equestrian leather.",
+        "status": "suggested",
+        "created_at": "2026-08-29T06:02:18.549146+00:00",
+        "updated_at": "2026-08-29T06:17:16.996156+00:00"
+      },
+      {
+        "id": "2e789d91-4b6c-4d28-9b4f-817c8b8e03fa",
+        "match_profile_id": "f0b75855-adb1-48a5-a0fc-725e43ff36ba",
+        "buyer_id": "123eff84-e7fc-46e8-b20f-b82b6752a612",
+        "total_score": 78.0,
+        "product_fit_score": 27.5,
+        "compliance_score": 20.0,
+        "lane_economics_score": 12.5,
+        "intent_signals_score": 11.5,
+        "accessibility_score": 6.5,
+        "grade": "B",
+        "rank": 59,
+        "score_version": "v1.0.0",
+        "drivers": [
+          {
+            "score": 27.5,
+            "title": "Material & Tannage Alignment",
+            "weight": 35,
+            "category": "Product Fit",
+            "evidence": "Full bovine & goat leather grain overlap with buyer catalog requirements."
+          },
+          {
+            "score": 20.0,
+            "title": "EUDR 68/100 & REACH Certification",
+            "weight": 25,
+            "category": "Compliance",
+            "evidence": "LWG Gold certified; EUDR readiness at 68/100 with active due diligence pack."
+          },
+          {
+            "score": 12.5,
+            "title": "Chennai \u2192 Hamburg Ocean Transit",
+            "weight": 15,
+            "category": "Lane Economics",
+            "evidence": "Direct Chennai-to-Hamburg ocean transit (26-34 days, $1,850/FEU) highly viable."
+          },
+          {
+            "score": 11.5,
+            "title": "Buyer Sourcing Demand Signal",
+            "weight": 15,
+            "category": "Intent Signals",
+            "evidence": "Public sourcing portal prioritizes traceable EUDR compliant leather suppliers."
+          },
+          {
+            "score": 6.5,
+            "title": "Verified Procurement Decision Maker",
+            "weight": 10,
+            "category": "Accessibility",
+            "evidence": "Verified Head of Sourcing contact identified with GDPR legitimate interest basis."
+          }
+        ],
+        "key_gaps": [
+          "Confirm buyer's exact batch thickness tolerance (0.9-1.3mm vs 1.2-1.4mm)",
+          "Provide farm-level GPS polygon coordinates for EUDR due diligence dossier"
+        ],
+        "next_best_action": "Send vegetable-tanned heavy cowhide swatch (1.8-2.2mm) for master saddlery evaluation",
+        "outreach_angle": "Showcase heritage vegetable tannage and dense temper suited for equestrian leather.",
+        "status": "suggested",
+        "created_at": "2026-08-29T06:16:44.286134+00:00",
+        "updated_at": "2026-08-29T06:17:17.012033+00:00"
+      },
+      {
+        "id": "60884a30-885c-4c9f-b6d0-c200edad52f3",
+        "match_profile_id": "d9f612b9-c780-47d0-bd40-1244b793cd0f",
+        "buyer_id": "a9617707-7e12-4833-83c8-ec82958334de",
+        "total_score": 78.0,
+        "product_fit_score": 27.5,
+        "compliance_score": 20.0,
+        "lane_economics_score": 12.5,
+        "intent_signals_score": 11.5,
+        "accessibility_score": 6.5,
+        "grade": "B",
+        "rank": 60,
+        "score_version": "v1.0.0",
+        "drivers": [
+          {
+            "score": 27.5,
+            "title": "Material & Tannage Alignment",
+            "weight": 35,
+            "category": "Product Fit",
+            "evidence": "Full bovine & goat leather grain overlap with buyer catalog requirements."
+          },
+          {
+            "score": 20.0,
+            "title": "EUDR 68/100 & REACH Certification",
+            "weight": 25,
+            "category": "Compliance",
+            "evidence": "LWG Gold certified; EUDR readiness at 68/100 with active due diligence pack."
+          },
+          {
+            "score": 12.5,
+            "title": "Chennai \u2192 Hamburg Ocean Transit",
+            "weight": 15,
+            "category": "Lane Economics",
+            "evidence": "Direct Chennai-to-Hamburg ocean transit (26-34 days, $1,850/FEU) highly viable."
+          },
+          {
+            "score": 11.5,
+            "title": "Buyer Sourcing Demand Signal",
+            "weight": 15,
+            "category": "Intent Signals",
+            "evidence": "Public sourcing portal prioritizes traceable EUDR compliant leather suppliers."
+          },
+          {
+            "score": 6.5,
+            "title": "Verified Procurement Decision Maker",
+            "weight": 10,
+            "category": "Accessibility",
+            "evidence": "Verified Head of Sourcing contact identified with GDPR legitimate interest basis."
+          }
+        ],
+        "key_gaps": [
+          "Confirm buyer's exact batch thickness tolerance (0.9-1.3mm vs 1.2-1.4mm)",
+          "Provide farm-level GPS polygon coordinates for EUDR due diligence dossier"
+        ],
+        "next_best_action": "Send vegetable-tanned heavy cowhide swatch (1.8-2.2mm) for master saddlery evaluation",
+        "outreach_angle": "Showcase heritage vegetable tannage and dense temper suited for equestrian leather.",
+        "status": "suggested",
+        "created_at": "2026-08-29T06:09:57.152785+00:00",
+        "updated_at": "2026-08-29T06:17:17.019782+00:00"
+      }
+    ],
+    "gold.signal": [
+      {
+        "id": "c1bb8ee9-d5f6-4595-bf23-af6c51099335",
+        "entity_id": "c8b63527-9483-46ca-9408-1c215977d1ff",
+        "category": "compliance",
+        "severity": "high",
+        "title": "EUDR Traceability Mandate for Leather Goods Supply Chain",
+        "summary": "Picard sustainability update highlights mandatory batch-level deforestation-free declarations for all imported leathers.",
+        "quote": "We are requiring all non-EU tanneries to provide farm geolocation data and REACH chemical compliance certificates prior to 2026 collection orders.",
+        "source_url": null,
+        "detected_at": "2026-08-28T12:06:21.987819+00:00",
+        "score": 90.0,
+        "evidence": {
+          "quote": "We are requiring all non-EU tanneries to provide farm geolocation data and REACH chemical compliance certificates prior to 2026 collection orders.",
+          "source": "Public Company Sustainability / Procurement Portal"
+        },
+        "created_at": "2026-08-28T12:06:21.987819+00:00"
+      },
+      {
+        "id": "fd4552fb-ac50-4593-a9d9-a38ab928e491",
+        "entity_id": "c8b63527-9483-46ca-9408-1c215977d1ff",
+        "category": "intent",
+        "severity": "medium",
+        "title": "Expansion of Sustainable Leather Bag Collection",
+        "summary": "Picard announced new sustainable accessory line requiring LWG Gold certified leather supply partners.",
+        "quote": "Expanding premium leather accessory range with emphasis on certified ethical tanneries in South Asia.",
+        "source_url": null,
+        "detected_at": "2026-08-28T12:06:21.987819+00:00",
+        "score": 85.0,
+        "evidence": {
+          "quote": "Expanding premium leather accessory range with emphasis on certified ethical tanneries in South Asia.",
+          "source": "Public Company Sustainability / Procurement Portal"
+        },
+        "created_at": "2026-08-28T12:06:21.987819+00:00"
+      },
+      {
+        "id": "bfacdae4-a5c6-49af-95b8-dea01f100a2d",
+        "entity_id": "e95aaf01-aab7-4b49-b883-788244137059",
+        "category": "intent",
+        "severity": "high",
+        "title": "Winter Equestrian & Glove Collection Sourcing Push",
+        "summary": "Procurement team expanding search for high-tensile goat nappa with high colorfastness for seasonal lines.",
+        "quote": "Sourcing supple kidskins and goat leathers meeting rigorous dry/wet rub tests for luxury glove production.",
+        "source_url": null,
+        "detected_at": "2026-08-28T12:06:22.004479+00:00",
+        "score": 88.0,
+        "evidence": {
+          "quote": "Sourcing supple kidskins and goat leathers meeting rigorous dry/wet rub tests for luxury glove production.",
+          "source": "Public Company Sustainability / Procurement Portal"
+        },
+        "created_at": "2026-08-28T12:06:22.004479+00:00"
+      },
+      {
+        "id": "727867f4-e663-444b-a22b-d178501c34ec",
+        "entity_id": "741a6de1-ec94-47ef-804b-2dcfe87a5a0c",
+        "category": "regulatory",
+        "severity": "critical",
+        "title": "Automotive Supply Chain LkSG & EUDR Compliance Audit",
+        "summary": "Bader supplier quality team enforces strict origin tracing for all imported wet-blue and crust containers.",
+        "quote": "All Tier-2 tanneries must document farm origin and demonstrate zero deforestation compliance.",
+        "source_url": null,
+        "detected_at": "2026-08-28T12:06:22.014168+00:00",
+        "score": 92.0,
+        "evidence": {
+          "quote": "All Tier-2 tanneries must document farm origin and demonstrate zero deforestation compliance.",
+          "source": "Public Company Sustainability / Procurement Portal"
+        },
+        "created_at": "2026-08-28T12:06:22.014168+00:00"
+      },
+      {
+        "id": "a6365d8e-b126-4082-9160-56d3d9544197",
+        "entity_id": "83d4d51d-d178-43ae-b7f5-1a265d4a8c10",
+        "category": "market",
+        "severity": "medium",
+        "title": "Wholesale Inventory Replenishment Run",
+        "summary": "Kilger wholesale catalogue shows steady demand for imported crust to buffer rising European raw hide costs.",
+        "quote": "Seeking consistent vegetable-tanned bovine crust in container quantities for footwear replenishment.",
+        "source_url": null,
+        "detected_at": "2026-08-28T12:06:22.023405+00:00",
+        "score": 78.0,
+        "evidence": {
+          "quote": "Seeking consistent vegetable-tanned bovine crust in container quantities for footwear replenishment.",
+          "source": "Public Company Sustainability / Procurement Portal"
+        },
+        "created_at": "2026-08-28T12:06:22.023405+00:00"
+      }
+    ],
+    "gold.product_family": [
+      {
+        "id": "3ceb0234-a2f5-495e-8ee0-490b0cce6df2",
+        "tenant_id": null,
+        "name": "Bovine Full-Grain Classic Nappa",
+        "category": "Finished Bovine Leather",
+        "hs_code": "4107",
+        "itc_hs_code": "4107.12.00",
+        "leather_type": "Full Grain Bovine",
+        "description": "Premium bovine full grain leather with supple temper, aniline finish, crafted for luxury handbags and small leather goods.",
+        "is_active": true,
+        "created_at": "2026-08-29T05:43:59.342429+00:00"
+      },
+      {
+        "id": "5622bfaf-2671-4988-ab73-0c03def98471",
+        "tenant_id": null,
+        "name": "Supple Goat Nappa for Gloves & Accessories",
+        "category": "Finished Goat Leather",
+        "hs_code": "4106",
+        "itc_hs_code": "4106.21.00",
+        "leather_type": "Goat Nappa",
+        "description": "Ultra-soft kid/goat nappa with high tensile strength and colorfastness, tailored for gloves, wallets, and garment trim.",
+        "is_active": true,
+        "created_at": "2026-08-29T05:43:59.363693+00:00"
+      },
+      {
+        "id": "10c89940-4bde-4e67-b586-5c76428f12eb",
+        "tenant_id": null,
+        "name": "Heavy Vegetable Tanned Bridle & Saddle Cowhide",
+        "category": "Vegetable Tanned Leather",
+        "hs_code": "4107",
+        "itc_hs_code": "4107.92.00",
+        "leather_type": "Heavy Cowhide",
+        "description": "Traditional pit-tanned heavy cowhide infused with natural waxes and tallows for equestrian saddles and harnesses.",
+        "is_active": true,
+        "created_at": "2026-08-29T05:43:59.381008+00:00"
+      },
+      {
+        "id": "5e1d2372-5c29-4645-b7fe-44c5f7cc2a8d",
+        "tenant_id": null,
+        "name": "Vegetable Tanned Buffalo Crust for Belts",
+        "category": "Finished Buffalo Leather",
+        "hs_code": "4104",
+        "itc_hs_code": "4104.41.00",
+        "leather_type": "Buffalo Crust",
+        "description": "Heavy temper buffalo crust for equestrian and heavy duty belts",
+        "is_active": true,
+        "created_at": "2026-08-29T05:44:31.639072+00:00"
+      },
+      {
+        "id": "3ebb428a-643c-4a8f-b043-5f5307530748",
+        "tenant_id": null,
+        "name": "Vegetable Tanned Buffalo Crust for Belts",
+        "category": "Finished Buffalo Leather",
+        "hs_code": "4104",
+        "itc_hs_code": "4104.41.00",
+        "leather_type": "Buffalo Crust",
+        "description": "Heavy temper buffalo crust for equestrian and heavy duty belts",
+        "is_active": true,
+        "created_at": "2026-08-29T05:45:16.721978+00:00"
+      }
+    ],
+    "gold.opportunity": [
+      {
+        "id": "06829ff7-ab7b-444e-ab75-8ac7737f039d",
+        "tenant_id": null,
+        "buyer_id": "e95aaf01-aab7-4b49-b883-788244137059",
+        "product_family_id": "5622bfaf-2671-4988-ab73-0c03def98471",
+        "product_version_id": null,
+        "title": "Roeckl Supple Glove Nappa Order (5,000 sqft)",
+        "stage": "closed_won",
+        "deal_value_eur": 17750.0,
+        "deal_value_inr": 1641875.0,
+        "volume_sqft": 5000,
+        "incoterms": "CIF Munich / Air Cargo",
+        "target_close_date": "2026-10-15",
+        "probability": 0.65,
+        "owner": "Sales Lead",
+        "loss_reason": null,
+        "notes": "Landed cost quotation QT-2026-ROECKL sent at \u20ac3.55/sqft.\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Contract drafted under standard CISG terms\n[2026-08-29] Advanced to po received\n[2026-08-29] Advanced to closed won",
+        "created_at": "2026-08-29T06:02:18.507192+00:00",
+        "updated_at": "2026-08-29T06:26:26.297358+00:00"
+      },
+      {
+        "id": "5c2209b5-eadc-48fa-9486-7b592a74fe47",
+        "tenant_id": null,
+        "buyer_id": "741a6de1-ec94-47ef-804b-2dcfe87a5a0c",
+        "product_family_id": "3ceb0234-a2f5-495e-8ee0-490b0cce6df2",
+        "product_version_id": null,
+        "title": "Bader Automotive Grade Crust Tender (30,000 sqft)",
+        "stage": "closed_won",
+        "deal_value_eur": 120000.0,
+        "deal_value_inr": 11100000.0,
+        "volume_sqft": 30000,
+        "incoterms": "CIF Bremerhaven",
+        "target_close_date": "2026-11-30",
+        "probability": 0.4,
+        "owner": "Sales Lead",
+        "loss_reason": null,
+        "notes": "High-volume automotive tier-1 supplier inquiry.\n[2026-08-29] Advanced to outreach sent\n[2026-08-29] Advanced to reply positive\n[2026-08-29] Advanced to sample requested\n[2026-08-29] Advanced to sample sent\n[2026-08-29] Advanced to sample approved\n[2026-08-29] Advanced to quote sent\n[2026-08-29] Advanced to contract negotiation\n[2026-08-29] Advanced to po received\n[2026-08-29] Advanced to closed won",
+        "created_at": "2026-08-29T06:02:18.507192+00:00",
+        "updated_at": "2026-08-29T06:30:57.223451+00:00"
+      },
+      {
+        "id": "6a9103da-4618-428d-a7d9-94d23464b901",
+        "tenant_id": null,
+        "buyer_id": "0ff911c7-706e-4d22-ac83-ee646d35be94",
+        "product_family_id": "3ceb0234-a2f5-495e-8ee0-490b0cce6df2",
+        "product_version_id": null,
+        "title": "Picard AW26 Handbag Nappa Contract (12,000 sqft)",
+        "stage": "closed_won",
+        "deal_value_eur": 45000.0,
+        "deal_value_inr": 4162500.0,
+        "volume_sqft": 12000,
+        "incoterms": "CIF Hamburg",
+        "target_close_date": "2026-09-30",
+        "probability": 0.85,
+        "owner": "Johann Exporter (Butler's Lead)",
+        "loss_reason": null,
+        "notes": "Physical swatches approved by Offenbach procurement team. Preparing commercial contract.\n[2026-08-29] Advanced to quote sent\n[2026-08-29] Advanced to contract negotiation\n[2026-08-29] Advanced to po received\n[2026-08-29] Advanced to closed won",
+        "created_at": "2026-08-29T06:02:18.507192+00:00",
+        "updated_at": "2026-08-29T06:27:04.336275+00:00"
+      }
+    ],
+    "gold.tenant": [
+      {
+        "id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "name": "Butler's Leather Tannery Pvt Ltd",
+        "slug": "butlers-leather",
+        "country_code": "IN",
+        "plan": "enterprise",
+        "status": "active",
+        "settings": {
+          "currency": "INR",
+          "preferred_export_corridor": "Germany"
+        },
+        "created_at": "2026-08-29T06:06:13.727172+00:00",
+        "updated_at": "2026-08-29T06:06:13.727172+00:00"
+      }
+    ],
+    "gold.user_account": [
+      {
+        "id": "60148f10-d5e7-4622-a551-c37c30c9891c",
+        "tenant_id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "email": "johann@butlers.in",
+        "full_name": "Johann Butler",
+        "role": "owner",
+        "is_active": true,
+        "oidc_sub": null,
+        "last_login_at": null,
+        "created_at": "2026-08-29T06:06:13.727172+00:00",
+        "updated_at": "2026-08-29T06:06:13.727172+00:00"
+      },
+      {
+        "id": "d87744f1-33cc-4c77-8db8-20e50c8ece93",
+        "tenant_id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "email": "ramesh.sales@butlers.in",
+        "full_name": "Ramesh Kumar",
+        "role": "sales",
+        "is_active": true,
+        "oidc_sub": null,
+        "last_login_at": null,
+        "created_at": "2026-08-29T06:06:13.727172+00:00",
+        "updated_at": "2026-08-29T06:06:13.727172+00:00"
+      },
+      {
+        "id": "e19a53d8-961a-4142-bb67-341e27d07a4f",
+        "tenant_id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "email": "ananya.compliance@butlers.in",
+        "full_name": "Dr. Ananya Iyer",
+        "role": "compliance",
+        "is_active": true,
+        "oidc_sub": null,
+        "last_login_at": null,
+        "created_at": "2026-08-29T06:06:13.727172+00:00",
+        "updated_at": "2026-08-29T06:06:13.727172+00:00"
+      },
+      {
+        "id": "55ba83fb-9c79-4172-b8d4-85dbb43cd623",
+        "tenant_id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "email": "vikram.finance@butlers.in",
+        "full_name": "Vikram Raman",
+        "role": "finance",
+        "is_active": true,
+        "oidc_sub": null,
+        "last_login_at": null,
+        "created_at": "2026-08-29T06:06:13.727172+00:00",
+        "updated_at": "2026-08-29T06:06:13.727172+00:00"
+      },
+      {
+        "id": "5856b8e4-c86e-4051-8ea6-67fc0834ef02",
+        "tenant_id": "b4494119-648e-4211-b0c4-92b141773c0b",
+        "email": "test.logistics.beae@butlers.in",
+        "full_name": "Suresh Logistics Manager",
+        "role": "compliance",
+        "is_active": true,
+        "oidc_sub": null,
+        "last_login_at": null,
+        "created_at": "2026-08-29T06:06:33.256216+00:00",
+        "updated_at": "2026-08-29T06:06:33.269924+00:00"
+      }
+    ]
+  }
+}
