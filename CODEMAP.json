@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 217,
-    "last_updated": "2026-09-01T15:15:28Z",
+    "total_entities": 218,
+    "last_updated": "2026-09-01T15:27:36Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -420,9 +420,9 @@
       "description": "Pydantic v2 schemas for journey actions, blockers, states, transitions, and history"
     },
     "TOS-SCH-API-016": {
-      "name": "Product Family & Passport Schemas",
+      "name": "Product Matrix Schemas",
       "file": "backend/app/schemas/product.py",
-      "description": "Pydantic v2 schemas for product catalog, versions, certificates, and passports"
+      "description": "Pydantic v2 schemas for physical specs, chemical safety, traceability, and DPP public tokens"
     },
     "TOS-FE-PROD-001": {
       "name": "ProductPassportView",
@@ -845,9 +845,9 @@
       "description": "Frontend hybrid search API client"
     },
     "TOS-DB-SCHEMA-018": {
-      "name": "VerificationQueue / EntityResolutionLink / CorrectionRecord",
-      "file": "backend/app/models/verification.py",
-      "description": "Gold buyer verification queue, brand-parent entity resolution links, and audit correction records"
+      "name": "ProductSpecification / ChemicalComplianceSpec / TraceabilitySpec",
+      "file": "backend/app/models/product.py",
+      "description": "Universal product matrix physical specifications, chemical limits, and EUDR traceability models in gold"
     },
     "TOS-REP-API-014": {
       "name": "verification_repo.py",
@@ -1203,6 +1203,11 @@
       "name": "JourneyTransitionModal",
       "file": "frontend/src/components/deals/JourneyTransitionModal.tsx",
       "description": "Stage gate modal with backend-governed actions, blocked reasons, evidence inputs, and audit history"
+    },
+    "TOS-TST-API-010": {
+      "name": "test_product_matrix_rbac.py",
+      "file": "backend/app/tests/test_product_matrix_rbac.py",
+      "description": "Pytest suite for product matrix creation, public DPP token lookup, and RBAC 7-role permissions"
     }
   },
   "dependency_rules": {

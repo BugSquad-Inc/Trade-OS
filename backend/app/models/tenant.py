@@ -12,7 +12,10 @@ class UserRole(str, Enum):
     sales = "sales"
     compliance = "compliance"
     finance = "finance"
-    auditor = "auditor"
+    logistics = "logistics"
+    analyst = "analyst"
+    admin = "admin"
+    auditor = "auditor" # Backward-compatible alias for analyst/compliance
 
 class Tenant(Base):
     __tablename__ = "tenant"
@@ -41,7 +44,7 @@ class UserAccount(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[UserRole] = mapped_column(
-        SQLEnum(UserRole, name="user_role_enum", schema="gold"),
+        SQLEnum(UserRole, name="user_role_enum", schema="gold", values_callable=lambda obj: [e.value for e in obj]),
         default=UserRole.sales,
         nullable=False
     )
@@ -63,7 +66,7 @@ class TenantMembership(Base):
     tenant_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("gold.tenant.id", ondelete="CASCADE"), nullable=False, index=True)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("gold.user_account.id", ondelete="CASCADE"), nullable=False, index=True)
     role: Mapped[UserRole] = mapped_column(
-        SQLEnum(UserRole, name="user_role_enum", schema="gold"),
+        SQLEnum(UserRole, name="user_role_enum", schema="gold", values_callable=lambda obj: [e.value for e in obj]),
         default=UserRole.sales,
         nullable=False
     )

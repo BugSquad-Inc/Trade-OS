@@ -1,6 +1,41 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from './client';
 
+export interface ProductSpecification {
+  id?: string;
+  thickness_min_mm: number;
+  thickness_max_mm: number;
+  temper: string;
+  tensile_strength_n_per_mm2: number;
+  tear_strength_n: number;
+  grain_type: string;
+  tannage_type: string;
+  origin_country: string;
+}
+
+export interface ChemicalComplianceSpec {
+  id?: string;
+  chromium_vi_ppm: number;
+  azo_dyes_ppm: number;
+  formaldehyde_ppm: number;
+  pfas_free: boolean;
+  reach_svhc_status: string;
+  lab_test_report_id?: string;
+  accredited_lab: string;
+  test_date?: string;
+}
+
+export interface TraceabilitySpec {
+  id?: string;
+  abattoir_license_no: string;
+  mandal_district: string;
+  state: string;
+  geolocation_lat: number;
+  geolocation_lng: number;
+  eudr_cutoff_cleared: boolean;
+  hide_origin_batch: string;
+}
+
 export interface ProductCertificate {
   id: string;
   product_version_id: string;
@@ -22,6 +57,9 @@ export interface ProductPassport {
   id: string;
   product_version_id: string;
   passport_number: string;
+  public_token: string;
+  qr_code_url?: string;
+  carbon_footprint_kg_co2e: number;
   status: string;
   recipient_buyer_id?: string;
   generated_at: string;
@@ -46,6 +84,9 @@ export interface ProductVersion {
   approved_by?: string;
   approved_at?: string;
   created_at: string;
+  specifications?: ProductSpecification;
+  chemical_spec?: ChemicalComplianceSpec;
+  traceability_spec?: TraceabilitySpec;
   certificates: ProductCertificate[];
   passports: ProductPassport[];
 }
@@ -71,10 +112,18 @@ export function useProducts() {
   });
 }
 
+export function usePublicDpp(publicToken?: string) {
+  return useQuery<ProductPassport>({
+    queryKey: ['publicDpp', publicToken],
+    queryFn: () => fetchApi<ProductPassport>(`/api/v1/products/dpp/public/${publicToken}`),
+    enabled: !!publicToken,
+  });
+}
+
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: Partial<ProductFamily>) =>
+    mutationFn: (data: any) =>
       fetchApi<ProductFamily>('/api/v1/products', {
         method: 'POST',
         body: JSON.stringify(data),
