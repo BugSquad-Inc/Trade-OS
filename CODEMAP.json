@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 214,
-    "last_updated": "2026-09-01T15:10:29Z",
+    "total_entities": 217,
+    "last_updated": "2026-09-01T15:15:28Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -390,9 +390,9 @@
       "description": "Apple HIG toggle switching between owner Simple Mode and deep Analyst Mode"
     },
     "TOS-DB-SCHEMA-017": {
-      "name": "ProductFamily / Version / Certificate / Passport",
-      "file": "backend/app/models/product.py",
-      "description": "Gold product family catalog, version-controlled specs, lab test certificates, and Digital Product Passports"
+      "name": "StageEvent",
+      "file": "backend/app/models/journey.py",
+      "description": "Immutable append-only journey stage events model in gold.stage_events"
     },
     "TOS-REP-API-012": {
       "name": "exporter_repo.py",
@@ -415,9 +415,9 @@
       "description": "FastAPI routes for product catalog, versions, certificates, and Digital Product Passports"
     },
     "TOS-SCH-API-015": {
-      "name": "Exporter Profile & Readiness Schemas",
-      "file": "backend/app/schemas/exporter.py",
-      "description": "Pydantic v2 schemas for Indian exporter registrations and readiness gap audits"
+      "name": "Journey Schemas",
+      "file": "backend/app/schemas/journey.py",
+      "description": "Pydantic v2 schemas for journey actions, blockers, states, transitions, and history"
     },
     "TOS-SCH-API-016": {
       "name": "Product Family & Passport Schemas",
@@ -545,9 +545,9 @@
       "description": "Gold trade document vault, audit hashes, container shipments, and DGFT eBRC realization models"
     },
     "TOS-SVC-SCORING-006": {
-      "name": "compliance_engine_v2.py",
-      "file": "backend/app/services/compliance_engine_v2.py",
-      "description": "European market compliance rule engine evaluating EUDR, REACH SVHC, Chromium VI, and LWG protocols"
+      "name": "journey_service",
+      "file": "backend/app/services/journey_service.py",
+      "description": "Canonical journey engine authority for allowed transitions, prerequisites, blocked reasons, and Today task generation"
     },
     "TOS-REP-API-017": {
       "name": "document_repo.py",
@@ -615,9 +615,9 @@
       "description": "Enterprise compliance and security audit trail viewer with payload diff inspector"
     },
     "TOS-TST-API-009": {
-      "name": "test_audit_production_gate.py",
-      "file": "backend/app/tests/test_audit_production_gate.py",
-      "description": "Pytest integration tests for centralized audit logs and production secure MVP gate"
+      "name": "test_journey_engine.py",
+      "file": "backend/app/tests/test_journey_engine.py",
+      "description": "Pytest suite for golden paths, invalid transition rejection, idempotency, and history"
     },
     "TOS-FE-MATCHUI-001": {
       "name": "MatchPortalView",
@@ -1188,6 +1188,21 @@
       "name": "MyBusinessHubView",
       "file": "frontend/src/components/business/MyBusinessHubView.tsx",
       "description": "Consolidated 5-tab Business Hub for Exporter profile, product passports, verification queue, team, and audit trail"
+    },
+    "TOS-REP-API-009": {
+      "name": "journey_repo",
+      "file": "backend/app/repositories/journey_repo.py",
+      "description": "Stage event persistence and immutable history querying"
+    },
+    "TOS-RTE-API-014": {
+      "name": "journey.router",
+      "file": "backend/app/api/journey.py",
+      "description": "FastAPI routes for state inspection, stage transitions, and immutable audit history"
+    },
+    "TOS-FE-ACC-017": {
+      "name": "JourneyTransitionModal",
+      "file": "frontend/src/components/deals/JourneyTransitionModal.tsx",
+      "description": "Stage gate modal with backend-governed actions, blocked reasons, evidence inputs, and audit history"
     }
   },
   "dependency_rules": {

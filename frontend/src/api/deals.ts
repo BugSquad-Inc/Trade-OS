@@ -53,6 +53,11 @@ export interface Opportunity {
   owner: string;
   loss_reason?: string;
   notes?: string;
+  buyer?: {
+    id: string;
+    legal_name: string;
+    country?: string;
+  };
   created_at: string;
   updated_at: string;
   quotes: Quote[];

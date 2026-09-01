@@ -1,55 +1,27 @@
 import React, { useState } from 'react';
-import { Layers, Plus, ArrowRight, DollarSign, Calculator, ChevronRight, CheckCircle2, TrendingUp } from 'lucide-react';
+import { Layers, Plus, ArrowRight, DollarSign, Calculator, ChevronRight, CheckCircle2, TrendingUp, SlidersHorizontal } from 'lucide-react';
 import { AppleCard } from '../apple/AppleCard';
 import { AppleButton } from '../apple/AppleButton';
 import { AppleBadge } from '../apple/AppleBadge';
+import { TruthStatusBadge } from '../apple/TruthStatusBadge';
 import { PageSkeleton } from '../ui/PageSkeleton';
 import { EmptyState } from '../ui/EmptyState';
-import { useDeals, usePipelineSummary, useUpdateDealStage, useIssueQuote, Opportunity, OpportunityStage } from '../../api/deals';
+import { useDeals, usePipelineSummary, useIssueQuote, Opportunity } from '../../api/deals';
 import { LandedCostCalculatorModal } from './LandedCostCalculatorModal';
+import { JourneyTransitionModal } from './JourneyTransitionModal';
 
 export const DealsPipelineView: React.FC = () => {
   const { data: deals, isLoading } = useDeals();
   const { data: summary } = usePipelineSummary();
-  const updateStage = useUpdateDealStage();
   const issueQuote = useIssueQuote();
 
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [selectedOppForQuote, setSelectedOppForQuote] = useState<Opportunity | null>(null);
+  const [selectedOppForTransition, setSelectedOppForTransition] = useState<Opportunity | null>(null);
 
   if (isLoading) return <PageSkeleton />;
 
   const dealList = deals || [];
-
-  const keyStages: { stage: OpportunityStage; label: string; tone: 'blue' | 'purple' | 'amber' | 'green' | 'gray' }[] = [
-    { stage: 'pitch_drafted', label: 'Pitch Drafted', tone: 'gray' },
-    { stage: 'outreach_sent', label: 'Outreach Sent', tone: 'blue' },
-    { stage: 'sample_requested', label: 'Sample Requested', tone: 'amber' },
-    { stage: 'sample_approved', label: 'Sample Approved', tone: 'green' },
-    { stage: 'quote_sent', label: 'Quote Sent', tone: 'blue' },
-    { stage: 'contract_negotiation', label: 'Contract / PO', tone: 'purple' },
-    { stage: 'closed_won', label: 'Closed Won', tone: 'green' },
-  ];
-
-  const handleAdvanceStage = (opp: Opportunity) => {
-    const stageFlow: Record<OpportunityStage, OpportunityStage> = {
-      matched: 'pitch_drafted',
-      pitch_drafted: 'outreach_sent',
-      outreach_sent: 'reply_positive',
-      reply_positive: 'sample_requested',
-      sample_requested: 'sample_sent',
-      sample_sent: 'sample_approved',
-      sample_approved: 'quote_sent',
-      quote_sent: 'contract_negotiation',
-      contract_negotiation: 'po_received',
-      po_received: 'closed_won',
-      in_production: 'closed_won',
-      closed_won: 'closed_won',
-      closed_lost: 'closed_lost',
-    };
-    const next = stageFlow[opp.stage] || 'closed_won';
-    updateStage.mutate({ oppId: opp.id, stage: next, notes: `Advanced to ${next.replace(/_/g, ' ')}` });
-  };
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
@@ -63,7 +35,7 @@ export const DealsPipelineView: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-slate-300 mt-1 max-w-xl font-medium">
-            From verified buyer match to physical sample approval, Landed DDP quotations, and PO issuance.
+            From verified buyer match to physical sample approval, Landed DDP quotations, and PO issuance. Governed by backend journey rules.
           </p>
         </div>
 
@@ -106,6 +78,7 @@ export const DealsPipelineView: React.FC = () => {
                       <AppleBadge tone="blue" size="sm">
                         {deal.stage.replace(/_/g, ' ').toUpperCase()}
                       </AppleBadge>
+                      <TruthStatusBadge status="verified" sourceName="Stage Gate" />
                       <span className="text-[11px] font-mono font-bold text-slate-500">
                         {deal.volume_sqft.toLocaleString()} sqft · {deal.incoterms}
                       </span>
@@ -153,16 +126,14 @@ export const DealsPipelineView: React.FC = () => {
                         Quote
                       </AppleButton>
 
-                      {deal.stage !== 'closed_won' && (
-                        <AppleButton
-                          variant="primary"
-                          size="sm"
-                          icon={<ArrowRight size={13} />}
-                          onClick={() => handleAdvanceStage(deal)}
-                        >
-                          Next Stage
-                        </AppleButton>
-                      )}
+                      <AppleButton
+                        variant="primary"
+                        size="sm"
+                        icon={<SlidersHorizontal size={13} />}
+                        onClick={() => setSelectedOppForTransition(deal)}
+                      >
+                        Manage Stage Gate
+                      </AppleButton>
                     </div>
                   </div>
                 </div>
@@ -197,6 +168,13 @@ export const DealsPipelineView: React.FC = () => {
             });
           }
         }}
+      />
+
+      {/* Journey Transition Modal */}
+      <JourneyTransitionModal
+        opportunity={selectedOppForTransition}
+        isOpen={!!selectedOppForTransition}
+        onClose={() => setSelectedOppForTransition(null)}
       />
     </div>
   );
