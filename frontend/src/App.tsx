@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from './components/layout/AppShell';
 import { TodayCockpitView } from './components/today/TodayCockpitView';
@@ -24,6 +24,7 @@ import { AuditTrailView } from './components/audit/AuditTrailView';
 import { OnboardingWizardModal } from './components/onboarding/OnboardingWizardModal';
 import { TeamManagementModal } from './components/tenants/TeamManagementModal';
 import { ExportGlossaryModal } from './components/ui/ExportGlossaryModal';
+import { CommandPaletteModal } from './components/ui/CommandPaletteModal';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { useUIStore } from './store/uiStore';
 
@@ -39,11 +40,55 @@ const queryClient = new QueryClient({
 function AppContent() {
   const { 
     currentView, 
+    setCurrentView,
     isOnboardingModalOpen, 
     setOnboardingModalOpen, 
     isTeamModalOpen, 
-    setTeamModalOpen 
+    setTeamModalOpen,
+    setCommandPaletteOpen,
+    setGlossaryModalOpen
   } = useUIStore();
+
+  // Global Keyboard Shortcuts (Cmd+K, 1-5, ?)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is currently typing in an input or textarea
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          setCommandPaletteOpen(true);
+        }
+        return;
+      }
+
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(true);
+      } else if (e.key === '1') {
+        e.preventDefault();
+        setCurrentView('today');
+      } else if (e.key === '2') {
+        e.preventDefault();
+        setCurrentView('sales');
+      } else if (e.key === '3') {
+        e.preventDefault();
+        setCurrentView('orders');
+      } else if (e.key === '4') {
+        e.preventDefault();
+        setCurrentView('money');
+      } else if (e.key === '5') {
+        e.preventDefault();
+        setCurrentView('business');
+      } else if (e.key === '?') {
+        e.preventDefault();
+        setGlossaryModalOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setCurrentView, setCommandPaletteOpen, setGlossaryModalOpen]);
 
   return (
     <AppShell>
@@ -80,6 +125,7 @@ function AppContent() {
       />
 
       <ExportGlossaryModal />
+      <CommandPaletteModal />
     </AppShell>
   );
 }

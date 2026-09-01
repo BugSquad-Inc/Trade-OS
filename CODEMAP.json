@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 224,
-    "last_updated": "2026-09-01T15:37:12Z",
+    "total_entities": 226,
+    "last_updated": "2026-09-01T15:40:49Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -1238,6 +1238,16 @@
       "name": "outreach_api_v2",
       "file": "frontend/src/api/outreach.ts",
       "description": "API client for 3-mode outreach generation and export-ready compliance pack manifest"
+    },
+    "TOS-TST-API-014": {
+      "name": "test_s7_production_readiness.py",
+      "file": "backend/app/tests/test_s7_production_readiness.py",
+      "description": "Pytest suite for full lifecycle E2E integration, security headers, and compression"
+    },
+    "TOS-FE-INF-008": {
+      "name": "CommandPaletteModal",
+      "file": "frontend/src/components/ui/CommandPaletteModal.tsx",
+      "description": "Global keyboard-driven Cmd+K command palette and view jumper"
     }
   },
   "dependency_rules": {

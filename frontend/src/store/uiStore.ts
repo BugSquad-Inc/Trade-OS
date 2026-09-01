@@ -19,6 +19,7 @@ export type AppView =
   | 'verification' 
   | 'audit';
 
+export type ViewType = AppView;
 export type WorkspaceMode = 'owner' | 'expert';
 
 export type SalesSubTab = 'matches' | 'signals' | 'accounts' | 'quotes';
@@ -37,6 +38,7 @@ interface UIState {
   selectedBuyerId: string | null;
   selectedInspectorMatch: any | null;
   isCommandBarOpen: boolean;
+  isCommandPaletteOpen: boolean;
   isInspectorOpen: boolean;
   isSimpleMode: boolean;
   isMobileDrawerOpen: boolean;
@@ -56,6 +58,8 @@ interface UIState {
   setSelectedBuyerId: (id: string | null) => void;
   setSelectedInspectorMatch: (match: any | null) => void;
   setCommandBarOpen: (open: boolean) => void;
+  setCommandPaletteOpen: (open: boolean) => void;
+  toggleCommandPalette: () => void;
   setInspectorOpen: (open: boolean) => void;
   setSimpleMode: (simple: boolean) => void;
   toggleSimpleMode: () => void;
@@ -77,6 +81,7 @@ export const useUIStore = create<UIState>((set) => ({
   selectedBuyerId: null,
   selectedInspectorMatch: null,
   isCommandBarOpen: false,
+  isCommandPaletteOpen: false,
   isInspectorOpen: false,
   isSimpleMode: true,
   isMobileDrawerOpen: false,
@@ -98,6 +103,8 @@ export const useUIStore = create<UIState>((set) => ({
   setSelectedBuyerId: (id) => set({ selectedBuyerId: id }),
   setSelectedInspectorMatch: (match) => set({ selectedInspectorMatch: match, isInspectorOpen: !!match }),
   setCommandBarOpen: (open) => set({ isCommandBarOpen: open }),
+  setCommandPaletteOpen: (open) => set({ isCommandPaletteOpen: open }),
+  toggleCommandPalette: () => set((state) => ({ isCommandPaletteOpen: !state.isCommandPaletteOpen })),
   setInspectorOpen: (open) => set({ isInspectorOpen: open }),
   setSimpleMode: (simple) => set({ isSimpleMode: simple }),
   toggleSimpleMode: () => set((state) => ({ isSimpleMode: !state.isSimpleMode })),

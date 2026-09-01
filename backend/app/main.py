@@ -1,15 +1,34 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from app.config import settings
-from app.api import health, capability, matches, signals, accounts, outreach, ingest, search, agents, customs, crm, analytics, webhooks, lanes, websocket, exporters, products, verification, deals, today, tenants, users, documents, shipments, audit, journey
+from app.api import (
+    health, capability, matches, signals, accounts, outreach, ingest,
+    search, agents, customs, crm, analytics, webhooks, lanes,
+    websocket, exporters, products, verification, deals, today,
+    tenants, users, documents, shipments, audit, journey
+)
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["X-TradeOS-Engine"] = "v2.0-universal-sprint7"
+        return response
 
 app = FastAPI(
     title="Trade OS API",
-    description="Export Revenue Operating System — Leather & Materials Vertical",
+    description="Export Revenue Operating System — Universal Multi-Tenant Architecture",
     version="2.0.0"
 )
 
-# CORS Middleware
+# Security & Performance Middlewares
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list or ["*"],
@@ -18,7 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API Routers
+# Include All 26 Production API Routers
 app.include_router(health.router)
 app.include_router(journey.router)
 app.include_router(today.router)
@@ -51,6 +70,7 @@ def root():
     return {
         "name": "Trade OS API",
         "status": "running",
+        "version": "2.0.0",
         "docs": "/docs",
-        "vertical": "Leather & Materials Exporters"
+        "vertical": "Indian SMB Leather & Universal Materials Exporters"
     }
