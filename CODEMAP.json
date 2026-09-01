@@ -13,8 +13,8 @@
       "S6",
       "S7"
     ],
-    "total_entities": 220,
-    "last_updated": "2026-09-01T15:31:13Z",
+    "total_entities": 222,
+    "last_updated": "2026-09-01T15:34:24Z",
     "last_updated_by": "update.py"
   },
   "modules": {
@@ -1218,6 +1218,16 @@
       "name": "test_provenance_analyst_loop.py",
       "file": "backend/app/tests/test_provenance_analyst_loop.py",
       "description": "Pytest suite for data freshness calculation, 90-day SLA, and analyst review workflow"
+    },
+    "TOS-TST-API-012": {
+      "name": "test_scoring_v2_explainability.py",
+      "file": "backend/app/tests/test_scoring_v2_explainability.py",
+      "description": "Pytest suite for non-compensatory compliance gates, counter-factual recommendations, and explainability weights"
+    },
+    "TOS-FE-MATCH-012": {
+      "name": "WhatIfSimulatorModal",
+      "file": "frontend/src/components/matches/WhatIfSimulatorModal.tsx",
+      "description": "Interactive what-if simulator allowing adjustments of certs, specs, and freight to preview score impact"
     }
   },
   "dependency_rules": {

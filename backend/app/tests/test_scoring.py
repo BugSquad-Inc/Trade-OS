@@ -19,13 +19,15 @@ def test_grade_boundaries():
 
 def test_score_match_structure():
     score = score_match(DummyCompany(), DummyExporter(), rank=1)
-    assert score.total_score == 88.0
+    assert score.total_score == 92.0
     assert score.grade == "A"
+    assert score.score_version == "v2.0-product-matrix"
     assert len(score.drivers) == 5
-    assert score.product_fit_score == 32.0
-    assert score.compliance_score == 22.0
-    assert score.lane_economics_score == 13.5
-    assert score.intent_signals_score == 13.0
-    assert score.accessibility_score == 7.5
+    assert score.product_fit_score == 23.5
+    assert score.compliance_score == 23.5
+    assert score.lane_economics_score == 18.0
+    assert score.intent_signals_score == 13.5
+    assert score.accessibility_score == 13.5
+    assert len(score.counter_factuals) > 0
     assert len(score.key_gaps) > 0
     assert score.next_best_action is not None

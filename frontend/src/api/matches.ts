@@ -8,6 +8,14 @@ export interface DriverItem {
   evidence: string;
 }
 
+export interface CounterFactualItem {
+  action: string;
+  dimension: string;
+  score_impact_pts: number;
+  projected_total_score: number;
+  implementation_tip: string;
+}
+
 export interface MatchCard {
   id: string;
   buyer_id: string;
@@ -20,6 +28,9 @@ export interface MatchCard {
   rank: number;
   total_score: number;
   grade: string;
+  score_version?: string;
+  is_compliance_gate_failed?: boolean;
+  compliance_gate_reason?: string;
   score_breakdown: {
     product_fit: number;
     compliance: number;
@@ -28,6 +39,7 @@ export interface MatchCard {
     accessibility: number;
   };
   drivers: DriverItem[];
+  counter_factuals?: CounterFactualItem[];
   key_gaps: string[];
   next_best_action: string;
   outreach_angle: string;
@@ -47,6 +59,7 @@ export interface MatchListResponse {
   matches: MatchCard[];
   total_count: number;
   generated_at: string;
+  score_version?: string;
 }
 
 export const getMatches = () => fetchApi<MatchListResponse>('/api/v1/matches');

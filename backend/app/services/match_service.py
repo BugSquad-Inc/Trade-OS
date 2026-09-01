@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any
-from app.repositories import match_repo, account_repo, capability_repo
+from app.repositories import match_repo, capability_repo
 from app.services import scoring_service, lane_service, compliance_service
 
 def list_ranked_matches(db: Session, limit: int = 10) -> List[Dict[str, Any]]:
@@ -13,6 +13,9 @@ def list_ranked_matches(db: Session, limit: int = 10) -> List[Dict[str, Any]]:
     for c in candidates:
         buyer = c.company
         primary_contact = next((p for p in buyer.persons if p.is_primary), buyer.persons[0] if buyer.persons else None)
+        
+        # Calculate dynamic match score using v2.0 engine
+        match_eval = scoring_service.score_match(buyer=buyer, exporter=exporter, rank=c.rank)
 
         result.append({
             "id": str(c.id),
@@ -24,19 +27,23 @@ def list_ranked_matches(db: Session, limit: int = 10) -> List[Dict[str, Any]]:
             "city": buyer.city or "Germany",
             "segment": buyer.segment,
             "rank": c.rank,
-            "total_score": float(c.total_score),
-            "grade": c.grade,
+            "total_score": match_eval.total_score,
+            "grade": match_eval.grade,
+            "score_version": match_eval.score_version,
+            "is_compliance_gate_failed": match_eval.is_compliance_gate_failed,
+            "compliance_gate_reason": match_eval.compliance_gate_reason,
             "score_breakdown": {
-                "product_fit": float(c.product_fit_score),
-                "compliance": float(c.compliance_score),
-                "lane_economics": float(c.lane_economics_score),
-                "intent_signals": float(c.intent_signals_score),
-                "accessibility": float(c.accessibility_score)
+                "product_fit": match_eval.product_fit_score,
+                "compliance": match_eval.compliance_score,
+                "lane_economics": match_eval.lane_economics_score,
+                "intent_signals": match_eval.intent_signals_score,
+                "accessibility": match_eval.accessibility_score
             },
-            "drivers": c.drivers,
-            "key_gaps": c.key_gaps,
-            "next_best_action": c.next_best_action,
-            "outreach_angle": c.outreach_angle,
+            "drivers": [d.model_dump() for d in match_eval.drivers],
+            "counter_factuals": [cf.model_dump() for cf in match_eval.counter_factuals],
+            "key_gaps": match_eval.key_gaps,
+            "next_best_action": match_eval.next_best_action,
+            "outreach_angle": match_eval.outreach_angle,
             "status": c.status,
             "contact": {
                 "full_name": primary_contact.full_name if primary_contact else "Head of Procurement",

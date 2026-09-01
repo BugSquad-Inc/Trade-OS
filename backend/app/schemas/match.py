@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Any
 
 class DriverItem(BaseModel):
@@ -7,6 +7,13 @@ class DriverItem(BaseModel):
     score: float
     title: str
     evidence: str
+
+class CounterFactualItem(BaseModel):
+    action: str
+    dimension: str
+    score_impact_pts: float
+    projected_total_score: float
+    implementation_tip: str
 
 class ContactSummary(BaseModel):
     full_name: str
@@ -34,8 +41,12 @@ class MatchCardResponse(BaseModel):
     rank: int
     total_score: float
     grade: str
+    score_version: str = "v2.0-product-matrix"
+    is_compliance_gate_failed: bool = False
+    compliance_gate_reason: Optional[str] = None
     score_breakdown: ScoreBreakdown
     drivers: List[Dict[str, Any]]
+    counter_factuals: List[CounterFactualItem] = Field(default_factory=list)
     key_gaps: List[str]
     next_best_action: str
     outreach_angle: str
@@ -44,7 +55,10 @@ class MatchCardResponse(BaseModel):
     freight_summary: str
     eudr_readiness_score: int
 
+    model_config = ConfigDict(from_attributes=True)
+
 class MatchListResponse(BaseModel):
     matches: List[MatchCardResponse]
     total_count: int
     generated_at: str
+    score_version: str = "v2.0-product-matrix"
